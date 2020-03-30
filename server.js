@@ -11,7 +11,7 @@ const connectDB = require("./config/db");
 const dotenv = require("dotenv");
 const passport = require("koa-passport");
 const errorHandler = require("./middleware/errorHandler");
-const serve = require("koa-static-server");
+const serve = require("koa-static");
 const RateLimit = require("koa2-ratelimit").RateLimit;
 const {
   default: sslify, // middleware factory
@@ -73,7 +73,7 @@ app.use(respond());
 // API routes
 require("./routes")(router);
 app.use(router.routes());
-app.use(serve({ rootDir: "./client/build" }));
+app.use(serve("./client/build"));
 app.use(router.allowedMethods());
 
 module.exports = app;
