@@ -48,11 +48,11 @@ function App() {
   const [isDark, setIsDark] = useState(false);
 
   return (
-    <AuthState>
-      <ProjectsState>
-        <BugsState>
-          <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-            <Router>
+    <Router>
+      <AuthState>
+        <ProjectsState>
+          <BugsState>
+            <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
               <Navbar isDark={isDark} setIsDark={setIsDark} />
               <Loader />
               <Alert />
@@ -64,11 +64,11 @@ function App() {
                 <Route exact path="/info" component={Info} />
                 <Route path="*" component={NotFound} />
               </Switch>
-            </Router>
-          </ThemeProvider>
-        </BugsState>
-      </ProjectsState>
-    </AuthState>
+            </ThemeProvider>
+          </BugsState>
+        </ProjectsState>
+      </AuthState>
+    </Router>
   );
 }
 

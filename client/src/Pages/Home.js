@@ -18,14 +18,12 @@ const Home = props => {
   ));
 
   useEffect(() => {
-    getProjects();
-
-    //eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
     if (!isAuthenticated && !isLoading) {
-      history.push("/login");
+      history.push("/info");
+    }
+
+    if (isAuthenticated && !isLoading) {
+      getProjects();
     }
 
     // eslint-disable-next-line

@@ -26,20 +26,18 @@ const Bugs = () => {
   ));
 
   useEffect(() => {
-    getBugs();
-    //eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
-    if (!currentProject) history.push("/");
+    if (!currentProject) {
+      history.push("/");
+    } else {
+      getBugs();
+    }
     // eslint-disable-next-line
   }, [currentProject]);
 
   useEffect(() => {
     if (!isAuthenticated && !isLoading) {
-      history.push("/login");
+      history.push("/info");
     }
-
     // eslint-disable-next-line
   }, [isAuthenticated, isLoading]);
 

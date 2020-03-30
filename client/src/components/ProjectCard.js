@@ -1,10 +1,8 @@
 import React, { useContext } from "react";
-import { useHistory } from "react-router-dom";
 
 import ProjectsContext from "../Context/projects/projectsContext";
 
 const ProjectCard = props => {
-  const history = useHistory();
   const projectsContext = useContext(ProjectsContext);
 
   const { setProject, deleteProject } = projectsContext;
@@ -51,7 +49,6 @@ const ProjectCard = props => {
         className="bg-cyan-a700 hover:bg-cyan-700 transition duration-300 ease-in-out h-10 w-full rounded focus:outline-none shadow text-white"
         onClick={() => {
           setProject(project._id);
-          history.push("/bugs");
         }}
       >
         Go To Project

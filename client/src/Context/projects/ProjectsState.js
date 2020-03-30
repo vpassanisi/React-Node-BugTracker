@@ -1,4 +1,5 @@
 import React, { useReducer } from "react";
+import { useHistory } from "react-router-dom";
 
 import ProjectsContext from "./projectsContext";
 import projectsReducer from "./projectsReducer";
@@ -21,6 +22,8 @@ const ProjectsState = props => {
     currentProject: null,
     error: null
   };
+
+  const history = useHistory();
 
   const [state, dispatch] = useReducer(projectsReducer, initialState);
 
@@ -76,6 +79,7 @@ const ProjectsState = props => {
           type: SET_PROJECT_SUCCESS,
           payload: res.data
         });
+        history.push("/bugs");
       }
     } catch (err) {
       dispatch({

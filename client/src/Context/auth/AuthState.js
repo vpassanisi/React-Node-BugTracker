@@ -1,4 +1,5 @@
 import React, { useReducer, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
 import AuthContext from "./authContext";
 import authReducer from "./authReducer";
@@ -21,6 +22,8 @@ const AuthState = props => {
     isLoading: true,
     error: null
   };
+
+  const history = useHistory();
 
   const [state, dispatch] = useReducer(authReducer, initialState);
 
@@ -47,6 +50,7 @@ const AuthState = props => {
           type: LOGIN_SUCCESS,
           payload: res.data
         });
+        history.push("/");
       }
     } catch (err) {
       dispatch({
@@ -106,6 +110,7 @@ const AuthState = props => {
           type: LOGOUT_SUCCESS,
           payload: res
         });
+        history.push("/info");
       }
     } catch (err) {
       dispatch({
@@ -139,6 +144,7 @@ const AuthState = props => {
           type: CREATE_USER_SUCCESS,
           payload: res.data
         });
+        history.push("/");
       }
     } catch (err) {
       dispatch({

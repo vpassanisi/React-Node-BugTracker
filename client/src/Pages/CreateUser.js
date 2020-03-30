@@ -1,14 +1,12 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import TextField from "@material-ui/core/TextField";
-import { useHistory } from "react-router-dom";
 
 import AuthContext from "../Context/auth/authContext";
 
 const CreateUser = () => {
-  const history = useHistory();
   const authContext = useContext(AuthContext);
 
-  const { createUser, isAuthenticated } = authContext;
+  const { createUser } = authContext;
 
   const [newUser, setNewUser] = useState({
     name: "",
@@ -21,12 +19,6 @@ const CreateUser = () => {
 
     setNewUser(obj);
   };
-
-  useEffect(() => {
-    if (isAuthenticated) history.push("/");
-
-    // eslint-disable-next-line
-  }, [isAuthenticated]);
 
   return (
     <div className="w-full">

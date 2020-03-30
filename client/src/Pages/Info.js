@@ -1,21 +1,11 @@
-import React, { useContext, useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useContext } from "react";
 
 import AuthContext from "../Context/auth/authContext";
 
 const Info = () => {
-  const history = useHistory();
   const authContext = useContext(AuthContext);
 
-  const [loginDemo, setLoginDemo] = useState(false);
-
-  const { login, isAuthenticated } = authContext;
-
-  useEffect(() => {
-    if (isAuthenticated && loginDemo) history.push("/");
-
-    // eslint-disable-next-line
-  }, [isAuthenticated, loginDemo]);
+  const { login } = authContext;
 
   return (
     <div className="w-screen max-w-full">
@@ -61,7 +51,6 @@ const Info = () => {
               email: "Demo@gmail.com",
               password: "123456"
             });
-            setLoginDemo(true);
           }}
           className="block flex items-center justify-center text-xl mx-auto w-2/3 h-10 bg-purple-400 text-white rounded hover:bg-purple-600 transition-colors duration-300 ease-in-out shadow focus:outline-none"
         >
