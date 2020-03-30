@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.w-90p {
+  width: 90%;
+}
+
+.mt-10vh {
+  margin-top: 10vh;
+}
+
+input:-webkit-autofill,
+.autofill-style:-webkit-autofill {
+  -webkit-transition-delay: 9999999s;
+}
+
+.text-indent {
+  text-indent: 4rem;
+}
