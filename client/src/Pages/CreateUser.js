@@ -26,7 +26,6 @@ const CreateUser = () => {
         <div className="text-center font-hairline text-4xl">Create User</div>
         <div className="mb-4">
           <TextField
-            className="autofill-style"
             variant="standard"
             label="Name"
             color="primary"
@@ -39,7 +38,6 @@ const CreateUser = () => {
         </div>
         <div className="mb-4">
           <TextField
-            className="autofill-style"
             variant="standard"
             label="Email"
             color="primary"
@@ -52,7 +50,6 @@ const CreateUser = () => {
         </div>
         <div className="mb-8">
           <TextField
-            className="autofill-style"
             variant="standard"
             label="Password"
             color="primary"

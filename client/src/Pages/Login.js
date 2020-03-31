@@ -25,7 +25,6 @@ const Login = () => {
         <div className="text-center font-hairline text-4xl">Login</div>
         <div className="mb-4">
           <TextField
-            className="autofill-style"
             variant="standard"
             label="Email"
             color="primary"
@@ -38,7 +37,6 @@ const Login = () => {
         </div>
         <div className="mb-8">
           <TextField
-            className="autofill-style"
             variant="standard"
             label="Password"
             color="primary"
