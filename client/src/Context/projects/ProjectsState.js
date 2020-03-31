@@ -13,6 +13,7 @@ import {
   NEW_PORJECT_FAIL,
   DELETE_PROJECT_SUCCESS,
   DELETE_PROJECT_FAIL,
+  CLEAR_CURRENT_PROJECT,
   CLEAR_PROJECTS_ERRORS
 } from "../types";
 
@@ -173,6 +174,12 @@ const ProjectsState = props => {
     loader.classList.add("hidden");
   };
 
+  const clearCurrentProject = () => {
+    dispatch({
+      type: CLEAR_CURRENT_PROJECT
+    });
+  };
+
   const clearProjectsErrors = () => {
     dispatch({
       type: CLEAR_PROJECTS_ERRORS
@@ -189,6 +196,7 @@ const ProjectsState = props => {
         setProject,
         newProject,
         deleteProject,
+        clearCurrentProject,
         clearProjectsErrors
       }}
     >

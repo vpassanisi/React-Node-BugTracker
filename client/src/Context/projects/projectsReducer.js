@@ -7,6 +7,7 @@ import {
   NEW_PORJECT_FAIL,
   DELETE_PROJECT_SUCCESS,
   DELETE_PROJECT_FAIL,
+  CLEAR_CURRENT_PROJECT,
   CLEAR_PROJECTS_ERRORS
 } from "../types";
 
@@ -51,6 +52,11 @@ export default (state, action) => {
       return {
         ...state,
         error: action.payload
+      };
+    case CLEAR_CURRENT_PROJECT:
+      return {
+        ...state,
+        currentProject: null
       };
     case CLEAR_PROJECTS_ERRORS:
       return {

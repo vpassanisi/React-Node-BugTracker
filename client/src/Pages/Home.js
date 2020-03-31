@@ -10,7 +10,7 @@ const Home = props => {
   const projectsContext = useContext(ProjectsContext);
 
   const { isAuthenticated, isLoading } = authContext;
-  const { getProjects, projects } = projectsContext;
+  const { getProjects, projects, clearCurrentProject } = projectsContext;
   const history = useHistory();
 
   const cards = projects.map((project, index) => (
@@ -28,6 +28,12 @@ const Home = props => {
 
     // eslint-disable-next-line
   }, [isAuthenticated, isLoading]);
+
+  useEffect(() => {
+    clearCurrentProject();
+
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <Fragment>
