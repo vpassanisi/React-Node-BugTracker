@@ -11,6 +11,7 @@ const connectDB = require("./config/db");
 const dotenv = require("dotenv");
 const passport = require("koa-passport");
 const errorHandler = require("./middleware/errorHandler");
+const send = require("koa-send");
 const serve = require("koa-static");
 const RateLimit = require("koa2-ratelimit").RateLimit;
 const {
@@ -73,7 +74,10 @@ app.use(respond());
 // API routes
 require("./routes")(router);
 app.use(router.routes());
-app.use(serve("./client/build"));
 app.use(router.allowedMethods());
+
+// serve client to any route not picked up by the router
+app.use(serve("./client/build"));
+app.use(async ctx => await send(ctx, "./client/build/index.html"));
 
 module.exports = app;
