@@ -8,30 +8,22 @@ import Sidebar from "../Layout/Sidebar";
 
 import ProjectsContext from "../Context/projects/projectsContext";
 import AuthContext from "../Context/auth/authContext";
+import DarkModeContext from "../Context/darkMode/darkModeContext";
 
-const Navbar = props => {
+const Navbar = (props) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [isNewBugOpen, setIsNewBugOpen] = useState(false);
   const [isNewProjectOpen, setIsNewProjectOpen] = useState(false);
 
   const projectsContext = useContext(ProjectsContext);
   const authContext = useContext(AuthContext);
+  const darkModeContext = useContext(DarkModeContext);
 
   const { currentProject } = projectsContext;
   const { logout, isAuthenticated } = authContext;
+  const { isDarkMode, darkModeOn, darkModeOff } = darkModeContext;
 
-  const { isDark, setIsDark } = props;
-
-  const switchDarkMode = () => {
-    const html = document.documentElement.classList;
-
-    if (html.contains("mode-dark")) {
-      html.remove("mode-dark");
-    } else {
-      html.add("mode-dark");
-    }
-  };
+  const { setIsDark } = props;
 
   const guestLinks = (
     <Fragment>
@@ -100,7 +92,7 @@ const Navbar = props => {
     <div className="flex flex-row items-center justify-center h-full">
       {isAuthenticated ? userLinks : guestLinks}
 
-      <DarkModeToggle isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+      <DarkModeToggle />
     </div>
   );
 
@@ -114,8 +106,13 @@ const Navbar = props => {
   );
 
   useEffect(() => {
-    switchDarkMode();
-    setIsDark(!isDark);
+    if (isDarkMode) {
+      setIsDark(true);
+      darkModeOn();
+    } else {
+      setIsDark(false);
+      darkModeOff();
+    }
 
     // eslint-disable-next-line
   }, [isDarkMode]);
@@ -140,8 +137,6 @@ const Navbar = props => {
       <Sidebar
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        isDarkMode={isDarkMode}
-        setIsDarkMode={setIsDarkMode}
         setIsNewBugOpen={setIsNewBugOpen}
         setIsNewProjectOpen={setIsNewProjectOpen}
       />

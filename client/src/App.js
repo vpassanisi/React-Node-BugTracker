@@ -14,34 +14,35 @@ import Alert from "./Layout/Alert";
 import AuthState from "./Context/auth/AuthState";
 import BugsState from "./Context/bugs/BugsState";
 import ProjectsState from "./Context/projects/ProjectsState";
+import DarkModeState from "./Context/darkMode/darkModeState";
 
 import "./css/tailwind.css";
 
 const darkTheme = createMuiTheme({
   palette: {
     action: {
-      active: "rgba(0, 0, 0, 1)"
+      active: "rgba(0, 0, 0, 1)",
     },
     type: "dark",
     primary: {
-      main: "#26c6da"
+      main: "#26c6da",
     },
     secondary: {
-      main: "#d500f9"
-    }
-  }
+      main: "#d500f9",
+    },
+  },
 });
 
 const lightTheme = createMuiTheme({
   palette: {
     type: "light",
     primary: {
-      main: "#26c6da"
+      main: "#26c6da",
     },
     secondary: {
-      main: "#d500f9"
-    }
-  }
+      main: "#d500f9",
+    },
+  },
 });
 
 function App() {
@@ -52,19 +53,21 @@ function App() {
       <AuthState>
         <ProjectsState>
           <BugsState>
-            <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-              <Navbar isDark={isDark} setIsDark={setIsDark} />
-              <Loader />
-              <Alert />
-              <Switch>
-                <Route exact path="/" component={Home} />
-                <Route exact path="/bugs" component={Bugs} />
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/create" component={CreateUser} />
-                <Route exact path="/info" component={Info} />
-                <Route path="*" component={NotFound} />
-              </Switch>
-            </ThemeProvider>
+            <DarkModeState>
+              <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+                <Navbar setIsDark={setIsDark} />
+                <Loader />
+                <Alert />
+                <Switch>
+                  <Route exact path="/" component={Home} />
+                  <Route exact path="/bugs" component={Bugs} />
+                  <Route exact path="/login" component={Login} />
+                  <Route exact path="/create" component={CreateUser} />
+                  <Route exact path="/info" component={Info} />
+                  <Route path="*" component={NotFound} />
+                </Switch>
+              </ThemeProvider>
+            </DarkModeState>
           </BugsState>
         </ProjectsState>
       </AuthState>

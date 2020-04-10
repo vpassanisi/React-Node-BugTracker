@@ -1,21 +1,27 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useContext } from "react";
 
-const DarkModeToggle = props => {
+import DarkModeContext from "../Context/darkMode/darkModeContext";
+
+const DarkModeToggle = () => {
+  const darkModeContext = useContext(DarkModeContext);
+
+  const { isDarkMode, darkModeOff, darkModeOn } = darkModeContext;
+
   return (
     <Fragment>
-      {props.isDarkMode ? (
+      {isDarkMode ? (
         <button
           className="flex flex-row items-center justify-center h-full w-16 focus:outline-none"
-          onClick={() => props.setIsDarkMode(!props.isDarkMode)}
+          onClick={() => darkModeOff()}
         >
-          <i className="material-icons text-black">brightness_high</i>
+          <i className="material-icons text-white">brightness_high</i>
         </button>
       ) : (
         <button
           className="flex flex-row items-center justify-center h-full w-16 focus:outline-none"
-          onClick={() => props.setIsDarkMode(!props.isDarkMode)}
+          onClick={() => darkModeOn()}
         >
-          <i className="material-icons text-white">brightness_medium</i>
+          <i className="material-icons text-black">brightness_medium</i>
         </button>
       )}
     </Fragment>
