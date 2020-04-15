@@ -25,6 +25,24 @@ const Bug = (props) => {
     deleteBug(bug._id, index);
   };
 
+  bug.createdAt = new Date(Date.parse(bug.createdAt)).toLocaleString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  bug.updatedAt = new Date(Date.parse(bug.updatedAt)).toLocaleString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
   const statusColor = () => {
     switch (bug.status) {
       case "Open":
