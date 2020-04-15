@@ -640,6 +640,14 @@ input {
   margin-right: auto;
 }
 
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
 .mt-4 {
   margin-top: 1rem;
 }
@@ -684,6 +692,10 @@ input {
   outline: 0;
 }
 
+.p-1 {
+  padding: 0.25rem;
+}
+
 .p-4 {
   padding: 1rem;
 }
@@ -695,6 +707,11 @@ input {
 .py-2 {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+}
+
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
 .px-4 {
@@ -769,6 +786,10 @@ input {
 
 .text-purple-800 {
   color: #6A1B9A;
+}
+
+.text-blue-500 {
+  color: #2196F3;
 }
 
 .text-black {
@@ -916,10 +937,6 @@ input {
 .duration-500 {
   -webkit-transition-duration: 500ms;
           transition-duration: 500ms;
-}
-
-.bg-white-alpha-10 {
-  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .hover\:bg-white-alpha-20:hover {

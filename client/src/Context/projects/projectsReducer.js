@@ -5,10 +5,12 @@ import {
   SET_PROJECT_FAIL,
   NEW_PROJECT_SUCCESS,
   NEW_PORJECT_FAIL,
+  EDIT_PROJECT_SUCCESS,
+  EDIT_PROJECT_FAIL,
   DELETE_PROJECT_SUCCESS,
   DELETE_PROJECT_FAIL,
   CLEAR_CURRENT_PROJECT,
-  CLEAR_PROJECTS_ERRORS
+  CLEAR_PROJECTS_ERRORS,
 } from "../types";
 
 export default (state, action) => {
@@ -16,52 +18,62 @@ export default (state, action) => {
     case GET_PROJECTS_SUCCESS:
       return {
         ...state,
-        projects: action.payload
+        projects: action.payload,
       };
     case GET_PROJECTS_FAIL:
       return {
         ...state,
-        error: action.payload
+        error: action.payload,
       };
     case SET_PROJECT_SUCCESS:
       return {
         ...state,
-        currentProject: action.payload
+        currentProject: action.payload,
       };
     case SET_PROJECT_FAIL:
       return {
         ...state,
-        error: action.payload
+        error: action.payload,
       };
     case NEW_PROJECT_SUCCESS:
       return {
         ...state,
-        projects: action.payload
+        projects: action.payload,
       };
     case NEW_PORJECT_FAIL:
       return {
         ...state,
-        error: action.payload
+        error: action.payload,
+      };
+    case EDIT_PROJECT_SUCCESS:
+      return {
+        ...state,
+        projects: action.payload,
+      };
+    case EDIT_PROJECT_FAIL:
+      return {
+        ...state,
+        error: action.payload,
       };
     case DELETE_PROJECT_SUCCESS:
       return {
         ...state,
-        projects: action.payload
+        projects: action.payload,
       };
     case DELETE_PROJECT_FAIL:
       return {
         ...state,
-        error: action.payload
+        error: action.payload,
       };
     case CLEAR_CURRENT_PROJECT:
       return {
         ...state,
-        currentProject: null
+        currentProject: null,
       };
     case CLEAR_PROJECTS_ERRORS:
       return {
         ...state,
-        error: null
+        error: null,
       };
     default:
       return state;

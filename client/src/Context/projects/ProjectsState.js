@@ -11,17 +11,19 @@ import {
   SET_PROJECT_FAIL,
   NEW_PROJECT_SUCCESS,
   NEW_PORJECT_FAIL,
+  EDIT_PROJECT_SUCCESS,
+  EDIT_PROJECT_FAIL,
   DELETE_PROJECT_SUCCESS,
   DELETE_PROJECT_FAIL,
   CLEAR_CURRENT_PROJECT,
-  CLEAR_PROJECTS_ERRORS
+  CLEAR_PROJECTS_ERRORS,
 } from "../types";
 
-const ProjectsState = props => {
+const ProjectsState = (props) => {
   const initialState = {
     projects: [],
     currentProject: null,
-    error: null
+    error: null,
   };
 
   const history = useHistory();
@@ -34,7 +36,7 @@ const ProjectsState = props => {
     try {
       const req = await fetch(`/api/v1/projects/getProjects`, {
         method: "GET",
-        credentials: "include"
+        credentials: "include",
       });
 
       const res = await req.json();
@@ -42,30 +44,30 @@ const ProjectsState = props => {
       if (!res.success) {
         dispatch({
           type: GET_PROJECTS_FAIL,
-          payload: res.error
+          payload: res.error,
         });
       } else {
         dispatch({
           type: GET_PROJECTS_SUCCESS,
-          payload: res.data
+          payload: res.data,
         });
       }
     } catch (err) {
       dispatch({
         type: GET_PROJECTS_FAIL,
-        payload: `${err}`
+        payload: `${err}`,
       });
     }
     loader.classList.add("hidden");
   };
 
-  const setProject = async id => {
+  const setProject = async (id) => {
     const loader = document.getElementById("loader");
     loader.classList.remove("hidden");
     try {
       const req = await fetch(`/api/v1/projects/${id}`, {
         method: "GET",
-        credentials: "include"
+        credentials: "include",
       });
 
       const res = await req.json();
@@ -73,25 +75,25 @@ const ProjectsState = props => {
       if (!res.success) {
         dispatch({
           type: SET_PROJECT_FAIL,
-          payload: res.error
+          payload: res.error,
         });
       } else {
         dispatch({
           type: SET_PROJECT_SUCCESS,
-          payload: res.data
+          payload: res.data,
         });
         history.push("/bugs");
       }
     } catch (err) {
       dispatch({
         type: SET_PROJECT_FAIL,
-        payload: `${err}`
+        payload: `${err}`,
       });
     }
     loader.classList.add("hidden");
   };
 
-  const newProject = async body => {
+  const newProject = async (body) => {
     const loader = document.getElementById("loader");
     loader.classList.remove("hidden");
     try {
@@ -99,7 +101,7 @@ const ProjectsState = props => {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
       });
 
       const res = await req.json();
@@ -107,13 +109,13 @@ const ProjectsState = props => {
       if (!res.success) {
         dispatch({
           type: NEW_PORJECT_FAIL,
-          payload: res.error
+          payload: res.error,
         });
       } else {
         const newProjectsArr = [...state.projects, res.data];
         dispatch({
           type: NEW_PROJECT_SUCCESS,
-          payload: newProjectsArr
+          payload: newProjectsArr,
         });
 
         setProject(res.data._id);
@@ -121,10 +123,42 @@ const ProjectsState = props => {
     } catch (err) {
       dispatch({
         type: NEW_PORJECT_FAIL,
-        payload: `${err}`
+        payload: `${err}`,
       });
     }
     loader.classList.add("hidden");
+  };
+
+  const editProject = async (project, index) => {
+    try {
+      const req = await fetch(`/api/v1/projects`, {
+        method: "PUT",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(project),
+      });
+
+      const res = await req.json();
+
+      if (!res.success) {
+        dispatch({
+          type: EDIT_PROJECT_FAIL,
+          payload: res.error,
+        });
+      } else {
+        let newProjectsArr = [...state.projects];
+        newProjectsArr[index] = res.data;
+        dispatch({
+          type: EDIT_PROJECT_SUCCESS,
+          payload: newProjectsArr,
+        });
+      }
+    } catch (err) {
+      dispatch({
+        type: EDIT_PROJECT_FAIL,
+        payload: err,
+      });
+    }
   };
 
   const deleteProject = async (id, index) => {
@@ -133,7 +167,7 @@ const ProjectsState = props => {
     try {
       const req = await fetch(`/api/v1/projects/${id}`, {
         method: "GET",
-        credentials: "include"
+        credentials: "include",
       });
 
       const res = await req.json();
@@ -141,13 +175,13 @@ const ProjectsState = props => {
       if (!res.success) {
         return dispatch({
           type: DELETE_PROJECT_FAIL,
-          payload: res.error
+          payload: res.error,
         });
       }
 
       const deleteReq = await fetch(`/api/v1/projects`, {
         method: "DELETE",
-        credentials: "include"
+        credentials: "include",
       });
 
       const deleteRes = await deleteReq.json();
@@ -155,20 +189,20 @@ const ProjectsState = props => {
       if (!deleteRes.success) {
         dispatch({
           type: DELETE_PROJECT_FAIL,
-          payload: deleteRes.error
+          payload: deleteRes.error,
         });
       } else {
         let newProjectsArr = [...state.projects];
         newProjectsArr.splice(index, 1);
         dispatch({
           type: DELETE_PROJECT_SUCCESS,
-          payload: newProjectsArr
+          payload: newProjectsArr,
         });
       }
     } catch (err) {
       dispatch({
         type: DELETE_PROJECT_FAIL,
-        payload: `${err}`
+        payload: `${err}`,
       });
     }
     loader.classList.add("hidden");
@@ -176,13 +210,13 @@ const ProjectsState = props => {
 
   const clearCurrentProject = () => {
     dispatch({
-      type: CLEAR_CURRENT_PROJECT
+      type: CLEAR_CURRENT_PROJECT,
     });
   };
 
   const clearProjectsErrors = () => {
     dispatch({
-      type: CLEAR_PROJECTS_ERRORS
+      type: CLEAR_PROJECTS_ERRORS,
     });
   };
 
@@ -195,9 +229,10 @@ const ProjectsState = props => {
         getProjects,
         setProject,
         newProject,
+        editProject,
         deleteProject,
         clearCurrentProject,
-        clearProjectsErrors
+        clearProjectsErrors,
       }}
     >
       {props.children}
