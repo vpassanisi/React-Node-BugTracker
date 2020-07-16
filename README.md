@@ -1,5 +1,7 @@
 # Koalerplate
 
+Testing Branch
+
 A simple Koa 2 boilerplate for API's using ES6.
 
 [![GitHub issues](https://img.shields.io/github/issues/dbalas/koalerplate.svg?style=flat-square)](https://github.com/dbalas/koalerplate/issues)
@@ -10,13 +12,13 @@ A simple Koa 2 boilerplate for API's using ES6.
 
 ## What's in the package?
 
-* Routing with koa-router.
-* Parsing request with koa-bodyparser.
-* CORS middleware with @koa/cors.
-* koa-respond for helper functions on the context.
-* koa-helmet for important security headers.
-* nodemon for development to auto-restart when your files change.
-* dotenv for environment variable management.
+- Routing with koa-router.
+- Parsing request with koa-bodyparser.
+- CORS middleware with @koa/cors.
+- koa-respond for helper functions on the context.
+- koa-helmet for important security headers.
+- nodemon for development to auto-restart when your files change.
+- dotenv for environment variable management.
 
 ## Getting Started
 
@@ -31,7 +33,7 @@ By default the API server starts on port 3000, http://localhost:3000.
 
 ### Prerequisites
 
-* node >= v7.6.0
+- node >= v7.6.0
 
 ## Contributing
 
@@ -43,7 +45,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-* **Daniel Balastegui** - *Initial work* - [dbalas](https://github.com/dbalas)
+- **Daniel Balastegui** - _Initial work_ - [dbalas](https://github.com/dbalas)
 
 ## License
 
