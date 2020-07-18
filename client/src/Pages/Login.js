@@ -10,7 +10,7 @@ const Login = () => {
 
   const [credentials, setCredentials] = useState({
     email: "",
-    password: ""
+    password: "",
   });
 
   const handleChange = (event, item) => {
@@ -25,6 +25,9 @@ const Login = () => {
         <div className="text-center font-hairline text-4xl">Login</div>
         <div className="mb-4">
           <TextField
+            inputProps={{
+              "data-testid": "input_email",
+            }}
             variant="standard"
             label="Email"
             color="primary"
@@ -32,11 +35,14 @@ const Login = () => {
             name="email"
             autoComplete="on"
             fullWidth={true}
-            onChange={event => handleChange(event, "email")}
+            onChange={(event) => handleChange(event, "email")}
           />
         </div>
         <div className="mb-8">
           <TextField
+            inputProps={{
+              "data-testid": "input_password",
+            }}
             variant="standard"
             label="Password"
             color="primary"
@@ -44,11 +50,12 @@ const Login = () => {
             name="password"
             autoComplete="on"
             fullWidth={true}
-            onChange={event => handleChange(event, "password")}
+            onChange={(event) => handleChange(event, "password")}
           />
         </div>
         <button
           className="w-full h-12 rounded bg-cyan-400 hover:bg-cyan-600 transition-colors duration-300 ease-in-out text-white focus:outline-none shadow"
+          data-testid="login_button"
           onClick={() => login(credentials)}
         >
           Login
