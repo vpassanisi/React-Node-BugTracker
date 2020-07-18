@@ -46,10 +46,11 @@ const Info = () => {
           </small>
         </div>
         <button
+          data-testid="button_demo_login"
           onClick={() => {
             login({
               email: "Demo@gmail.com",
-              password: "123456"
+              password: "123456",
             });
           }}
           className="block flex items-center justify-center text-xl mx-auto w-2/3 h-10 bg-purple-400 text-white rounded hover:bg-purple-600 transition-colors duration-300 ease-in-out shadow focus:outline-none"

@@ -55,7 +55,7 @@ const Login = () => {
         </div>
         <button
           className="w-full h-12 rounded bg-cyan-400 hover:bg-cyan-600 transition-colors duration-300 ease-in-out text-white focus:outline-none shadow"
-          data-testid="login_button"
+          data-testid="button_login"
           onClick={() => login(credentials)}
         >
           Login

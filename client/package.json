@@ -23,6 +23,7 @@
     "start": "npm-run-all -p start:css start:js",
     "build": "npm-run-all build:css build:js",
     "test": "react-scripts test",
+    "coverage": "react-scripts test --watchAll=false --coverage",
     "eject": "react-scripts eject",
     "start:js": "react-scripts start",
     "build:js": "react-scripts build",
