@@ -31,7 +31,10 @@ const EditProjectModal = (props) => {
       }}
     >
       <Fade in={isEditProjectOpen}>
-        <div className="w-64 bg-gray-200 dark:bg-gray-900 p-4 w-90p max-w-screen-md focus:outline-none border border-cyan-400 rounded">
+        <div
+          data-testid="edit_project_modal"
+          className="w-64 bg-gray-200 dark:bg-gray-900 p-4 w-90p max-w-screen-md focus:outline-none border border-cyan-400 rounded"
+        >
           <div className="text-4xl text-black dark:text-white text-center font-hairline">
             Edit Project Info
           </div>

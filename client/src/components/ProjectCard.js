@@ -41,9 +41,9 @@ const ProjectCard = (props) => {
       "Are you sure you want to delete this project? This will permanently delete this project And all of it's bugs"
     );
 
-    if (!conf) return;
-
-    deleteProject(project._id, index);
+    if (conf) {
+      deleteProject(project._id, index);
+    }
   };
 
   return (
@@ -81,6 +81,7 @@ const ProjectCard = (props) => {
         </div>
 
         <button
+          data-testid="button_delete"
           className="absolute top-0 right-0 flex items-center justify-center mt-4 mr-4 focus:outline-none"
           onClick={() => handleDelete()}
         >
@@ -88,6 +89,7 @@ const ProjectCard = (props) => {
         </button>
         <div>
           <button
+            data-testid="button_edit"
             className="mb-2 p-1 flex focus:outline-none"
             onClick={() => setIsEditProjectOpen(true)}
           >
@@ -95,6 +97,7 @@ const ProjectCard = (props) => {
           </button>
 
           <button
+            data-testid="button_go_to"
             className="bg-cyan-a700 hover:bg-cyan-700 transition duration-300 ease-in-out h-10 w-full rounded focus:outline-none shadow text-white"
             onClick={() => {
               setProject(project._id);

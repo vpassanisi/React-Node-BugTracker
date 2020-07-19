@@ -11,7 +11,7 @@ const CreateUser = () => {
   const [newUser, setNewUser] = useState({
     name: "",
     email: "",
-    password: ""
+    password: "",
   });
 
   const handleChange = (event, item) => {
@@ -26,6 +26,9 @@ const CreateUser = () => {
         <div className="text-center font-hairline text-4xl">Create User</div>
         <div className="mb-4">
           <TextField
+            inputProps={{
+              "data-testid": "input_name",
+            }}
             variant="standard"
             label="Name"
             color="primary"
@@ -33,11 +36,14 @@ const CreateUser = () => {
             name="name"
             autoComplete="on"
             fullWidth={true}
-            onChange={event => handleChange(event, "name")}
+            onChange={(event) => handleChange(event, "name")}
           />
         </div>
         <div className="mb-4">
           <TextField
+            inputProps={{
+              "data-testid": "input_email",
+            }}
             variant="standard"
             label="Email"
             color="primary"
@@ -45,11 +51,14 @@ const CreateUser = () => {
             name="email"
             autoComplete="on"
             fullWidth={true}
-            onChange={event => handleChange(event, "email")}
+            onChange={(event) => handleChange(event, "email")}
           />
         </div>
         <div className="mb-8">
           <TextField
+            inputProps={{
+              "data-testid": "input_password",
+            }}
             variant="standard"
             label="Password"
             color="primary"
@@ -57,10 +66,11 @@ const CreateUser = () => {
             name="password"
             autoComplete="on"
             fullWidth={true}
-            onChange={event => handleChange(event, "password")}
+            onChange={(event) => handleChange(event, "password")}
           />
         </div>
         <button
+          data-testid="button_create_user"
           className="w-full h-12 rounded bg-cyan-400 hover:bg-cyan-600 transition-colors duration-300 ease-in-out text-white focus:outline-none shadow"
           onClick={() => createUser(newUser)}
         >

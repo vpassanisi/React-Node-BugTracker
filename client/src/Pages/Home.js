@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import AuthContext from "../Context/auth/authContext";
 import ProjectsContext from "../Context/projects/projectsContext";
 
-const Home = props => {
+const Home = () => {
   const authContext = useContext(AuthContext);
   const projectsContext = useContext(ProjectsContext);
 
