@@ -4,9 +4,7 @@ import ProjectCard from "../components/ProjectCard";
 import ProjectsContext from "../Context/projects/projectsContext";
 import EditProjectModal from "../components/EditProjectModal";
 
-jest.mock("../components/EditProjectModal", () => {
-  return jest.fn(() => null);
-});
+jest.mock("../components/EditProjectModal", () => jest.fn(() => null));
 
 const setup = () => {
   const mockSetProject = jest.fn();

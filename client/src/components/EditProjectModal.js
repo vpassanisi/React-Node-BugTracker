@@ -25,8 +25,9 @@ const EditProjectModal = (props) => {
     <Modal
       open={isEditProjectOpen}
       onClose={() => setIsEditProjectOpen(false)}
-      className="flex items-center justify-center"
+      className="flex z-30 items-center justify-center"
       BackdropProps={{
+        "data-testid": "modal",
         timeout: 500,
       }}
     >
@@ -40,6 +41,9 @@ const EditProjectModal = (props) => {
           </div>
           <div className="mb-4">
             <TextField
+              inputProps={{
+                "data-testid": "input_name",
+              }}
               variant="standard"
               label="Name"
               color="secondary"
@@ -50,6 +54,9 @@ const EditProjectModal = (props) => {
           </div>
           <div className="mb-4">
             <TextField
+              inputProps={{
+                "data-testid": "input_description",
+              }}
               multiline={true}
               variant="standard"
               label="Description"
@@ -60,6 +67,7 @@ const EditProjectModal = (props) => {
             />
           </div>
           <button
+            data-testid="button_edit_project"
             className="bg-purple-400 hover:bg-purple-600 transition-colors duration-300 ease-in-out focus:outline-none rounded w-full h-10 text-white"
             onClick={() => {
               editProject(editProjectBody, index);
