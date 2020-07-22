@@ -53,6 +53,7 @@ const Bugs = () => {
           } h-10 flex items-center justify-center`}
         >
           <button
+            data-testid="button_name"
             className="h-10 px-4 bg-gray-400 dark:bg-gray-700 rounded border shadow"
             onClick={() => sortBugs("name")}
           >
@@ -62,6 +63,7 @@ const Bugs = () => {
         {isDesktop && (
           <div className="w-1/8 flex items-center justify-center">
             <button
+              data-testid="button_fixer"
               className="h-10 px-4 bg-gray-400 dark:bg-gray-700 rounded border shadow"
               onClick={() => sortBugs("fixer")}
             >
@@ -72,6 +74,7 @@ const Bugs = () => {
         {isDesktop && (
           <div className="w-1/8 flex items-center justify-center">
             <button
+              data-testid="button_reporter"
               className="h-10 px-4 bg-gray-400 dark:bg-gray-700 rounded border shadow"
               onClick={() => sortBugs("reporter")}
             >
@@ -85,6 +88,7 @@ const Bugs = () => {
           } mx-2`}
         >
           <button
+            data-testid="button_status"
             className="h-10 px-4 bg-gray-400 dark:bg-gray-700 rounded border shadow"
             onClick={() => sortBugs("status")}
           >
@@ -97,6 +101,7 @@ const Bugs = () => {
           } mx-2`}
         >
           <button
+            data-testid="button_severity"
             className="h-10 px-4 bg-gray-400 dark:bg-gray-700 rounded border shadow"
             onClick={() => sortBugs("severity")}
           >
@@ -106,6 +111,7 @@ const Bugs = () => {
         {isDesktop && (
           <div className="flex items-center justify-center w-1/8 mx-2">
             <button
+              data-testid="button_reproduceability"
               className="h-10 px-4 bg-gray-400 dark:bg-gray-700 rounded border shadow"
               onClick={() => sortBugs("reproduceability")}
             >

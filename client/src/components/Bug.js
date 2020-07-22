@@ -8,7 +8,6 @@ import DarkModeContext from "../Context/darkMode/darkModeContext";
 
 const Bug = (props) => {
   const { open, setOpen, index, bug } = props;
-  const [isMounted, setIsMounted] = useState(false);
   const bugsContext = useContext(BugsContext);
   const darkModeContext = useContext(DarkModeContext);
 
@@ -20,9 +19,7 @@ const Bug = (props) => {
   const handleDelete = () => {
     const conf = window.confirm("Are you sure you want to delete this bug?");
 
-    if (!conf) return;
-
-    deleteBug(bug._id, index);
+    if (conf) deleteBug(bug._id, index);
   };
 
   bug.createdAt = new Date(Date.parse(bug.createdAt)).toLocaleString("en-US", {
@@ -115,6 +112,7 @@ const Bug = (props) => {
   return (
     <div>
       <button
+        data-testid="button_open"
         onClick={() => (open === index ? setOpen(null) : setOpen(index))}
         className={`flex flex-row items-center justify-between px-4 py-5 w-full bg-white ${
           isDarkMode ? "hover:bg-gray-800" : "hover:bg-gray-300"
@@ -156,29 +154,30 @@ const Bug = (props) => {
       <Collapse
         in={open === index}
         timeout={500}
-        onEnter={() => setIsMounted(true)}
-        onExited={() => setIsMounted(false)}
+        mountOnEnter={true}
+        unmountOnExit={true}
       >
-        {isMounted ? (
-          <div className="flex flex-wrap w-full max-w-screen bg-gray-50 dark:bg-dark-gray-900 border-l border-r rounded-lg p-4">
-            <Updatebug bug={bug} index={index} />
-            <div className="w-full md:w-1/2 p-4">
-              <span className="text-purple-500 text-xl">Description: </span>
-              <p className="mb-4">{bug.description}</p>
-              {isDesktop ? desktopDetails : mobileDetails}
-              <span className="text-purple-500 text-xl">Created At: </span>
-              <p className="mb-4">{bug.createdAt}</p>
-              <span className="text-purple-500 text-xl">Updated At: </span>
-              <p className="mb-4">{bug.updatedAt}</p>
-              <button
-                className="w-full h-10 rounded bg-cyan-400 hover:bg-cyan-600 transition-colors duration-300 ease-in-out focus:outline-none text-white shadow"
-                onClick={() => handleDelete()}
-              >
-                Delete
-              </button>
-            </div>
+        <div className="flex flex-wrap w-full max-w-screen bg-gray-50 dark:bg-dark-gray-900 border-l border-r rounded-lg p-4">
+          <Updatebug bug={bug} index={index} />
+          <div className="w-full md:w-1/2 p-4">
+            <span className="text-purple-500 text-xl">Description: </span>
+            <p data-testid="description" className="mb-4">
+              {bug.description}
+            </p>
+            {isDesktop ? desktopDetails : mobileDetails}
+            <span className="text-purple-500 text-xl">Created At: </span>
+            <p className="mb-4">{bug.createdAt}</p>
+            <span className="text-purple-500 text-xl">Updated At: </span>
+            <p className="mb-4">{bug.updatedAt}</p>
+            <button
+              data-testid="button_delete"
+              className="w-full h-10 rounded bg-cyan-400 hover:bg-cyan-600 transition-colors duration-300 ease-in-out focus:outline-none text-white shadow"
+              onClick={() => handleDelete()}
+            >
+              Delete
+            </button>
           </div>
-        ) : null}
+        </div>
       </Collapse>
     </div>
   );

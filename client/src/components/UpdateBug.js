@@ -7,7 +7,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 import BugsContext from "../Context/bugs/bugsContext";
 
-const UpdateBug = props => {
+const UpdateBug = (props) => {
   const bugsContext = useContext(BugsContext);
 
   const { updateBug } = bugsContext;
@@ -20,7 +20,7 @@ const UpdateBug = props => {
     description: bug.description,
     status: bug.status,
     severity: bug.severity,
-    reproduceability: bug.reproduceability
+    reproduceability: bug.reproduceability,
   });
 
   const handleChange = (event, item) => {
@@ -33,16 +33,22 @@ const UpdateBug = props => {
     <div className="w-full md:w-1/2 p-4 rounded border border-cyan-400">
       <div className="mb-4">
         <TextField
+          inputProps={{
+            "data-testid": "input_edit_name",
+          }}
           variant="standard"
           label="Name"
           color="secondary"
           fullWidth={true}
           defaultValue={bug.name}
-          onChange={event => handleChange(event, "name")}
+          onChange={(event) => handleChange(event, "name")}
         />
       </div>
       <div className="mb-4">
         <TextField
+          inputProps={{
+            "data-testid": "input_edit_fixer",
+          }}
           variant="standard"
           label="Fixer"
           color="secondary"
@@ -50,18 +56,21 @@ const UpdateBug = props => {
           defaultValue={bug.fixer.email}
           helperText="Must be a users email"
           type="email"
-          onChange={event => handleChange(event, "fixer")}
+          onChange={(event) => handleChange(event, "fixer")}
         />
       </div>
       <div className="mb-4">
         <TextField
+          inputProps={{
+            "data-testid": "input_edit_description",
+          }}
           multiline={true}
           variant="standard"
           label="Description"
           color="secondary"
           fullWidth={true}
           defaultValue={bug.description}
-          onChange={event => handleChange(event, "description")}
+          onChange={(event) => handleChange(event, "description")}
         />
       </div>
       <div className="flex mb-4">
@@ -69,8 +78,11 @@ const UpdateBug = props => {
           <FormControl variant="standard" color="secondary" fullWidth={true}>
             <InputLabel>Status</InputLabel>
             <Select
+              inputProps={{
+                "data-testid": "select_status",
+              }}
               value={updateBugBody.status}
-              onChange={event => handleChange(event, "status")}
+              onChange={(event) => handleChange(event, "status")}
               label="Status"
             >
               <MenuItem value={"Open"}>Open</MenuItem>
@@ -84,8 +96,11 @@ const UpdateBug = props => {
           <FormControl variant="standard" color="secondary" fullWidth={true}>
             <InputLabel>Severity</InputLabel>
             <Select
+              inputProps={{
+                "data-testid": "select_severity",
+              }}
               value={updateBugBody.severity}
-              onChange={event => handleChange(event, "severity")}
+              onChange={(event) => handleChange(event, "severity")}
               label="Severity"
             >
               <MenuItem value={"Major"}>Major</MenuItem>
@@ -97,9 +112,12 @@ const UpdateBug = props => {
           <FormControl variant="standard" color="secondary" fullWidth={true}>
             <InputLabel>Reproduceable</InputLabel>
             <Select
+              inputProps={{
+                "data-testid": "select_reproduceability",
+              }}
               autoWidth={false}
               value={updateBugBody.reproduceability}
-              onChange={event => handleChange(event, "reproduceability")}
+              onChange={(event) => handleChange(event, "reproduceability")}
               label="Reproduceable"
             >
               <MenuItem value={"Always"}>Always</MenuItem>
@@ -109,6 +127,7 @@ const UpdateBug = props => {
         </div>
       </div>
       <button
+        data-testid="button_edit"
         className="w-full h-10 bg-purple-400 hover:bg-purple-600 transition duration-300 ease-in-out rounded focus:outline-none text-white shadow"
         onClick={() => updateBug(updateBugBody, bug._id, index)}
       >

@@ -22,7 +22,7 @@ const Info = () => {
         </div>
         <a
           href="./docs/index.html"
-          className="block flex items-center justify-center text-xl mx-auto w-2/3 h-10 bg-cyan-400 text-white rounded hover:bg-cyan-600 transition-colors duration-300 ease-in-out shadow mb-4"
+          className="flex items-center justify-center text-xl mx-auto w-2/3 h-10 bg-cyan-400 text-white rounded hover:bg-cyan-600 transition-colors duration-300 ease-in-out shadow mb-4"
         >
           API Documentation
         </a>
@@ -53,7 +53,7 @@ const Info = () => {
               password: "123456",
             });
           }}
-          className="block flex items-center justify-center text-xl mx-auto w-2/3 h-10 bg-purple-400 text-white rounded hover:bg-purple-600 transition-colors duration-300 ease-in-out shadow focus:outline-none"
+          className="flex items-center justify-center text-xl mx-auto w-2/3 h-10 bg-purple-400 text-white rounded hover:bg-purple-600 transition-colors duration-300 ease-in-out shadow focus:outline-none"
         >
           Demo
         </button>

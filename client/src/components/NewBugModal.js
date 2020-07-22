@@ -9,19 +9,21 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 import BugsContext from "../Context/bugs/bugsContext";
 
-const NewBugModal = props => {
+const NewBugModal = (props) => {
   const [newBugBody, setNewBugBody] = useState({
     name: "",
     fixer: "",
     description: "",
     status: "Open",
     severity: "Major",
-    reproduceability: "Always"
+    reproduceability: "Always",
   });
 
   const bugsContext = useContext(BugsContext);
 
   const { newBug } = bugsContext;
+
+  const { isNewBugOpen, setIsNewBugOpen } = props;
 
   const handleChange = (event, field) => {
     const bug = { ...newBugBody, [field]: event.target.value };
@@ -31,29 +33,36 @@ const NewBugModal = props => {
 
   return (
     <Modal
-      open={props.isNewBugOpen}
-      onClose={() => props.setIsNewBugOpen(false)}
+      open={isNewBugOpen}
+      onClose={() => setIsNewBugOpen(false)}
       className="flex items-center justify-center"
       BackdropProps={{
-        timeout: 500
+        "data-testid": "modal",
+        timeout: 500,
       }}
     >
-      <Fade in={props.isNewBugOpen}>
+      <Fade in={isNewBugOpen}>
         <div className="w-64 bg-gray-200 dark:bg-gray-900 p-4 w-90p max-w-screen-md focus:outline-none border border-cyan-400 rounded">
           <div className="text-4xl text-black dark:text-white text-center font-hairline">
             New Bug
           </div>
           <div className="mb-4">
             <TextField
+              inputProps={{
+                "data-testid": "input_name",
+              }}
               variant="standard"
               label="Name"
               color="secondary"
               fullWidth={true}
-              onChange={event => handleChange(event, "name")}
+              onChange={(event) => handleChange(event, "name")}
             />
           </div>
           <div className="mb-4">
             <TextField
+              inputProps={{
+                "data-testid": "input_fixer",
+              }}
               variant="standard"
               label="Fixer"
               helperText="Must be a users email"
@@ -62,17 +71,20 @@ const NewBugModal = props => {
               name="email"
               autoComplete="on"
               fullWidth={true}
-              onChange={event => handleChange(event, "fixer")}
+              onChange={(event) => handleChange(event, "fixer")}
             />
           </div>
           <div className="mb-4">
             <TextField
+              inputProps={{
+                "data-testid": "input_description",
+              }}
               multiline={true}
               variant="standard"
               label="Description"
               color="secondary"
               fullWidth={true}
-              onChange={event => handleChange(event, "description")}
+              onChange={(event) => handleChange(event, "description")}
             />
           </div>
           <div className="flex mb-8">
@@ -84,9 +96,12 @@ const NewBugModal = props => {
               >
                 <InputLabel>Status</InputLabel>
                 <Select
-                  onChange={event => handleChange(event, "status")}
+                  inputProps={{
+                    "data-testid": "select_status",
+                  }}
+                  onChange={(event) => handleChange(event, "status")}
                   label="Status"
-                  defaultValue={newBugBody.status}
+                  value={newBugBody.status}
                 >
                   <MenuItem value={"Open"}>Open</MenuItem>
                   <MenuItem value={"In Progress"}>In Progress</MenuItem>
@@ -103,9 +118,12 @@ const NewBugModal = props => {
               >
                 <InputLabel>Severity</InputLabel>
                 <Select
-                  onChange={event => handleChange(event, "severity")}
+                  inputProps={{
+                    "data-testid": "select_severity",
+                  }}
+                  onChange={(event) => handleChange(event, "severity")}
                   label="Severity"
-                  defaultValue={newBugBody.severity}
+                  value={newBugBody.severity}
                 >
                   <MenuItem value={"Major"}>Major</MenuItem>
                   <MenuItem value={"Minor"}>Minor</MenuItem>
@@ -120,9 +138,10 @@ const NewBugModal = props => {
               >
                 <InputLabel>Reproduceable</InputLabel>
                 <Select
-                  onChange={event => handleChange(event, "reproduceability")}
+                  inputProps={{ "data-testid": "select_reproduceability" }}
+                  onChange={(event) => handleChange(event, "reproduceability")}
                   label="Reproduceable"
-                  defaultValue={newBugBody.reproduceability}
+                  value={newBugBody.reproduceability}
                 >
                   <MenuItem value={"Always"}>Always</MenuItem>
                   <MenuItem value={"Intermitent"}>Intermitent</MenuItem>
@@ -131,10 +150,11 @@ const NewBugModal = props => {
             </div>
           </div>
           <button
+            data-testid="button_new_bug"
             className="bg-purple-400 hover:bg-purple-600 transition-colors duration-300 ease-in-out focus:outline-none rounded w-full h-10 text-white"
             onClick={() => {
               newBug(newBugBody);
-              props.setIsNewBugOpen(false);
+              setIsNewBugOpen(false);
             }}
           >
             Add
