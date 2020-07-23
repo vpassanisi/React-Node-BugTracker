@@ -3,16 +3,20 @@ import Slide from "@material-ui/core/Slide";
 
 import BugsContext from "../Context/bugs/bugsContext";
 import ProjectsContext from "../Context/projects/projectsContext";
-import AuthContext from "../Context/auth/authContext";
+import {
+  useAuthState,
+  useAuthDispatch,
+  clearAuthErrors,
+} from "../Context/auth/AuthContext";
 
 const Alert = () => {
   const bugsContext = useContext(BugsContext);
   const projectsContext = useContext(ProjectsContext);
-  const authContext = useContext(AuthContext);
 
   const { error: bugsError, clearBugsErrors } = bugsContext;
   const { error: projectsError, clearProjectsErrors } = projectsContext;
-  const { error: authError, clearAuthErrors } = authContext;
+  const { error: authError } = useAuthState();
+  const authDispatch = useAuthDispatch();
 
   useEffect(() => {
     if (bugsError) setTimeout(() => clearBugsErrors(), 5000);
@@ -27,8 +31,8 @@ const Alert = () => {
   }, [projectsError]);
 
   useEffect(() => {
-    if (authError === "You are not logged in") clearAuthErrors();
-    if (authError) setTimeout(() => clearAuthErrors(), 5000);
+    if (authError === "You are not logged in") clearAuthErrors(authDispatch);
+    if (authError) setTimeout(() => clearAuthErrors(authDispatch), 5000);
 
     // eslint-disable-next-line
   }, [authError]);

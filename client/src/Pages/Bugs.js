@@ -3,7 +3,7 @@ import Bug from "../components/Bug";
 import { useMediaQuery } from "react-responsive";
 import { useHistory } from "react-router-dom";
 
-import AuthContext from "../Context/auth/authContext";
+import { useAuthState } from "../Context/auth/AuthContext";
 import BugsContext from "../Context/bugs/bugsContext";
 import ProjectsContext from "../Context/projects/projectsContext";
 
@@ -11,11 +11,10 @@ const Bugs = () => {
   const history = useHistory();
   const [open, setOpen] = useState(null);
 
-  const authContext = useContext(AuthContext);
   const bugsContext = useContext(BugsContext);
   const projectsContext = useContext(ProjectsContext);
 
-  const { isAuthenticated, isLoading } = authContext;
+  const { isAuthenticated, isLoading } = useAuthState();
   const { getBugs, bugs, sortBugs } = bugsContext;
   const { currentProject } = projectsContext;
 

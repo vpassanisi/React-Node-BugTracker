@@ -1,14 +1,19 @@
-import React, { useState, useContext } from "react";
+import React from "react";
+import { useHistory } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 
-import AuthContext from "../Context/auth/authContext";
+import {
+  useAuthState,
+  useAuthDispatch,
+  login,
+} from "../Context/auth/AuthContext";
 
 const Login = () => {
-  const authContext = useContext(AuthContext);
+  const authDispatch = useAuthDispatch();
+  const { isAuthenticated } = useAuthState();
+  const history = useHistory();
 
-  const { login } = authContext;
-
-  const [credentials, setCredentials] = useState({
+  const [credentials, setCredentials] = React.useState({
     email: "",
     password: "",
   });
@@ -18,6 +23,10 @@ const Login = () => {
 
     setCredentials(newCredentials);
   };
+
+  React.useEffect(() => {
+    if (isAuthenticated) history.push("/");
+  }, [isAuthenticated, history]);
 
   return (
     <div className="w-full">
@@ -56,7 +65,7 @@ const Login = () => {
         <button
           className="w-full h-12 rounded bg-cyan-400 hover:bg-cyan-600 transition-colors duration-300 ease-in-out text-white focus:outline-none shadow"
           data-testid="button_login"
-          onClick={() => login(credentials)}
+          onClick={() => login(authDispatch, credentials)}
         >
           Login
         </button>

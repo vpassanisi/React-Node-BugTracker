@@ -11,7 +11,7 @@ import Info from "./Pages/Info";
 import CreateUser from "./Pages/CreateUser";
 import Alert from "./Layout/Alert";
 
-import AuthState from "./Context/auth/AuthState";
+import { AuthProvider } from "./Context/auth/AuthContext";
 import BugsState from "./Context/bugs/BugsState";
 import ProjectsState from "./Context/projects/ProjectsState";
 import { DarkModeProvider } from "./Context/darkMode/darkModeContext";
@@ -50,7 +50,7 @@ function App() {
 
   return (
     <Router>
-      <AuthState>
+      <AuthProvider>
         <ProjectsState>
           <BugsState>
             <DarkModeProvider>
@@ -70,7 +70,7 @@ function App() {
             </DarkModeProvider>
           </BugsState>
         </ProjectsState>
-      </AuthState>
+      </AuthProvider>
     </Router>
   );
 }

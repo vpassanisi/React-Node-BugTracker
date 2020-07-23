@@ -7,7 +7,11 @@ import NewProjectModal from "../components/NewProjectModal";
 import Sidebar from "../Layout/Sidebar";
 
 import ProjectsContext from "../Context/projects/projectsContext";
-import AuthContext from "../Context/auth/authContext";
+import {
+  useAuthState,
+  useAuthDispatch,
+  logout,
+} from "../Context/auth/AuthContext";
 import {
   useDarkModeState,
   useDarkModeDispatch,
@@ -21,12 +25,14 @@ const Navbar = (props) => {
   const [isNewProjectOpen, setIsNewProjectOpen] = useState(false);
 
   const projectsContext = useContext(ProjectsContext);
-  const authContext = useContext(AuthContext);
 
   const { currentProject } = projectsContext;
-  const { logout, isAuthenticated } = authContext;
+
+  const { isAuthenticated } = useAuthState();
+  const authDispatch = useAuthDispatch();
+
   const { isDarkMode } = useDarkModeState();
-  const dispatch = useDarkModeDispatch();
+  const darkModeDispatch = useDarkModeDispatch();
 
   const { setIsDark } = props;
 
@@ -80,7 +86,7 @@ const Navbar = (props) => {
       )}
       <button
         className="flex items-center justify-center h-full px-4 transition duration-300 ease-in-out hover:bg-white-alpha-20 text-black dark:text-white cursor-pointer focus:outline-none"
-        onClick={() => logout()}
+        onClick={() => logout(authDispatch)}
       >
         Logout
       </button>
@@ -113,10 +119,10 @@ const Navbar = (props) => {
   useEffect(() => {
     if (isDarkMode) {
       setIsDark(true);
-      darkModeOn(dispatch);
+      darkModeOn(darkModeDispatch);
     } else {
       setIsDark(false);
-      darkModeOff(dispatch);
+      darkModeOff(darkModeDispatch);
     }
 
     // eslint-disable-next-line

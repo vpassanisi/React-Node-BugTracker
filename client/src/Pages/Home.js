@@ -2,14 +2,13 @@ import React, { useEffect, useContext, Fragment } from "react";
 import ProjectCard from "../components/ProjectCard";
 import { useHistory } from "react-router-dom";
 
-import AuthContext from "../Context/auth/authContext";
+import { useAuthState } from "../Context/auth/AuthContext";
 import ProjectsContext from "../Context/projects/projectsContext";
 
 const Home = () => {
-  const authContext = useContext(AuthContext);
   const projectsContext = useContext(ProjectsContext);
 
-  const { isAuthenticated, isLoading } = authContext;
+  const { isAuthenticated, isLoading } = useAuthState();
   const { getProjects, projects, clearCurrentProject } = projectsContext;
   const history = useHistory();
 

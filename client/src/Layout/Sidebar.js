@@ -4,15 +4,20 @@ import DarkModeToggle from "../Layout/DarkModeToggle";
 import { Link } from "react-router-dom";
 
 import ProjectsContext from "../Context/projects/projectsContext";
-import AuthContext from "../Context/auth/authContext";
+import {
+  useAuthState,
+  useAuthDispatch,
+  logout,
+} from "../Context/auth/AuthContext";
 import { useDarkModeState } from "../Context/darkMode/darkModeContext";
 
 const Sidebar = (props) => {
   const projectsContext = useContext(ProjectsContext);
-  const authContext = useContext(AuthContext);
 
   const { currentProject } = projectsContext;
-  const { logout, isAuthenticated } = authContext;
+
+  const { isAuthenticated } = useAuthState();
+  const authDispatch = useAuthDispatch();
   const { isDarkMode } = useDarkModeState();
 
   const { isOpen, setIsOpen, setIsNewBugOpen, setIsNewProjectOpen } = props;
@@ -92,7 +97,7 @@ const Sidebar = (props) => {
           isDarkMode ? "hover:bg-gray-800" : "hover:bg-gray-300"
         } text-black dark:text-white cursor-pointer`}
         onClick={() => {
-          logout();
+          logout(authDispatch);
           setIsOpen(false);
         }}
       >

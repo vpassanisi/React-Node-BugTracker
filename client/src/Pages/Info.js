@@ -1,11 +1,20 @@
-import React, { useContext } from "react";
+import React from "react";
+import { useHistory } from "react-router-dom";
 
-import AuthContext from "../Context/auth/authContext";
+import {
+  useAuthState,
+  useAuthDispatch,
+  login,
+} from "../Context/auth/AuthContext";
 
 const Info = () => {
-  const authContext = useContext(AuthContext);
+  const authDispatch = useAuthDispatch();
+  const { isAuthenticated } = useAuthState();
+  const history = useHistory();
 
-  const { login } = authContext;
+  React.useEffect(() => {
+    if (isAuthenticated) history.push("/");
+  }, [isAuthenticated, history]);
 
   return (
     <div className="w-screen max-w-full">
@@ -48,7 +57,7 @@ const Info = () => {
         <button
           data-testid="button_demo_login"
           onClick={() => {
-            login({
+            login(authDispatch, {
               email: "Demo@gmail.com",
               password: "123456",
             });
