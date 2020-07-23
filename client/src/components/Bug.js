@@ -1,18 +1,17 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { useMediaQuery } from "react-responsive";
 import Collapse from "@material-ui/core/Collapse";
 import Updatebug from "./UpdateBug";
 
 import BugsContext from "../Context/bugs/bugsContext";
-import DarkModeContext from "../Context/darkMode/darkModeContext";
+import { useDarkModeState } from "../Context/darkMode/darkModeContext";
 
 const Bug = (props) => {
   const { open, setOpen, index, bug } = props;
   const bugsContext = useContext(BugsContext);
-  const darkModeContext = useContext(DarkModeContext);
 
   const { deleteBug } = bugsContext;
-  const { isDarkMode } = darkModeContext;
+  const { isDarkMode } = useDarkModeState();
 
   const isDesktop = useMediaQuery({ query: "(min-width: 768px)" });
 

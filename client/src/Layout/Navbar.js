@@ -8,7 +8,12 @@ import Sidebar from "../Layout/Sidebar";
 
 import ProjectsContext from "../Context/projects/projectsContext";
 import AuthContext from "../Context/auth/authContext";
-import DarkModeContext from "../Context/darkMode/darkModeContext";
+import {
+  useDarkModeState,
+  useDarkModeDispatch,
+  darkModeOn,
+  darkModeOff,
+} from "../Context/darkMode/darkModeContext";
 
 const Navbar = (props) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,11 +22,11 @@ const Navbar = (props) => {
 
   const projectsContext = useContext(ProjectsContext);
   const authContext = useContext(AuthContext);
-  const darkModeContext = useContext(DarkModeContext);
 
   const { currentProject } = projectsContext;
   const { logout, isAuthenticated } = authContext;
-  const { isDarkMode, darkModeOn, darkModeOff } = darkModeContext;
+  const { isDarkMode } = useDarkModeState();
+  const dispatch = useDarkModeDispatch();
 
   const { setIsDark } = props;
 
@@ -108,10 +113,10 @@ const Navbar = (props) => {
   useEffect(() => {
     if (isDarkMode) {
       setIsDark(true);
-      darkModeOn();
+      darkModeOn(dispatch);
     } else {
       setIsDark(false);
-      darkModeOff();
+      darkModeOff(dispatch);
     }
 
     // eslint-disable-next-line

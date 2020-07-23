@@ -14,7 +14,7 @@ import Alert from "./Layout/Alert";
 import AuthState from "./Context/auth/AuthState";
 import BugsState from "./Context/bugs/BugsState";
 import ProjectsState from "./Context/projects/ProjectsState";
-import DarkModeState from "./Context/darkMode/darkModeState";
+import { DarkModeProvider } from "./Context/darkMode/darkModeContext";
 
 import "./css/tailwind.css";
 
@@ -53,7 +53,7 @@ function App() {
       <AuthState>
         <ProjectsState>
           <BugsState>
-            <DarkModeState>
+            <DarkModeProvider>
               <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
                 <Navbar setIsDark={setIsDark} />
                 <Loader />
@@ -67,7 +67,7 @@ function App() {
                   <Route path="*" component={NotFound} />
                 </Switch>
               </ThemeProvider>
-            </DarkModeState>
+            </DarkModeProvider>
           </BugsState>
         </ProjectsState>
       </AuthState>

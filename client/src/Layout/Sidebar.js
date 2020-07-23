@@ -5,16 +5,15 @@ import { Link } from "react-router-dom";
 
 import ProjectsContext from "../Context/projects/projectsContext";
 import AuthContext from "../Context/auth/authContext";
-import DarkModeContext from "../Context/darkMode/darkModeContext";
+import { useDarkModeState } from "../Context/darkMode/darkModeContext";
 
 const Sidebar = (props) => {
   const projectsContext = useContext(ProjectsContext);
   const authContext = useContext(AuthContext);
-  const darkModeContext = useContext(DarkModeContext);
 
   const { currentProject } = projectsContext;
   const { logout, isAuthenticated } = authContext;
-  const { isDarkMode } = darkModeContext;
+  const { isDarkMode } = useDarkModeState();
 
   const { isOpen, setIsOpen, setIsNewBugOpen, setIsNewProjectOpen } = props;
 
