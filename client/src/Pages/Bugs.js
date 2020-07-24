@@ -1,21 +1,28 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useContext } from "react";
 import Bug from "../components/Bug";
 import { useMediaQuery } from "react-responsive";
 import { useHistory } from "react-router-dom";
 
 import { useAuthState } from "../Context/auth/AuthContext";
-import BugsContext from "../Context/bugs/bugsContext";
+import {
+  useBugsState,
+  useBugsDispatch,
+  sortBugs,
+  getBugs,
+} from "../Context/bugs/BugsContext";
 import ProjectsContext from "../Context/projects/projectsContext";
 
 const Bugs = () => {
   const history = useHistory();
-  const [open, setOpen] = useState(null);
-
-  const bugsContext = useContext(BugsContext);
-  const projectsContext = useContext(ProjectsContext);
+  const [open, setOpen] = React.useState(null);
 
   const { isAuthenticated, isLoading } = useAuthState();
-  const { getBugs, bugs, sortBugs } = bugsContext;
+  const { bugs } = useBugsState();
+
+  const bugsDispatch = useBugsDispatch();
+
+  const projectsContext = useContext(ProjectsContext);
+
   const { currentProject } = projectsContext;
 
   const isDesktop = useMediaQuery({ query: "(min-width: 768px)" });
@@ -24,16 +31,16 @@ const Bugs = () => {
     <Bug key={index} bug={bug} index={index} open={open} setOpen={setOpen} />
   ));
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!currentProject) {
       history.push("/");
     } else {
-      getBugs();
+      getBugs(bugsDispatch);
     }
     // eslint-disable-next-line
   }, [currentProject]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!isAuthenticated && !isLoading) {
       history.push("/info");
     }
@@ -54,7 +61,7 @@ const Bugs = () => {
           <button
             data-testid="button_name"
             className="h-10 px-4 bg-gray-400 dark:bg-gray-700 rounded border shadow"
-            onClick={() => sortBugs("name")}
+            onClick={() => sortBugs(bugsDispatch, "name")}
           >
             name
           </button>
@@ -64,7 +71,7 @@ const Bugs = () => {
             <button
               data-testid="button_fixer"
               className="h-10 px-4 bg-gray-400 dark:bg-gray-700 rounded border shadow"
-              onClick={() => sortBugs("fixer")}
+              onClick={() => sortBugs(bugsDispatch, "fixer")}
             >
               fixer
             </button>
@@ -75,7 +82,7 @@ const Bugs = () => {
             <button
               data-testid="button_reporter"
               className="h-10 px-4 bg-gray-400 dark:bg-gray-700 rounded border shadow"
-              onClick={() => sortBugs("reporter")}
+              onClick={() => sortBugs(bugsDispatch, "reporter")}
             >
               reporter
             </button>
@@ -89,7 +96,7 @@ const Bugs = () => {
           <button
             data-testid="button_status"
             className="h-10 px-4 bg-gray-400 dark:bg-gray-700 rounded border shadow"
-            onClick={() => sortBugs("status")}
+            onClick={() => sortBugs(bugsDispatch, "status")}
           >
             status
           </button>
@@ -102,7 +109,7 @@ const Bugs = () => {
           <button
             data-testid="button_severity"
             className="h-10 px-4 bg-gray-400 dark:bg-gray-700 rounded border shadow"
-            onClick={() => sortBugs("severity")}
+            onClick={() => sortBugs(bugsDispatch, "severity")}
           >
             severity
           </button>
@@ -112,7 +119,7 @@ const Bugs = () => {
             <button
               data-testid="button_reproduceability"
               className="h-10 px-4 bg-gray-400 dark:bg-gray-700 rounded border shadow"
-              onClick={() => sortBugs("reproduceability")}
+              onClick={() => sortBugs(bugsDispatch, "reproduceability")}
             >
               reprodeable
             </button>

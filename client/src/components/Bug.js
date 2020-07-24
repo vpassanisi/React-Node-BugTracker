@@ -1,16 +1,15 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useMediaQuery } from "react-responsive";
 import Collapse from "@material-ui/core/Collapse";
 import Updatebug from "./UpdateBug";
 
-import BugsContext from "../Context/bugs/bugsContext";
+import { useBugsDispatch, deleteBug } from "../Context/bugs/BugsContext";
 import { useDarkModeState } from "../Context/darkMode/darkModeContext";
 
 const Bug = (props) => {
   const { open, setOpen, index, bug } = props;
-  const bugsContext = useContext(BugsContext);
 
-  const { deleteBug } = bugsContext;
+  const bugsDispatch = useBugsDispatch();
   const { isDarkMode } = useDarkModeState();
 
   const isDesktop = useMediaQuery({ query: "(min-width: 768px)" });
@@ -18,7 +17,7 @@ const Bug = (props) => {
   const handleDelete = () => {
     const conf = window.confirm("Are you sure you want to delete this bug?");
 
-    if (conf) deleteBug(bug._id, index);
+    if (conf) deleteBug(bugsDispatch, bug._id, index);
   };
 
   bug.createdAt = new Date(Date.parse(bug.createdAt)).toLocaleString("en-US", {

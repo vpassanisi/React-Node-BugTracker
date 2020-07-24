@@ -12,7 +12,7 @@ import CreateUser from "./Pages/CreateUser";
 import Alert from "./Layout/Alert";
 
 import { AuthProvider } from "./Context/auth/AuthContext";
-import BugsState from "./Context/bugs/BugsState";
+import { BugsProvider } from "./Context/bugs/BugsContext";
 import ProjectsState from "./Context/projects/ProjectsState";
 import { DarkModeProvider } from "./Context/darkMode/darkModeContext";
 
@@ -52,7 +52,7 @@ function App() {
     <Router>
       <AuthProvider>
         <ProjectsState>
-          <BugsState>
+          <BugsProvider>
             <DarkModeProvider>
               <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
                 <Navbar setIsDark={setIsDark} />
@@ -68,7 +68,7 @@ function App() {
                 </Switch>
               </ThemeProvider>
             </DarkModeProvider>
-          </BugsState>
+          </BugsProvider>
         </ProjectsState>
       </AuthProvider>
     </Router>

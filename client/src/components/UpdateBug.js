@@ -1,20 +1,18 @@
-import React, { useState, useContext } from "react";
+import React from "react";
 import TextField from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 
-import BugsContext from "../Context/bugs/bugsContext";
+import { useBugsDispatch, updateBug } from "../Context/bugs/BugsContext";
 
 const UpdateBug = (props) => {
-  const bugsContext = useContext(BugsContext);
-
-  const { updateBug } = bugsContext;
+  const bugsDispatch = useBugsDispatch();
 
   const { bug, index } = props;
 
-  const [updateBugBody, setUpdateBugBody] = useState({
+  const [updateBugBody, setUpdateBugBody] = React.useState({
     name: bug.name,
     fixer: bug.fixer.email,
     description: bug.description,
@@ -129,7 +127,7 @@ const UpdateBug = (props) => {
       <button
         data-testid="button_edit"
         className="w-full h-10 bg-purple-400 hover:bg-purple-600 transition duration-300 ease-in-out rounded focus:outline-none text-white shadow"
-        onClick={() => updateBug(updateBugBody, bug._id, index)}
+        onClick={() => updateBug(bugsDispatch, updateBugBody, bug._id, index)}
       >
         Update
       </button>

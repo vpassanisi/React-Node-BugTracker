@@ -1,7 +1,11 @@
 import React, { useEffect, useContext, Fragment } from "react";
 import Slide from "@material-ui/core/Slide";
 
-import BugsContext from "../Context/bugs/bugsContext";
+import {
+  useBugsState,
+  useBugsDispatch,
+  clearBugsErrors,
+} from "../Context/bugs/BugsContext";
 import ProjectsContext from "../Context/projects/projectsContext";
 import {
   useAuthState,
@@ -10,16 +14,17 @@ import {
 } from "../Context/auth/AuthContext";
 
 const Alert = () => {
-  const bugsContext = useContext(BugsContext);
   const projectsContext = useContext(ProjectsContext);
 
-  const { error: bugsError, clearBugsErrors } = bugsContext;
+  const { error: bugsError } = useBugsState();
   const { error: projectsError, clearProjectsErrors } = projectsContext;
   const { error: authError } = useAuthState();
+
+  const bugsDispatch = useBugsDispatch();
   const authDispatch = useAuthDispatch();
 
   useEffect(() => {
-    if (bugsError) setTimeout(() => clearBugsErrors(), 5000);
+    if (bugsError) setTimeout(() => clearBugsErrors(bugsDispatch), 5000);
 
     // eslint-disable-next-line
   }, [bugsError]);

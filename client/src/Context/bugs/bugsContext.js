@@ -1,5 +1,309 @@
-import { createContext } from "react";
+import React from "react";
 
-const bugContext = createContext();
+import {
+  GET_BUGS_SUCCESS,
+  GET_BUGS_FAIL,
+  SORT_BUGS,
+  UPDATE_BUG_SUCCESS,
+  UPDATE_BUG_FAIL,
+  NEW_BUG_SUCCESS,
+  NEW_BUG_FAIL,
+  DELETE_BUG_SUCCESS,
+  DELETE_BUG_FAIL,
+  CLEAR_BUGS_ERRORS,
+} from "../types";
 
-export default bugContext;
+const BugsStateContext = React.createContext();
+const BugsDispatchContext = React.createContext();
+
+const bugsReducer = (state, action) => {
+  switch (action.type) {
+    case GET_BUGS_SUCCESS:
+      return {
+        ...state,
+        bugs: action.payload,
+      };
+    case GET_BUGS_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case NEW_BUG_SUCCESS:
+      return {
+        ...state,
+        bugs: [...state.bugs, action.payload],
+      };
+    case NEW_BUG_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case UPDATE_BUG_SUCCESS:
+      let bugs = [...state.bugs];
+      bugs[action.payload.index] = action.payload.data;
+      return {
+        ...state,
+        bugs: bugs,
+      };
+    case UPDATE_BUG_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case DELETE_BUG_SUCCESS:
+      let arr = [...state.bugs];
+      arr.splice(action.payload, 1);
+      return {
+        ...state,
+        bugs: arr,
+      };
+    case DELETE_BUG_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case SORT_BUGS:
+      const sortBy = action.payload;
+      const n = state.bugs;
+      let sorted = [...n].sort((bug, nextBug) => {
+        let X;
+        let Y;
+        sortBy === "reporter" || sortBy === "fixer"
+          ? (X = bug[sortBy].name.toUpperCase())
+          : (X = bug[sortBy].toUpperCase());
+        sortBy === "reporter" || sortBy === "fixer"
+          ? (Y = nextBug[sortBy].name.toUpperCase())
+          : (Y = nextBug[sortBy].toUpperCase());
+        if (X > Y) return 1;
+        if (X < Y) return -1;
+        return 0;
+      });
+
+      let wasChanged = false;
+      n.forEach((bug, index) => {
+        if (bug !== sorted[index]) wasChanged = true;
+      });
+
+      if (!wasChanged) sorted = sorted.reverse();
+
+      return {
+        ...state,
+        bugs: sorted,
+      };
+    case CLEAR_BUGS_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+    default: {
+      throw new Error(`Unhandled action type: ${action.type}`);
+    }
+  }
+};
+
+const BugsProvider = ({ children }) => {
+  const initialState = {
+    bugs: [
+      {
+        name: "",
+        status: "",
+        severity: "",
+        reproduceablility: "",
+        description: "",
+        createdAt: "",
+        updatedAt: "",
+        reporter: {
+          name: "",
+        },
+        fixer: {
+          name: "",
+        },
+      },
+    ],
+    error: null,
+  };
+
+  const [state, dispatch] = React.useReducer(bugsReducer, initialState);
+
+  return (
+    <BugsStateContext.Provider value={state}>
+      <BugsDispatchContext.Provider value={dispatch}>
+        {children}
+      </BugsDispatchContext.Provider>
+    </BugsStateContext.Provider>
+  );
+};
+
+const getBugs = async (dispatch) => {
+  const loader = document.getElementById("loader");
+  loader.classList.remove("hidden");
+  try {
+    const req = await fetch(`/api/v1/bugs/project`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    const res = await req.json();
+
+    if (!res.success) {
+      dispatch({
+        type: GET_BUGS_FAIL,
+        payload: res.error,
+      });
+    } else {
+      dispatch({
+        type: GET_BUGS_SUCCESS,
+        payload: res.data,
+      });
+    }
+  } catch (err) {
+    dispatch({
+      type: GET_BUGS_FAIL,
+      payload: err,
+    });
+  }
+  loader.classList.add("hidden");
+};
+
+const newBug = async (dispatch, body) => {
+  const loader = document.getElementById("loader");
+  loader.classList.remove("hidden");
+  try {
+    const req = await fetch(`/api/v1/bugs`, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    const res = await req.json();
+
+    if (!res.success) {
+      dispatch({
+        type: NEW_BUG_FAIL,
+        payload: res.error,
+      });
+    } else {
+      // let newBugsArr = [...state.bugs, res.data];
+      dispatch({
+        type: NEW_BUG_SUCCESS,
+        payload: res.data,
+      });
+    }
+  } catch (err) {
+    dispatch({
+      type: NEW_BUG_FAIL,
+      payload: `${err}`,
+    });
+  }
+  loader.classList.add("hidden");
+};
+
+const updateBug = async (dispatch, body, id, index) => {
+  const loader = document.getElementById("loader");
+  loader.classList.remove("hidden");
+  try {
+    const req = await fetch(`/api/v1/bugs/${id}`, {
+      method: "PUT",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    const res = await req.json();
+
+    if (!res.success) {
+      dispatch({
+        type: UPDATE_BUG_FAIL,
+        payload: res.error,
+      });
+    } else {
+      // let newBugsArr = [...state.bugs];
+      // newBugsArr[index] = res.data;
+      dispatch({
+        type: UPDATE_BUG_SUCCESS,
+        payload: { data: res.data, index: index },
+      });
+    }
+  } catch (err) {
+    dispatch({
+      type: UPDATE_BUG_FAIL,
+      payload: `${err}`,
+    });
+  }
+  loader.classList.add("hidden");
+};
+
+const deleteBug = async (dispatch, id, index) => {
+  const loader = document.getElementById("loader");
+  loader.classList.remove("hidden");
+  try {
+    const req = await fetch(`/api/v1/bugs/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+
+    const res = await req.json();
+
+    if (!res.success) {
+      dispatch({
+        type: DELETE_BUG_FAIL,
+        payload: res.error,
+      });
+    } else {
+      // let newBugsArr = [...state.bugs];
+      // newBugsArr.splice(index, 1);
+      dispatch({
+        type: DELETE_BUG_SUCCESS,
+        payload: index,
+      });
+    }
+  } catch (err) {
+    dispatch({
+      type: DELETE_BUG_FAIL,
+      payload: `${err}`,
+    });
+  }
+  loader.classList.add("hidden");
+};
+
+const sortBugs = (dispatch, sortBy) => {
+  dispatch({
+    type: SORT_BUGS,
+    payload: sortBy,
+  });
+};
+
+const clearBugsErrors = (dispatch) => {
+  dispatch({
+    type: CLEAR_BUGS_ERRORS,
+  });
+};
+
+const useBugsState = () => {
+  const context = React.useContext(BugsStateContext);
+  if (context === undefined) {
+    throw new Error(`useBugsState must be used within a BugsProvider`);
+  }
+  return context;
+};
+
+const useBugsDispatch = () => {
+  const context = React.useContext(BugsDispatchContext);
+  if (context === undefined) {
+    throw new Error(`useBugsDispatch must be used within a BugsProvider`);
+  }
+  return context;
+};
+
+export {
+  BugsProvider,
+  useBugsState,
+  useBugsDispatch,
+  getBugs,
+  newBug,
+  updateBug,
+  deleteBug,
+  sortBugs,
+  clearBugsErrors,
+};

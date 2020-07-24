@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React from "react";
 import Modal from "@material-ui/core/Modal";
 import Fade from "@material-ui/core/Fade";
 import TextField from "@material-ui/core/TextField";
@@ -7,10 +7,10 @@ import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 
-import BugsContext from "../Context/bugs/bugsContext";
+import { useBugsDispatch, newBug } from "../Context/bugs/BugsContext";
 
 const NewBugModal = (props) => {
-  const [newBugBody, setNewBugBody] = useState({
+  const [newBugBody, setNewBugBody] = React.useState({
     name: "",
     fixer: "",
     description: "",
@@ -19,9 +19,7 @@ const NewBugModal = (props) => {
     reproduceability: "Always",
   });
 
-  const bugsContext = useContext(BugsContext);
-
-  const { newBug } = bugsContext;
+  const bugsDispatch = useBugsDispatch();
 
   const { isNewBugOpen, setIsNewBugOpen } = props;
 
@@ -153,7 +151,7 @@ const NewBugModal = (props) => {
             data-testid="button_new_bug"
             className="bg-purple-400 hover:bg-purple-600 transition-colors duration-300 ease-in-out focus:outline-none rounded w-full h-10 text-white"
             onClick={() => {
-              newBug(newBugBody);
+              newBug(bugsDispatch, newBugBody);
               setIsNewBugOpen(false);
             }}
           >
