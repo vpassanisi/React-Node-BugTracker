@@ -13,7 +13,7 @@ import Alert from "./Layout/Alert";
 
 import { AuthProvider } from "./Context/auth/AuthContext";
 import { BugsProvider } from "./Context/bugs/BugsContext";
-import ProjectsState from "./Context/projects/ProjectsState";
+import { ProjectsProvider } from "./Context/projects/ProjectsContext";
 import { DarkModeProvider } from "./Context/darkMode/darkModeContext";
 
 import "./css/tailwind.css";
@@ -51,7 +51,7 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <ProjectsState>
+        <ProjectsProvider>
           <BugsProvider>
             <DarkModeProvider>
               <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
@@ -69,7 +69,7 @@ function App() {
               </ThemeProvider>
             </DarkModeProvider>
           </BugsProvider>
-        </ProjectsState>
+        </ProjectsProvider>
       </AuthProvider>
     </Router>
   );

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import Bug from "../components/Bug";
 import { useMediaQuery } from "react-responsive";
 import { useHistory } from "react-router-dom";
@@ -10,20 +10,18 @@ import {
   sortBugs,
   getBugs,
 } from "../Context/bugs/BugsContext";
-import ProjectsContext from "../Context/projects/projectsContext";
+import { useProjectsState } from "../Context/projects/ProjectsContext";
 
 const Bugs = () => {
   const history = useHistory();
   const [open, setOpen] = React.useState(null);
 
   const { isAuthenticated, isLoading } = useAuthState();
+
+  const { currentProject } = useProjectsState();
+
   const { bugs } = useBugsState();
-
   const bugsDispatch = useBugsDispatch();
-
-  const projectsContext = useContext(ProjectsContext);
-
-  const { currentProject } = projectsContext;
 
   const isDesktop = useMediaQuery({ query: "(min-width: 768px)" });
 

@@ -1,16 +1,18 @@
-import React, { useContext, Fragment, useState } from "react";
+import React from "react";
 import EditProjectModal from "./EditProjectModal";
 
-import ProjectsContext from "../Context/projects/projectsContext";
+import {
+  useProjectsDispatch,
+  setProject,
+  deleteProject,
+} from "../Context/projects/ProjectsContext";
 
 const ProjectCard = (props) => {
-  const projectsContext = useContext(ProjectsContext);
-
-  const { setProject, deleteProject } = projectsContext;
-
   const { project, index } = props;
 
-  const [isEditProjectOpen, setIsEditProjectOpen] = useState(false);
+  const projectsDispatch = useProjectsDispatch();
+
+  const [isEditProjectOpen, setIsEditProjectOpen] = React.useState(false);
 
   project.createdAt = new Date(Date.parse(project.createdAt)).toLocaleString(
     "en-US",
@@ -42,12 +44,12 @@ const ProjectCard = (props) => {
     );
 
     if (conf) {
-      deleteProject(project._id, index);
+      deleteProject(projectsDispatch, project._id, index);
     }
   };
 
   return (
-    <Fragment>
+    <React.Fragment>
       <div className="relative bg-gray-200 dark:bg-gray-900 rounded border-2 border-purple-a400 p-4 flex flex-col justify-between shadow">
         <div>
           <div className="text-center font-hairline text-2xl">
@@ -100,7 +102,7 @@ const ProjectCard = (props) => {
             data-testid="button_go_to"
             className="bg-cyan-a700 hover:bg-cyan-700 transition duration-300 ease-in-out h-10 w-full rounded focus:outline-none shadow text-white"
             onClick={() => {
-              setProject(project._id);
+              setProject(projectsDispatch, project._id);
             }}
           >
             Go To Project
@@ -114,7 +116,7 @@ const ProjectCard = (props) => {
         isEditProjectOpen={isEditProjectOpen}
         setIsEditProjectOpen={setIsEditProjectOpen}
       />
-    </Fragment>
+    </React.Fragment>
   );
 };
 

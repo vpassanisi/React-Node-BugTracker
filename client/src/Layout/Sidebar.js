@@ -1,9 +1,9 @@
-import React, { useContext, Fragment } from "react";
+import React from "react";
 import { Drawer } from "@material-ui/core";
 import DarkModeToggle from "../Layout/DarkModeToggle";
 import { Link } from "react-router-dom";
 
-import ProjectsContext from "../Context/projects/projectsContext";
+import { useProjectsState } from "../Context/projects/ProjectsContext";
 import {
   useAuthState,
   useAuthDispatch,
@@ -12,18 +12,17 @@ import {
 import { useDarkModeState } from "../Context/darkMode/darkModeContext";
 
 const Sidebar = (props) => {
-  const projectsContext = useContext(ProjectsContext);
+  const { currentProject } = useProjectsState();
 
-  const { currentProject } = projectsContext;
+  const { isDarkMode } = useDarkModeState();
 
   const { isAuthenticated } = useAuthState();
   const authDispatch = useAuthDispatch();
-  const { isDarkMode } = useDarkModeState();
 
   const { isOpen, setIsOpen, setIsNewBugOpen, setIsNewProjectOpen } = props;
 
   const guestLinks = (
-    <Fragment>
+    <React.Fragment>
       <Link
         className={`flex items-center justify-center w-full h-12 transition duration-300 ease-in-out ${
           isDarkMode ? "hover:bg-gray-800" : "hover:bg-gray-300"
@@ -51,11 +50,11 @@ const Sidebar = (props) => {
       >
         Info
       </Link>
-    </Fragment>
+    </React.Fragment>
   );
 
   const userLinks = (
-    <Fragment>
+    <React.Fragment>
       {currentProject ? (
         <button
           className={`flex items-center justify-center w-full h-12 transition duration-300 ease-in-out ${
@@ -112,7 +111,7 @@ const Sidebar = (props) => {
       >
         Info
       </Link>
-    </Fragment>
+    </React.Fragment>
   );
 
   return (

@@ -1,20 +1,25 @@
-import React, { useState, useContext, useEffect } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
 import Modal from "@material-ui/core/Modal";
 import Fade from "@material-ui/core/Fade";
 import TextField from "@material-ui/core/TextField";
 
-import ProjectsContext from "../Context/projects/projectsContext";
+import {
+  useProjectsState,
+  useProjectsDispatch,
+  newProject,
+} from "../Context/projects/ProjectsContext";
 
 const NewProjectModal = (props) => {
   const history = useHistory();
-  const projectsContext = useContext(ProjectsContext);
 
-  const { currentProject, newProject } = projectsContext;
+  const projectsDispatch = useProjectsDispatch();
+
+  const { currentProject } = useProjectsState();
 
   const { isNewProjectOpen, setIsNewProjectOpen } = props;
 
-  const [newProjectBody, setNewProjectBody] = useState({
+  const [newProjectBody, setNewProjectBody] = React.useState({
     name: "",
     description: "",
   });
@@ -25,7 +30,7 @@ const NewProjectModal = (props) => {
     setNewProjectBody(project);
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (currentProject) history.push("/bugs");
     // eslint-disable-next-line
   }, [currentProject]);
@@ -74,7 +79,7 @@ const NewProjectModal = (props) => {
             data-testid="button_new_project"
             className="bg-purple-400 hover:bg-purple-600 transition-colors duration-300 ease-in-out focus:outline-none rounded w-full h-10 text-white"
             onClick={() => {
-              newProject(newProjectBody);
+              newProject(projectsDispatch, newProjectBody);
               setIsNewProjectOpen(false);
             }}
           >

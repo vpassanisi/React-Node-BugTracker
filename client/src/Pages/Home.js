@@ -1,41 +1,47 @@
-import React, { useEffect, useContext, Fragment } from "react";
+import React from "react";
 import ProjectCard from "../components/ProjectCard";
 import { useHistory } from "react-router-dom";
 
 import { useAuthState } from "../Context/auth/AuthContext";
-import ProjectsContext from "../Context/projects/projectsContext";
+import {
+  useProjectsState,
+  useProjectsDispatch,
+  getProjects,
+  clearCurrentProject,
+} from "../Context/projects/ProjectsContext";
 
 const Home = () => {
-  const projectsContext = useContext(ProjectsContext);
+  const history = useHistory();
 
   const { isAuthenticated, isLoading } = useAuthState();
-  const { getProjects, projects, clearCurrentProject } = projectsContext;
-  const history = useHistory();
+
+  const { projects } = useProjectsState();
+  const projectsDispatch = useProjectsDispatch();
 
   const cards = projects.map((project, index) => (
     <ProjectCard project={project} index={index} key={index} />
   ));
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!isAuthenticated && !isLoading) {
       history.push("/info");
     }
 
     if (isAuthenticated && !isLoading) {
-      getProjects();
+      getProjects(projectsDispatch);
     }
 
     // eslint-disable-next-line
   }, [isAuthenticated, isLoading]);
 
-  useEffect(() => {
-    clearCurrentProject();
+  React.useEffect(() => {
+    clearCurrentProject(projectsDispatch);
 
     // eslint-disable-next-line
   }, []);
 
   return (
-    <Fragment>
+    <React.Fragment>
       {!isLoading && (
         <div className="w-screen max-w-full">
           <br />
@@ -49,7 +55,7 @@ const Home = () => {
           </div>
         </div>
       )}
-    </Fragment>
+    </React.Fragment>
   );
 };
 

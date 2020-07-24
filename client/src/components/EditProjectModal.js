@@ -1,19 +1,20 @@
-import React, { useState, useContext } from "react";
+import React from "react";
 import Modal from "@material-ui/core/Modal";
 import Fade from "@material-ui/core/Fade";
 import TextField from "@material-ui/core/TextField";
 
-import ProjectsContext from "../Context/projects/projectsContext";
+import {
+  useProjectsDispatch,
+  editProject,
+} from "../Context/projects/ProjectsContext";
 
 const EditProjectModal = (props) => {
   const { isEditProjectOpen, setIsEditProjectOpen, project, index } = props;
-  const [editProjectBody, setEditProjectBody] = useState({
+  const [editProjectBody, setEditProjectBody] = React.useState({
     ...project,
   });
 
-  const projectsContext = useContext(ProjectsContext);
-
-  const { editProject } = projectsContext;
+  const projectsDispatch = useProjectsDispatch();
 
   const handleChange = (event, field) => {
     const projectInfo = { ...editProjectBody, [field]: event.target.value };
@@ -70,7 +71,7 @@ const EditProjectModal = (props) => {
             data-testid="button_edit_project"
             className="bg-purple-400 hover:bg-purple-600 transition-colors duration-300 ease-in-out focus:outline-none rounded w-full h-10 text-white"
             onClick={() => {
-              editProject(editProjectBody, index);
+              editProject(projectsDispatch, editProjectBody, index);
               setIsEditProjectOpen(false);
             }}
           >

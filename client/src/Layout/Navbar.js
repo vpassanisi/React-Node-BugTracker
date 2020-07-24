@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useContext } from "react";
+import React from "react";
 import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import DarkModeToggle from "./DarkModeToggle";
@@ -6,7 +6,7 @@ import NewBugModal from "../components/NewBugModal";
 import NewProjectModal from "../components/NewProjectModal";
 import Sidebar from "../Layout/Sidebar";
 
-import ProjectsContext from "../Context/projects/projectsContext";
+import { useProjectsState } from "../Context/projects/ProjectsContext";
 import {
   useAuthState,
   useAuthDispatch,
@@ -20,13 +20,11 @@ import {
 } from "../Context/darkMode/darkModeContext";
 
 const Navbar = (props) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isNewBugOpen, setIsNewBugOpen] = useState(false);
-  const [isNewProjectOpen, setIsNewProjectOpen] = useState(false);
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [isNewBugOpen, setIsNewBugOpen] = React.useState(false);
+  const [isNewProjectOpen, setIsNewProjectOpen] = React.useState(false);
 
-  const projectsContext = useContext(ProjectsContext);
-
-  const { currentProject } = projectsContext;
+  const { currentProject } = useProjectsState();
 
   const { isAuthenticated } = useAuthState();
   const authDispatch = useAuthDispatch();
@@ -37,7 +35,7 @@ const Navbar = (props) => {
   const { setIsDark } = props;
 
   const guestLinks = (
-    <Fragment>
+    <React.Fragment>
       <Link
         className="flex items-center justify-center h-full px-4 transition duration-300 ease-in-out hover:bg-white-alpha-20 text-black dark:text-white"
         to="/create"
@@ -56,11 +54,11 @@ const Navbar = (props) => {
       >
         Info
       </Link>
-    </Fragment>
+    </React.Fragment>
   );
 
   const userLinks = (
-    <Fragment>
+    <React.Fragment>
       {currentProject ? (
         <button
           className="flex items-center justify-center h-full px-4 transition duration-300 ease-in-out hover:bg-white-alpha-20 text-black dark:text-white cursor-pointer focus:outline-none"
@@ -96,7 +94,7 @@ const Navbar = (props) => {
       >
         Info
       </Link>
-    </Fragment>
+    </React.Fragment>
   );
 
   const desktopNav = (
@@ -116,7 +114,7 @@ const Navbar = (props) => {
     </button>
   );
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (isDarkMode) {
       setIsDark(true);
       darkModeOn(darkModeDispatch);
@@ -131,7 +129,7 @@ const Navbar = (props) => {
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
 
   return (
-    <Fragment>
+    <React.Fragment>
       <div className="fixed flex flex-row items-baseline justify-center w-screen max-w-full h-16 shadow-lg bg-cyan-a400 dark:bg-cyan-a700 shadow z-10">
         <div className="flex flex-row items-center justify-between max-w-screen-xl px-4 w-full h-full text-white">
           <a
@@ -161,7 +159,7 @@ const Navbar = (props) => {
         isNewProjectOpen={isNewProjectOpen}
         setIsNewProjectOpen={setIsNewProjectOpen}
       />
-    </Fragment>
+    </React.Fragment>
   );
 };
 
