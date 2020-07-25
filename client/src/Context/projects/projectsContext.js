@@ -90,10 +90,14 @@ const projectsReducer = (state, action) => {
   }
 };
 
-const ProjectsProvider = ({ children }) => {
+const ProjectsProvider = ({
+  children,
+  projects = [],
+  currentProject = null,
+}) => {
   const initialState = {
-    projects: [],
-    currentProject: null,
+    projects: projects,
+    currentProject: currentProject,
     error: null,
   };
 

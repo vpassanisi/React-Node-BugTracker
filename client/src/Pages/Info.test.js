@@ -1,36 +1,63 @@
 import React from "react";
 import { fireEvent, render } from "@testing-library/react";
 import Info from "../Pages/Info";
-import AuthContext from "../Context/auth/authContext";
+import {
+  AuthProvider,
+  useAuthDispatch,
+  login,
+} from "../Context/auth/AuthContext";
 
-const setup = () => {
-  const mockDemoLogin = jest.fn();
+jest.mock("../Context/auth/AuthContext.js", () => ({
+  ...jest.requireActual("../Context/auth/AuthContext.js"),
+  useAuthDispatch: jest.fn(),
+  login: jest.fn(),
+}));
 
+const mockPush = jest.fn();
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useHistory: () => ({
+    push: mockPush,
+  }),
+}));
+
+const setup = (isAuth = true) => {
   const utils = render(
-    <AuthContext.Provider
-      value={{
-        login: mockDemoLogin,
-      }}
-    >
+    <AuthProvider isAuthenticated={isAuth}>
       <Info />
-    </AuthContext.Provider>
+    </AuthProvider>
   );
 
   const buttonDemoLogin = utils.getByTestId("button_demo_login");
 
   return {
     ...utils,
-    mockDemoLogin,
     buttonDemoLogin,
   };
 };
 
+test("does not push if not logged in", () => {
+  setup(false);
+
+  expect(mockPush).not.toHaveBeenCalled();
+});
+
+test("pushes to / if logged in", () => {
+  setup();
+
+  expect(mockPush).toHaveBeenCalledWith("/");
+});
+
 test("Demo login button logs in using demo account", () => {
-  const { mockDemoLogin, buttonDemoLogin } = setup();
+  const { buttonDemoLogin } = setup();
+
+  const authDispatch = useAuthDispatch();
+  const demo = {
+    email: "Demo@gmail.com",
+    password: "123456",
+  };
 
   fireEvent.click(buttonDemoLogin, { button: 0 });
 
-  expect(mockDemoLogin).toHaveBeenCalled();
-  expect(mockDemoLogin.mock.calls[0][0].email).toBe("Demo@gmail.com");
-  expect(mockDemoLogin.mock.calls[0][0].password).toBe("123456");
+  expect(login).toHaveBeenCalledWith(authDispatch, demo);
 });

@@ -1,9 +1,26 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import Home from "../Pages/Home";
-import ProjectsContext from "../Context/projects/projectsContext";
-import AuthContext from "../Context/auth/authContext";
+import {
+  ProjectsProvider,
+  getProjects,
+  clearCurrentProject,
+} from "../Context/projects/ProjectsContext";
+import { AuthProvider } from "../Context/auth/AuthContext";
 import ProjectCard from "../components/ProjectCard";
+
+jest.mock("../Context/auth/AuthContext.js", () => ({
+  ...jest.requireActual("../Context/auth/AuthContext.js"),
+  useAuthDispatch: jest.fn(),
+  login: jest.fn(),
+}));
+
+jest.mock("../Context/projects/ProjectsContext.js", () => ({
+  ...jest.requireActual("../Context/projects/ProjectsContext.js"),
+  useProjectsDispatch: jest.fn(),
+  getProjects: jest.fn(),
+  clearCurrentProject: jest.fn(),
+}));
 
 jest.mock("../components/ProjectCard", () => jest.fn(() => null));
 
@@ -15,55 +32,39 @@ jest.mock("react-router-dom", () => ({
 }));
 
 const setup = (isAuth = true) => {
-  const mockGetProjects = jest.fn();
-  const mockClearCurrentProject = jest.fn();
-
   const utils = render(
-    <ProjectsContext.Provider
-      value={{
-        clearCurrentProject: mockClearCurrentProject,
-        projects: [{}, {}, {}, {}],
-        getProjects: mockGetProjects,
-      }}
-    >
-      <AuthContext.Provider
-        value={{
-          isAuthenticated: isAuth,
-          isLoading: false,
-        }}
-      >
+    <ProjectsProvider projects={[{}, {}, {}]}>
+      <AuthProvider isAuthenticated={isAuth} isLoading={false}>
         <Home />
-      </AuthContext.Provider>
-    </ProjectsContext.Provider>
+      </AuthProvider>
+    </ProjectsProvider>
   );
 
   return {
     ...utils,
-    mockClearCurrentProject,
-    mockGetProjects,
   };
 };
 
-test("Pushes to /info if not authenticated", () => {
+test("Pushes to /info if not authenticated and not loading", () => {
   setup(false);
 
   expect(mockHistoryPush).toHaveBeenCalledWith("/info");
 });
 
-test("calls getProjects if authenticated", () => {
-  const { mockGetProjects } = setup(true);
+test("calls getProjects if authenticated and not loading", () => {
+  setup();
 
-  expect(mockGetProjects).toHaveBeenCalled();
+  expect(getProjects).toHaveBeenCalled();
 });
 
 test("always clears current project to avoid conflicts with routing", () => {
-  const { mockClearCurrentProject } = setup(true);
+  setup();
 
-  expect(mockClearCurrentProject).toHaveBeenCalled();
+  expect(clearCurrentProject).toHaveBeenCalled();
 });
 
 test("renders projects as children", () => {
-  setup(true);
+  setup();
 
   expect(ProjectCard).toHaveBeenCalled();
 });

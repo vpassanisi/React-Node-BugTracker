@@ -1,17 +1,21 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import DarkModeState from "../Context/darkMode/darkModeState";
-import DarkModeContext from "../Context/darkMode/darkModeContext";
+import {
+  DarkModeProvider,
+  DarkModeStateContext,
+} from "../Context/darkMode/DarkModeContext";
 
-global.matchMedia = jest.fn(() => true);
+global.matchMedia = jest.fn(() => ({
+  matches: true,
+}));
 
 const setup = () => {
   const utils = render(
-    <DarkModeState>
-      <DarkModeContext.Consumer>
+    <DarkModeProvider>
+      <DarkModeStateContext.Consumer>
         {(value) => console.log(value)}
-      </DarkModeContext.Consumer>
-    </DarkModeState>
+      </DarkModeStateContext.Consumer>
+    </DarkModeProvider>
   );
 };
 

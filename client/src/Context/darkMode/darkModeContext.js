@@ -22,9 +22,12 @@ const darkModeReducer = (state, action) => {
   }
 };
 
-const DarkModeProvider = ({ children }) => {
+const DarkModeProvider = ({
+  children,
+  isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches,
+}) => {
   const initialState = {
-    isDarkMode: window.matchMedia("(prefers-color-scheme: dark)").matches,
+    isDarkMode: isDarkMode,
     error: null,
   };
 
@@ -81,6 +84,7 @@ const useDarkModeDispatch = () => {
 
 export {
   DarkModeProvider,
+  DarkModeStateContext,
   useDarkModeState,
   useDarkModeDispatch,
   darkModeOn,

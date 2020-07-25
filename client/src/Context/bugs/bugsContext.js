@@ -101,25 +101,28 @@ const bugsReducer = (state, action) => {
   }
 };
 
-const BugsProvider = ({ children }) => {
-  const initialState = {
-    bugs: [
-      {
+const BugsProvider = ({
+  children,
+  bugs = [
+    {
+      name: "",
+      status: "",
+      severity: "",
+      reproduceablility: "",
+      description: "",
+      createdAt: "",
+      updatedAt: "",
+      reporter: {
         name: "",
-        status: "",
-        severity: "",
-        reproduceablility: "",
-        description: "",
-        createdAt: "",
-        updatedAt: "",
-        reporter: {
-          name: "",
-        },
-        fixer: {
-          name: "",
-        },
       },
-    ],
+      fixer: {
+        name: "",
+      },
+    },
+  ],
+}) => {
+  const initialState = {
+    bugs: bugs,
     error: null,
   };
 

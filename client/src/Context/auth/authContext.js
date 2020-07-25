@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from "react";
+import React from "react";
 
 import {
   LOGIN_SUCCESS,
@@ -76,18 +76,20 @@ const authReducer = (state, action) => {
   }
 };
 
-const AuthProvider = ({ children }) => {
+const AuthProvider = ({
+  children,
+  isAuthenticated = null,
+  // TODO: might not be needed??
+  isLoading = true,
+  error = null,
+}) => {
   const initialState = {
-    isAuthenticated: null,
-    isLoading: true,
-    error: null,
+    isAuthenticated: isAuthenticated,
+    isLoading: isLoading,
+    error: error,
   };
 
-  const [state, dispatch] = useReducer(authReducer, initialState);
-
-  useEffect(() => {
-    getMe(dispatch);
-  }, []);
+  const [state, dispatch] = React.useReducer(authReducer, initialState);
 
   return (
     <AuthStateContext.Provider value={state}>
@@ -251,6 +253,7 @@ const useAuthDispatch = () => {
 
 export {
   AuthProvider,
+  AuthStateContext,
   useAuthState,
   useAuthDispatch,
   login,

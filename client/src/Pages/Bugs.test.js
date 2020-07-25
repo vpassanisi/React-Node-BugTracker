@@ -2,9 +2,21 @@ import React from "react";
 import { fireEvent, render } from "@testing-library/react";
 import Bugs from "../Pages/Bugs";
 import Bug from "../components/Bug";
-import ProjectsContext from "../Context/projects/projectsContext";
-import AuthContext from "../Context/auth/authContext";
-import BugsContext from "../Context/bugs/bugsContext";
+import { ProjectsProvider } from "../Context/projects/ProjectsContext";
+import { AuthProvider } from "../Context/auth/AuthContext";
+import {
+  BugsProvider,
+  useBugsDispatch,
+  getBugs,
+  sortBugs,
+} from "../Context/bugs/BugsContext";
+
+jest.mock("../Context/bugs/BugsContext.js", () => ({
+  ...jest.requireActual("../Context/bugs/BugsContext.js"),
+  useBugsDispatch: jest.fn(),
+  getBugs: jest.fn(),
+  sortBugs: jest.fn(),
+}));
 
 const mockHistoryPush = jest.fn();
 jest.mock("react-router-dom", () => ({
@@ -20,33 +32,17 @@ jest.mock("react-responsive", () => ({
 jest.mock("../components/Bug", () => jest.fn(() => null));
 
 const setup = (isAuth = true, currentProject = {}) => {
-  const mockGetBugs = jest.fn();
-  const mockSortBugs = jest.fn();
-
   const utils = render(
-    <AuthContext.Provider
-      value={{
-        isAuthenticated: isAuth,
-        isLoading: false,
-      }}
-    >
-      <ProjectsContext.Provider
-        value={{
-          currentProject: currentProject,
-        }}
-      >
-        <BugsContext.Provider
-          value={{
-            getBugs: mockGetBugs,
-            sortBugs: mockSortBugs,
-            bugs: [{}, {}, {}],
-          }}
-        >
+    <AuthProvider isAuthenticated={isAuth} isLoading={false}>
+      <ProjectsProvider currentProject={currentProject}>
+        <BugsProvider bugs={[{}, {}, {}]}>
           <Bugs />
-        </BugsContext.Provider>
-      </ProjectsContext.Provider>
-    </AuthContext.Provider>
+        </BugsProvider>
+      </ProjectsProvider>
+    </AuthProvider>
   );
+
+  const bugsDispatch = useBugsDispatch();
 
   const buttonName = utils.getByTestId("button_name");
   const buttonFixer = utils.getByTestId("button_fixer");
@@ -57,8 +53,7 @@ const setup = (isAuth = true, currentProject = {}) => {
 
   return {
     ...utils,
-    mockGetBugs,
-    mockSortBugs,
+    bugsDispatch,
     buttonName,
     buttonFixer,
     buttonReporter,
@@ -67,6 +62,12 @@ const setup = (isAuth = true, currentProject = {}) => {
     buttonReproduceable,
   };
 };
+
+test("calls getBugs if authenticated and has a project", () => {
+  setup();
+
+  expect(getBugs).toHaveBeenCalled();
+});
 
 test("pushes to /info in not authenticated", () => {
   setup(false);
@@ -80,58 +81,52 @@ test("pushes to / if no project is set", () => {
   expect(mockHistoryPush).toHaveBeenCalledWith("/");
 });
 
-test("calls getBugs if authenticated and has a project", () => {
-  const { mockGetBugs } = setup(true);
-
-  expect(mockGetBugs).toHaveBeenCalled();
-});
-
 test("sorts bugs by name", () => {
-  const { mockSortBugs, buttonName } = setup(true);
+  const { buttonName, bugsDispatch } = setup(true);
 
   fireEvent.click(buttonName, { button: 0 });
 
-  expect(mockSortBugs).toHaveBeenCalledWith("name");
+  expect(sortBugs).toHaveBeenCalledWith(bugsDispatch, "name");
 });
 
 test("sorts bugs by fixer", () => {
-  const { mockSortBugs, buttonFixer } = setup(true);
+  const { buttonFixer, bugsDispatch } = setup(true);
 
   fireEvent.click(buttonFixer, { button: 0 });
 
-  expect(mockSortBugs).toHaveBeenCalledWith("fixer");
+  expect(sortBugs).toHaveBeenCalledWith(bugsDispatch, "fixer");
 });
 
 test("sorts bugs by reporter", () => {
-  const { mockSortBugs, buttonReporter } = setup(true);
+  const { buttonReporter, bugsDispatch } = setup(true);
 
   fireEvent.click(buttonReporter, { button: 0 });
 
-  expect(mockSortBugs).toHaveBeenCalledWith("reporter");
+  expect(sortBugs).toHaveBeenCalledWith(bugsDispatch, "reporter");
 });
 
 test("sorts bugs by status", () => {
-  const { mockSortBugs, buttonStatus } = setup(true);
+  const { buttonStatus, bugsDispatch } = setup(true);
 
   fireEvent.click(buttonStatus, { button: 0 });
 
-  expect(mockSortBugs).toHaveBeenCalledWith("status");
+  expect(sortBugs).toHaveBeenCalledWith(bugsDispatch, "status");
 });
 
 test("sorts bugs by severity", () => {
-  const { mockSortBugs, buttonSeverity } = setup(true);
+  const { buttonSeverity, bugsDispatch } = setup(true);
 
   fireEvent.click(buttonSeverity, { button: 0 });
 
-  expect(mockSortBugs).toHaveBeenCalledWith("severity");
+  expect(sortBugs).toHaveBeenCalledWith(bugsDispatch, "severity");
 });
 
 test("sorts bugs by reproduceability", () => {
-  const { mockSortBugs, buttonReproduceable } = setup(true);
+  const { buttonReproduceable, bugsDispatch } = setup(true);
 
   fireEvent.click(buttonReproduceable, { button: 0 });
 
-  expect(mockSortBugs).toHaveBeenCalledWith("reproduceability");
+  expect(sortBugs).toHaveBeenCalledWith(bugsDispatch, "reproduceability");
 });
 
 test("renders bug components", () => {

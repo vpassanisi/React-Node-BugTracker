@@ -5,7 +5,7 @@ import {
   useDarkModeDispatch,
   darkModeOn,
   darkModeOff,
-} from "../Context/darkMode/darkModeContext";
+} from "../Context/darkMode/DarkModeContext";
 
 const DarkModeToggle = () => {
   const { isDarkMode } = useDarkModeState();

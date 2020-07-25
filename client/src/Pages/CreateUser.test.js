@@ -1,19 +1,31 @@
 import React from "react";
 import { fireEvent, render } from "@testing-library/react";
-import AuthContext from "../Context/auth/authContext";
+import {
+  AuthProvider,
+  useAuthDispatch,
+  createUser,
+} from "../Context/auth/AuthContext";
 import CreateUser from "../Pages/CreateUser";
 
-const setup = () => {
-  const mockCreateUser = jest.fn();
+jest.mock("../Context/auth/AuthContext.js", () => ({
+  ...jest.requireActual("../Context/auth/AuthContext.js"),
+  useAuthDispatch: jest.fn(),
+  createUser: jest.fn(),
+}));
 
+const mockPush = jest.fn();
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useHistory: () => ({
+    push: mockPush,
+  }),
+}));
+
+const setup = (isAuth = null) => {
   const utils = render(
-    <AuthContext.Provider
-      value={{
-        createUser: mockCreateUser,
-      }}
-    >
+    <AuthProvider isAuthenticated={isAuth}>
       <CreateUser />
-    </AuthContext.Provider>
+    </AuthProvider>
   );
 
   const buttonCreateUser = utils.getByTestId("button_create_user");
@@ -23,7 +35,6 @@ const setup = () => {
 
   return {
     ...utils,
-    mockCreateUser,
     buttonCreateUser,
     inputName,
     inputEmail,
@@ -62,24 +73,34 @@ test("Password input exists and changes on input", () => {
 });
 
 test("Login button exists and logs in with the provided credencials", () => {
-  const {
-    buttonCreateUser,
-    inputName,
-    inputEmail,
-    inputPassword,
-    mockCreateUser,
-  } = setup();
+  const { buttonCreateUser, inputName, inputEmail, inputPassword } = setup();
+
+  const authDispatch = useAuthDispatch();
+  const newUser = {
+    name: "Jimmy Jam",
+    email: "Jimmy@gmail.com",
+    password: "123456",
+  };
 
   expect(buttonCreateUser).toBeInTheDocument();
 
-  fireEvent.change(inputName, { target: { value: "Jimmy Jam" } });
-  fireEvent.change(inputEmail, { target: { value: "Jimmy@gmail.com" } });
-  fireEvent.change(inputPassword, { target: { value: "123456" } });
+  fireEvent.change(inputName, { target: { value: newUser.name } });
+  fireEvent.change(inputEmail, { target: { value: newUser.email } });
+  fireEvent.change(inputPassword, { target: { value: newUser.password } });
 
   fireEvent.click(buttonCreateUser, { button: 0 });
 
-  expect(mockCreateUser).toHaveBeenCalled();
-  expect(mockCreateUser.mock.calls[0][0].name).toBe("Jimmy Jam");
-  expect(mockCreateUser.mock.calls[0][0].email).toBe("Jimmy@gmail.com");
-  expect(mockCreateUser.mock.calls[0][0].password).toBe("123456");
+  expect(createUser).toHaveBeenCalledWith(authDispatch, newUser);
+});
+
+test("does not push when not logged it", () => {
+  setup();
+
+  expect(mockPush).not.toHaveBeenCalled();
+});
+
+test("pushes to / when logged in", () => {
+  setup(true);
+
+  expect(mockPush).toHaveBeenCalledWith("/");
 });

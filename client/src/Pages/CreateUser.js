@@ -9,9 +9,10 @@ import {
 } from "../Context/auth/AuthContext";
 
 const CreateUser = () => {
+  const history = useHistory();
+
   const authDispatch = useAuthDispatch();
   const { isAuthenticated } = useAuthState();
-  const history = useHistory();
 
   const [newUser, setNewUser] = React.useState({
     name: "",
@@ -21,12 +22,12 @@ const CreateUser = () => {
 
   const handleChange = (event, item) => {
     const obj = { ...newUser, [item]: event.target.value };
-
     setNewUser(obj);
   };
   React.useEffect(() => {
     if (isAuthenticated) history.push("/");
-  }, [isAuthenticated, history]);
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div className="w-full">

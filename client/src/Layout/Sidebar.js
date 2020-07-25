@@ -9,7 +9,7 @@ import {
   useAuthDispatch,
   logout,
 } from "../Context/auth/AuthContext";
-import { useDarkModeState } from "../Context/darkMode/darkModeContext";
+import { useDarkModeState } from "../Context/darkMode/DarkModeContext";
 
 const Sidebar = (props) => {
   const { currentProject } = useProjectsState();

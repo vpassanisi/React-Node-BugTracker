@@ -4,7 +4,7 @@ import Collapse from "@material-ui/core/Collapse";
 import Updatebug from "./UpdateBug";
 
 import { useBugsDispatch, deleteBug } from "../Context/bugs/BugsContext";
-import { useDarkModeState } from "../Context/darkMode/darkModeContext";
+import { useDarkModeState } from "../Context/darkMode/DarkModeContext";
 
 const Bug = (props) => {
   const { open, setOpen, index, bug } = props;

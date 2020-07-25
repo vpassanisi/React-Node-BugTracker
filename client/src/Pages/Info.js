@@ -8,9 +8,10 @@ import {
 } from "../Context/auth/AuthContext";
 
 const Info = () => {
-  const authDispatch = useAuthDispatch();
-  const { isAuthenticated } = useAuthState();
   const history = useHistory();
+
+  const { isAuthenticated } = useAuthState();
+  const authDispatch = useAuthDispatch();
 
   React.useEffect(() => {
     if (isAuthenticated) history.push("/");

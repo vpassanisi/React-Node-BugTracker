@@ -11,13 +11,14 @@ import {
   useAuthState,
   useAuthDispatch,
   logout,
+  getMe,
 } from "../Context/auth/AuthContext";
 import {
   useDarkModeState,
   useDarkModeDispatch,
   darkModeOn,
   darkModeOff,
-} from "../Context/darkMode/darkModeContext";
+} from "../Context/darkMode/DarkModeContext";
 
 const Navbar = (props) => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -88,12 +89,14 @@ const Navbar = (props) => {
       >
         Logout
       </button>
-      <Link
-        className="flex items-center justify-center h-full px-4 transition duration-300 ease-in-out hover:bg-white-alpha-20 text-black dark:text-white"
-        to="/info"
-      >
-        Info
-      </Link>
+      {!isAuthenticated && (
+        <Link
+          className="flex items-center justify-center h-full px-4 transition duration-300 ease-in-out hover:bg-white-alpha-20 text-black dark:text-white"
+          to="/info"
+        >
+          Info
+        </Link>
+      )}
     </React.Fragment>
   );
 
@@ -122,9 +125,14 @@ const Navbar = (props) => {
       setIsDark(false);
       darkModeOff(darkModeDispatch);
     }
-
     // eslint-disable-next-line
   }, [isDarkMode]);
+
+  // checks if the login cookie is set.  This only needs to be done when the app loads, since the navabar should only mount once I put it here.
+  React.useEffect(() => {
+    getMe(authDispatch);
+    // eslint-disable-next-line
+  }, []);
 
   const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
 

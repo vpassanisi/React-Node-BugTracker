@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import Navbar from "./Layout/Navbar";
@@ -14,7 +14,7 @@ import Alert from "./Layout/Alert";
 import { AuthProvider } from "./Context/auth/AuthContext";
 import { BugsProvider } from "./Context/bugs/BugsContext";
 import { ProjectsProvider } from "./Context/projects/ProjectsContext";
-import { DarkModeProvider } from "./Context/darkMode/darkModeContext";
+import { DarkModeProvider } from "./Context/darkMode/DarkModeContext";
 
 import "./css/tailwind.css";
 
@@ -46,7 +46,7 @@ const lightTheme = createMuiTheme({
 });
 
 function App() {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = React.useState(false);
 
   return (
     <Router>

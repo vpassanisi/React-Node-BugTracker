@@ -1,46 +1,49 @@
 import React from "react";
 import { fireEvent, render } from "@testing-library/react";
 import DarkModeToggle from "../Layout/DarkModeToggle";
-import DarkModeContext from "../Context/darkMode/darkModeContext";
+import {
+  DarkModeProvider,
+  useDarkModeDispatch,
+  darkModeOn,
+  darkModeOff,
+} from "../Context/darkMode/DarkModeContext";
+
+jest.mock("../Context/darkMode/DarkModeContext.js", () => ({
+  ...jest.requireActual("../Context/darkMode/DarkModeContext.js"),
+  useDarkModeDispatch: jest.fn(),
+  darkModeOff: jest.fn(),
+  darkModeOn: jest.fn(),
+}));
+
+global.matchMedia = jest.fn(() => true);
 
 const setup = (darkMode = true) => {
-  const mockTurnOn = jest.fn();
-  const mockTurnOff = jest.fn();
-
   const utils = render(
-    <DarkModeContext.Provider
-      value={{
-        isDarkMode: darkMode,
-        darkModeOn: mockTurnOn,
-        darkModeOff: mockTurnOff,
-      }}
-    >
+    <DarkModeProvider isDarkMode={darkMode}>
       <DarkModeToggle />
-    </DarkModeContext.Provider>
+    </DarkModeProvider>
   );
 
   const buttonDarkMode = utils.getByTestId("button_dark_mode");
 
   return {
     ...utils,
-    mockTurnOff,
-    mockTurnOn,
     buttonDarkMode,
   };
 };
 
 test("turns off dark mode", () => {
-  const { buttonDarkMode, mockTurnOff } = setup(true);
+  const { buttonDarkMode } = setup(true);
 
   fireEvent.click(buttonDarkMode, { button: 0 });
 
-  expect(mockTurnOff).toHaveBeenCalled();
+  expect(darkModeOff).toHaveBeenCalled();
 });
 
 test("turns on dark mode", () => {
-  const { buttonDarkMode, mockTurnOn } = setup(false);
+  const { buttonDarkMode } = setup(false);
 
   fireEvent.click(buttonDarkMode, { button: 0 });
 
-  expect(mockTurnOn).toHaveBeenCalled();
+  expect(darkModeOn).toHaveBeenCalled();
 });

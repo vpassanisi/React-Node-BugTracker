@@ -1,13 +1,25 @@
 import React from "react";
-import { fireEvent, render, waitFor } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 import Bug from "../components/Bug";
-import BugsContext from "../Context/bugs/bugsContext";
-import DarkModeContext from "../Context/darkMode/darkModeContext";
+import {
+  BugsProvider,
+  useBugsDispatch,
+  deleteBug,
+} from "../Context/bugs/BugsContext";
+import { DarkModeProvider } from "../Context/darkMode/DarkModeContext";
 
 jest.mock("../components/UpdateBug.js", () => jest.fn(() => null));
 
+global.matchMedia = jest.fn(() => true);
+
 jest.mock("react-responsive", () => ({
   useMediaQuery: () => true,
+}));
+
+jest.mock("../Context/bugs/BugsContext.js", () => ({
+  ...jest.requireActual("../Context/bugs/BugsContext.js"),
+  useBugsDispatch: jest.fn(),
+  deleteBug: jest.fn(),
 }));
 
 const setup = () => {
@@ -29,27 +41,18 @@ const setup = () => {
   };
 
   const mockSetOpen = jest.fn();
-  const mockDeleteBug = jest.fn();
 
   const utils = render(
-    <DarkModeContext.Provider
-      value={{
-        isDarkMode: true,
-      }}
-    >
-      <BugsContext.Provider
-        value={{
-          deleteBug: mockDeleteBug,
-        }}
-      >
+    <DarkModeProvider>
+      <BugsProvider>
         <Bug
           open={2}
           setOpen={mockSetOpen}
           index={props.index}
           bug={props.bug}
         />
-      </BugsContext.Provider>
-    </DarkModeContext.Provider>
+      </BugsProvider>
+    </DarkModeProvider>
   );
 
   const buttonOpen = utils.getByTestId("button_open");
@@ -59,7 +62,6 @@ const setup = () => {
     ...utils,
     props,
     mockSetOpen,
-    mockDeleteBug,
     buttonOpen,
     buttonDelete,
   };
@@ -90,15 +92,15 @@ test("renders the bugs name", async () => {
 });
 
 test("calls deleteBug with the correct arguments", () => {
-  const { buttonDelete, mockDeleteBug, props } = setup();
+  const { buttonDelete, props } = setup();
 
   const { bug, index } = props;
-
   global.confirm = () => true;
+  const bugsDispatch = useBugsDispatch();
 
   fireEvent.click(buttonDelete, { button: 0 });
 
-  expect(mockDeleteBug).toHaveBeenCalledWith(bug._id, index);
+  expect(deleteBug).toHaveBeenCalledWith(bugsDispatch, bug._id, index);
 });
 
 test("calls setOpen correctly", () => {

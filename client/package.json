@@ -23,7 +23,7 @@
     "start": "npm-run-all -p start:css start:js",
     "build": "npm-run-all build:css build:js",
     "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
-    "coverage": "react-scripts test --watchAll=false --coverage",
+    "coverage": "react-scripts test --watchAll=false",
     "eject": "react-scripts eject",
     "start:js": "react-scripts start",
     "build:js": "react-scripts build",

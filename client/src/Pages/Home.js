@@ -30,13 +30,11 @@ const Home = () => {
     if (isAuthenticated && !isLoading) {
       getProjects(projectsDispatch);
     }
-
     // eslint-disable-next-line
   }, [isAuthenticated, isLoading]);
 
   React.useEffect(() => {
     clearCurrentProject(projectsDispatch);
-
     // eslint-disable-next-line
   }, []);
 
