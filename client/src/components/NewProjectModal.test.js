@@ -1,7 +1,17 @@
 import React from "react";
 import { fireEvent, render } from "@testing-library/react";
 import NewProjectModal from "../components/NewProjectModal";
-import ProjectsContext from "../Context/projects/projectsContext";
+import {
+  ProjectsProvider,
+  useProjectsDispatch,
+  newProject,
+} from "../Context/projects/ProjectsContext";
+
+jest.mock("../Context/projects/ProjectsContext.js", () => ({
+  ...jest.requireActual("../Context/projects/ProjectsContext.js"),
+  useProjectsDispatch: jest.fn(),
+  newProject: jest.fn(),
+}));
 
 const mockHistoryPush = jest.fn();
 jest.mock("react-router-dom", () => ({
@@ -12,21 +22,16 @@ jest.mock("react-router-dom", () => ({
 
 const setup = (currentProject = null, isOpen = true) => {
   const mockSetIsNewProjectOpen = jest.fn();
-  const mockNewProject = jest.fn();
   const utils = render(
-    <ProjectsContext.Provider
-      value={{
-        currentProject: currentProject,
-        newProject: mockNewProject,
-      }}
-    >
+    <ProjectsProvider currentProject={currentProject}>
       <NewProjectModal
         isNewProjectOpen={isOpen}
         setIsNewProjectOpen={mockSetIsNewProjectOpen}
       />
-    </ProjectsContext.Provider>
+    </ProjectsProvider>
   );
 
+  const projectsDispatch = useProjectsDispatch();
   const inputName = utils.getByTestId("input_name");
   const inputDescription = utils.getByTestId("input_description");
   const buttonNewProject = utils.getByTestId("button_new_project");
@@ -35,7 +40,7 @@ const setup = (currentProject = null, isOpen = true) => {
   return {
     ...utils,
     modal,
-    mockNewProject,
+    projectsDispatch,
     mockSetIsNewProjectOpen,
     inputName,
     inputDescription,
@@ -65,22 +70,23 @@ test("button calls newProject with to correct arguments and closes the modal", (
   const {
     inputName,
     inputDescription,
-    mockNewProject,
+    projectsDispatch,
     mockSetIsNewProjectOpen,
     buttonNewProject,
   } = setup();
 
-  fireEvent.change(inputName, { target: { value: "test edit project name" } });
+  const proj = {
+    name: "test edit project name",
+    description: "test edit project description",
+  };
+  fireEvent.change(inputName, { target: { value: proj.name } });
   fireEvent.change(inputDescription, {
-    target: { value: "test edit project description" },
+    target: { value: proj.description },
   });
 
   fireEvent.click(buttonNewProject, { button: 0 });
 
-  expect(mockNewProject).toHaveBeenCalledWith({
-    name: "test edit project name",
-    description: "test edit project description",
-  });
+  expect(newProject).toHaveBeenCalledWith(projectsDispatch, proj);
   expect(mockSetIsNewProjectOpen).toHaveBeenCalledWith(false);
 });
 

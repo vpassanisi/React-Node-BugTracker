@@ -1,10 +1,19 @@
 import React from "react";
 import { fireEvent, render } from "@testing-library/react";
-import ProjectsContext from "../Context/projects/projectsContext";
+import {
+  ProjectsProvider,
+  editProject,
+  useProjectsDispatch,
+} from "../Context/projects/ProjectsContext";
 import EditProjectModal from "../components/EditProjectModal";
 
+jest.mock("../Context/projects/ProjectsContext.js", () => ({
+  ...jest.requireActual("../Context/projects/ProjectsContext.js"),
+  useProjectsDispatch: jest.fn(),
+  editProject: jest.fn(),
+}));
+
 const setup = () => {
-  const mockEditProject = jest.fn();
   const mockSetIsEditProjectOpen = jest.fn();
 
   const props = {
@@ -22,20 +31,17 @@ const setup = () => {
   };
 
   const utils = render(
-    <ProjectsContext.Provider
-      value={{
-        editProject: mockEditProject,
-      }}
-    >
+    <ProjectsProvider>
       <EditProjectModal
         index={props.index}
         project={props.project}
         isEditProjectOpen={props.isEditProjectOpen}
         setIsEditProjectOpen={mockSetIsEditProjectOpen}
       />
-    </ProjectsContext.Provider>
+    </ProjectsProvider>
   );
 
+  const projectsDispatch = useProjectsDispatch();
   const buttonEditProject = utils.getByTestId("button_edit_project");
   const inputName = utils.getByTestId("input_name");
   const inputDescription = utils.getByTestId("input_description");
@@ -45,7 +51,7 @@ const setup = () => {
     ...utils,
     props,
     modal,
-    mockEditProject,
+    projectsDispatch,
     mockSetIsEditProjectOpen,
     buttonEditProject,
     inputName,
@@ -92,13 +98,15 @@ test("Calls updateProject with the correct arguments", () => {
     inputName,
     inputDescription,
     buttonEditProject,
-    mockEditProject,
+    projectsDispatch,
     props,
   } = setup();
 
-  let editedProps = { ...props };
-  editedProps.project.name = "test edit name";
-  editedProps.project.description = "test edit description";
+  let editedProps = {
+    ...props,
+    name: "test edit name",
+    deacription: "test edit description",
+  };
 
   fireEvent.change(inputName, {
     target: { value: editedProps.project.name },
@@ -110,7 +118,8 @@ test("Calls updateProject with the correct arguments", () => {
 
   fireEvent.click(buttonEditProject, { button: 0 });
 
-  expect(mockEditProject).toHaveBeenCalledWith(
+  expect(editProject).toHaveBeenCalledWith(
+    projectsDispatch,
     editedProps.project,
     editedProps.index
   );

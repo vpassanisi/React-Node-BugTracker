@@ -102,7 +102,7 @@ const AuthProvider = ({
 
 const login = async (dispatch, credentials) => {
   const loader = document.getElementById("loader");
-  loader.classList.remove("hidden");
+  loader && loader.classList.remove("hidden");
   try {
     const req = await fetch("/api/v1/auth/login", {
       method: "POST",
@@ -130,7 +130,7 @@ const login = async (dispatch, credentials) => {
       payload: `${err}`,
     });
   }
-  loader.classList.add("hidden");
+  loader && loader.classList.add("hidden");
 };
 
 const getMe = async (dispatch) => {

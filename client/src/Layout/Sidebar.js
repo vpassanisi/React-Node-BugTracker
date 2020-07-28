@@ -1,7 +1,7 @@
 import React from "react";
 import { Drawer } from "@material-ui/core";
 import DarkModeToggle from "../Layout/DarkModeToggle";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import { useProjectsState } from "../Context/projects/ProjectsContext";
 import {
@@ -21,35 +21,43 @@ const Sidebar = (props) => {
 
   const { isOpen, setIsOpen, setIsNewBugOpen, setIsNewProjectOpen } = props;
 
+  const history = useHistory();
+
   const guestLinks = (
     <React.Fragment>
-      <Link
+      <button
         className={`flex items-center justify-center w-full h-12 transition duration-300 ease-in-out ${
           isDarkMode ? "hover:bg-gray-800" : "hover:bg-gray-300"
         }  text-black dark:text-white`}
-        to="/create"
-        onClick={() => setIsOpen(false)}
+        onClick={() => {
+          setIsOpen(false);
+          history.push("/create");
+        }}
       >
         Create User
-      </Link>
-      <Link
+      </button>
+      <button
         className={`flex items-center justify-center w-full h-12 transition duration-300 ease-in-out ${
           isDarkMode ? "hover:bg-gray-800" : "hover:bg-gray-300"
         } text-black dark:text-white`}
-        to="/login"
-        onClick={() => setIsOpen(false)}
+        onClick={() => {
+          setIsOpen(false);
+          history.push("/login");
+        }}
       >
         Login
-      </Link>
-      <Link
+      </button>
+      <button
         className={`flex items-center justify-center w-full h-12 transition duration-300 ease-in-out ${
           isDarkMode ? "hover:bg-gray-800" : "hover:bg-gray-300"
         } text-black dark:text-white`}
-        to="/info"
-        onClick={() => setIsOpen(false)}
+        onClick={() => {
+          setIsOpen(false);
+          history.push("/info");
+        }}
       >
         Info
-      </Link>
+      </button>
     </React.Fragment>
   );
 
@@ -81,15 +89,17 @@ const Sidebar = (props) => {
         </button>
       )}
       {currentProject && (
-        <Link
+        <button
           className={`flex items-center justify-center w-full h-12 transition duration-300 ease-in-out ${
             isDarkMode ? "hover:bg-gray-800" : "hover:bg-gray-300"
           } text-black dark:text-white`}
-          to="/"
-          onClick={() => setIsOpen(false)}
+          onClick={() => {
+            setIsOpen(false);
+            history.push("/");
+          }}
         >
           Your Projects
-        </Link>
+        </button>
       )}
       <button
         className={`flex items-center justify-center w-full h-12 transition duration-300 ease-in-out ${
@@ -102,15 +112,17 @@ const Sidebar = (props) => {
       >
         Logout
       </button>
-      <Link
+      {/* <button
         className={`flex items-center justify-center w-full h-12 transition duration-300 ease-in-out ${
           isDarkMode ? "hover:bg-gray-800" : "hover:bg-gray-300"
         } text-black dark:text-white`}
-        to="/info"
-        onClick={() => setIsOpen(false)}
+        onClick={() => {
+          setIsOpen(false);
+          history.push("/info");
+        }}
       >
         Info
-      </Link>
+      </button> */}
     </React.Fragment>
   );
 

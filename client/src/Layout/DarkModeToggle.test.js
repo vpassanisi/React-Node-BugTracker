@@ -3,7 +3,6 @@ import { fireEvent, render } from "@testing-library/react";
 import DarkModeToggle from "../Layout/DarkModeToggle";
 import {
   DarkModeProvider,
-  useDarkModeDispatch,
   darkModeOn,
   darkModeOff,
 } from "../Context/darkMode/DarkModeContext";

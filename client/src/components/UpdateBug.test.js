@@ -1,11 +1,19 @@
 import React from "react";
 import { fireEvent, render } from "@testing-library/react";
 import UpdateBug from "../components/UpdateBug";
-import BugsContext from "../Context/bugs/bugsContext";
+import {
+  BugsProvider,
+  useBugsDispatch,
+  updateBug,
+} from "../Context/bugs/BugsContext";
+
+jest.mock("../Context/bugs/BugsContext.js", () => ({
+  ...jest.requireActual("../Context/bugs/BugsContext.js"),
+  useBugsDispatch: jest.fn(),
+  updateBug: jest.fn(),
+}));
 
 const setup = () => {
-  const mockUpdateBug = jest.fn();
-
   const props = {
     bug: {
       _id: "5e3d263bd58ff400173b19f9",
@@ -24,15 +32,12 @@ const setup = () => {
   };
 
   const utils = render(
-    <BugsContext.Provider
-      value={{
-        updateBug: mockUpdateBug,
-      }}
-    >
+    <BugsProvider>
       <UpdateBug bug={props.bug} index={props.index} />
-    </BugsContext.Provider>
+    </BugsProvider>
   );
 
+  const bugsDispatch = useBugsDispatch();
   const inputName = utils.getByTestId("input_edit_name");
   const inputFixer = utils.getByTestId("input_edit_fixer");
   const inputDescription = utils.getByTestId("input_edit_description");
@@ -44,7 +49,7 @@ const setup = () => {
   return {
     ...utils,
     props,
-    mockUpdateBug,
+    bugsDispatch,
     inputName,
     inputFixer,
     inputDescription,
@@ -114,7 +119,7 @@ test("edit button calls updateBug with the correct arguments", () => {
     selectReproduceability,
     selectSeverity,
     selectStatus,
-    mockUpdateBug,
+    bugsDispatch,
     props,
   } = setup();
 
@@ -140,7 +145,8 @@ test("edit button calls updateBug with the correct arguments", () => {
 
   fireEvent.click(buttonEdit, { button: 0 });
 
-  expect(mockUpdateBug).toHaveBeenCalledWith(
+  expect(updateBug).toHaveBeenCalledWith(
+    bugsDispatch,
     editedBug,
     props.bug._id,
     props.index

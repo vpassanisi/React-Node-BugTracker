@@ -13,7 +13,7 @@ const setup = () => {
   const utils = render(
     <DarkModeProvider>
       <DarkModeStateContext.Consumer>
-        {(value) => console.log(value)}
+        {(value) => {}}
       </DarkModeStateContext.Consumer>
     </DarkModeProvider>
   );

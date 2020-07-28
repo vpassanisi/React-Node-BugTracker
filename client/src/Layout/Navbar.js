@@ -1,6 +1,6 @@
 import React from "react";
 import { useMediaQuery } from "react-responsive";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import DarkModeToggle from "./DarkModeToggle";
 import NewBugModal from "../components/NewBugModal";
 import NewProjectModal from "../components/NewProjectModal";
@@ -35,26 +35,28 @@ const Navbar = (props) => {
 
   const { setIsDark } = props;
 
+  const history = useHistory();
+
   const guestLinks = (
     <React.Fragment>
-      <Link
-        className="flex items-center justify-center h-full px-4 transition duration-300 ease-in-out hover:bg-white-alpha-20 text-black dark:text-white"
-        to="/create"
+      <button
+        className="flex items-center justify-center h-full px-4 transition duration-300 ease-in-out hover:bg-white-alpha-20 text-black dark:text-white focus:outline-none"
+        onClick={() => history.push("/create")}
       >
         Create User
-      </Link>
-      <Link
-        className="flex items-center justify-center h-full px-4 transition duration-300 ease-in-out hover:bg-white-alpha-20 text-black dark:text-white"
-        to="/login"
+      </button>
+      <button
+        className="flex items-center justify-center h-full px-4 transition duration-300 ease-in-out hover:bg-white-alpha-20 text-black dark:text-white focus:outline-none"
+        onClick={() => history.push("/login")}
       >
         Login
-      </Link>
-      <Link
-        className="flex items-center justify-center h-full px-4 transition duration-300 ease-in-out hover:bg-white-alpha-20 text-black dark:text-white"
-        to="/info"
+      </button>
+      <button
+        className="flex items-center justify-center h-full px-4 transition duration-300 ease-in-out hover:bg-white-alpha-20 text-black dark:text-white focus:outline-none"
+        onClick={() => history.push("/info")}
       >
         Info
-      </Link>
+      </button>
     </React.Fragment>
   );
 
@@ -76,12 +78,12 @@ const Navbar = (props) => {
         </button>
       )}
       {currentProject && (
-        <Link
+        <button
           className="flex items-center justify-center h-full px-4 transition duration-300 ease-in-out hover:bg-white-alpha-20 text-black dark:text-white"
-          to="/"
+          onClick={() => history.push("/")}
         >
           Your Projects
-        </Link>
+        </button>
       )}
       <button
         className="flex items-center justify-center h-full px-4 transition duration-300 ease-in-out hover:bg-white-alpha-20 text-black dark:text-white cursor-pointer focus:outline-none"
@@ -89,14 +91,6 @@ const Navbar = (props) => {
       >
         Logout
       </button>
-      {!isAuthenticated && (
-        <Link
-          className="flex items-center justify-center h-full px-4 transition duration-300 ease-in-out hover:bg-white-alpha-20 text-black dark:text-white"
-          to="/info"
-        >
-          Info
-        </Link>
-      )}
     </React.Fragment>
   );
 
@@ -110,6 +104,7 @@ const Navbar = (props) => {
 
   const mobileNav = (
     <button
+      data-testid="button_hamburger"
       className="flex flex-row items-center justify-center h-full w-16 focus:outline-none"
       onClick={() => setIsOpen(!isOpen)}
     >

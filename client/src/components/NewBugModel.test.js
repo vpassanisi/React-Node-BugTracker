@@ -1,21 +1,27 @@
 import React from "react";
 import { fireEvent, render } from "@testing-library/react";
 import NewBugModal from "../components/NewBugModal";
-import BugsContext from "../Context/bugs/bugsContext";
+import {
+  BugsProvider,
+  useBugsDispatch,
+  newBug,
+} from "../Context/bugs/BugsContext";
+
+jest.mock("../Context/bugs/BugsContext.js", () => ({
+  ...jest.requireActual("../Context/bugs/BugsContext.js"),
+  useBugsDispatch: jest.fn(),
+  newBug: jest.fn(),
+}));
 
 const setup = () => {
   const mockSetIsNewBugOpen = jest.fn();
-  const mockNewBug = jest.fn();
   const utils = render(
-    <BugsContext.Provider
-      value={{
-        newBug: mockNewBug,
-      }}
-    >
+    <BugsProvider>
       <NewBugModal isNewBugOpen={true} setIsNewBugOpen={mockSetIsNewBugOpen} />
-    </BugsContext.Provider>
+    </BugsProvider>
   );
 
+  const bugsDispatch = useBugsDispatch();
   const modal = utils.getByTestId("modal");
   const inputName = utils.getByTestId("input_name");
   const inputFixer = utils.getByTestId("input_fixer");
@@ -27,7 +33,7 @@ const setup = () => {
 
   return {
     ...utils,
-    mockNewBug,
+    bugsDispatch,
     mockSetIsNewBugOpen,
     modal,
     inputName,
@@ -94,7 +100,7 @@ test("select reproduceability changes on input", () => {
 
 test("calls newBug with the correct arguments", () => {
   const {
-    mockNewBug,
+    bugsDispatch,
     inputName,
     inputFixer,
     inputDescription,
@@ -104,7 +110,7 @@ test("calls newBug with the correct arguments", () => {
     buttonNewBug,
   } = setup();
 
-  const newBug = {
+  const bug = {
     name: "test new bug name",
     fixer: "test new bug fixer",
     description: "test new bug description",
@@ -113,20 +119,20 @@ test("calls newBug with the correct arguments", () => {
     reproduceability: "Intermitent",
   };
 
-  fireEvent.change(inputName, { target: { value: newBug.name } });
-  fireEvent.change(inputFixer, { target: { value: newBug.fixer } });
+  fireEvent.change(inputName, { target: { value: bug.name } });
+  fireEvent.change(inputFixer, { target: { value: bug.fixer } });
   fireEvent.change(inputDescription, {
-    target: { value: newBug.description },
+    target: { value: bug.description },
   });
-  fireEvent.change(selectStatus, { target: { value: newBug.status } });
-  fireEvent.change(selectSeverity, { target: { value: newBug.severity } });
+  fireEvent.change(selectStatus, { target: { value: bug.status } });
+  fireEvent.change(selectSeverity, { target: { value: bug.severity } });
   fireEvent.change(selectRedproduceability, {
-    target: { value: newBug.reproduceability },
+    target: { value: bug.reproduceability },
   });
 
   fireEvent.click(buttonNewBug, { button: 0 });
 
-  expect(mockNewBug).toHaveBeenCalledWith(newBug);
+  expect(newBug).toHaveBeenCalledWith(bugsDispatch, bug);
 });
 
 test("closes the modal on button click", () => {
