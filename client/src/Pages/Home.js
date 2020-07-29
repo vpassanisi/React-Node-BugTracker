@@ -13,7 +13,7 @@ import {
 const Home = () => {
   const history = useHistory();
 
-  const { isAuthenticated, isLoading } = useAuthState();
+  const { isAuthenticated } = useAuthState();
 
   const { projects } = useProjectsState();
   const projectsDispatch = useProjectsDispatch();
@@ -23,15 +23,13 @@ const Home = () => {
   ));
 
   React.useEffect(() => {
-    if (!isAuthenticated && !isLoading) {
+    if (isAuthenticated) {
+      getProjects(projectsDispatch);
+    } else {
       history.push("/info");
     }
-
-    if (isAuthenticated && !isLoading) {
-      getProjects(projectsDispatch);
-    }
     // eslint-disable-next-line
-  }, [isAuthenticated, isLoading]);
+  }, [isAuthenticated]);
 
   React.useEffect(() => {
     clearCurrentProject(projectsDispatch);
@@ -40,7 +38,7 @@ const Home = () => {
 
   return (
     <React.Fragment>
-      {!isLoading && (
+      {
         <div className="w-screen max-w-full">
           <br />
           <div className="text-3xl text-center font-hairline">
@@ -52,7 +50,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-      )}
+      }
     </React.Fragment>
   );
 };

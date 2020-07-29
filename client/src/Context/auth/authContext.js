@@ -32,20 +32,17 @@ const authReducer = (state, action) => {
       return {
         ...state,
         isAuthenticated: true,
-        isLoading: false,
       };
     case GET_ME_FAIL:
       return {
         ...state,
         isAuthenticated: false,
-        isLoading: false,
         error: action.payload,
       };
     case LOGOUT_SUCCESS:
       return {
         ...state,
         isAuthenticated: false,
-        isLoading: false,
       };
     case LOGOUT_FAIL:
       return {
@@ -56,13 +53,11 @@ const authReducer = (state, action) => {
       return {
         ...state,
         isAuthenticated: true,
-        isLoading: false,
       };
     case CREATE_USER_FAIL:
       return {
         ...state,
         isAuthenticated: false,
-        isLoading: false,
         error: action.payload,
       };
     case CLEAR_AUTH_ERRORS:
@@ -70,8 +65,21 @@ const authReducer = (state, action) => {
         ...state,
         error: null,
       };
+    case "IS_LOADING":
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case "NOT_LOADING":
+      return {
+        ...state,
+        isLoading: false,
+      };
     default: {
-      throw new Error(`Unhandled action type: ${action.type}`);
+      return {
+        ...state,
+        error: `Unhandled action type: ${action.type}`,
+      };
     }
   }
 };
@@ -79,8 +87,7 @@ const authReducer = (state, action) => {
 const AuthProvider = ({
   children,
   isAuthenticated = null,
-  // TODO: might not be needed??
-  isLoading = true,
+  isLoading = false,
   error = null,
 }) => {
   const initialState = {
@@ -101,8 +108,9 @@ const AuthProvider = ({
 };
 
 const login = async (dispatch, credentials) => {
-  const loader = document.getElementById("loader");
-  loader && loader.classList.remove("hidden");
+  dispatch({
+    type: "IS_LOADING",
+  });
   try {
     const req = await fetch("/api/v1/auth/login", {
       method: "POST",
@@ -130,7 +138,9 @@ const login = async (dispatch, credentials) => {
       payload: `${err}`,
     });
   }
-  loader && loader.classList.add("hidden");
+  dispatch({
+    type: "NOT_LOADING",
+  });
 };
 
 const getMe = async (dispatch) => {
@@ -162,8 +172,9 @@ const getMe = async (dispatch) => {
 };
 
 const logout = async (dispatch) => {
-  const loader = document.getElementById("loader");
-  loader.classList.remove("hidden");
+  dispatch({
+    type: "IS_LOADING",
+  });
   try {
     const req = await fetch(`/api/v1/auth/logout`, {
       method: "GET",
@@ -189,12 +200,15 @@ const logout = async (dispatch) => {
       payload: `${err}`,
     });
   }
-  loader.classList.add("hidden");
+  dispatch({
+    type: "NOT_LOADING",
+  });
 };
 
 const createUser = async (dispatch, user) => {
-  const loader = document.getElementById("loader");
-  loader.classList.remove("hidden");
+  dispatch({
+    type: "IS_LOADING",
+  });
   try {
     const req = await fetch(`/api/v1/auth/register`, {
       method: "POST",
@@ -205,15 +219,15 @@ const createUser = async (dispatch, user) => {
 
     const res = await req.json();
 
-    if (!res.success) {
-      dispatch({
-        type: CREATE_USER_FAIL,
-        payload: res.error,
-      });
-    } else {
+    if (res.success) {
       dispatch({
         type: CREATE_USER_SUCCESS,
         payload: res.data,
+      });
+    } else {
+      dispatch({
+        type: CREATE_USER_FAIL,
+        payload: res.error,
       });
     }
   } catch (err) {
@@ -222,7 +236,9 @@ const createUser = async (dispatch, user) => {
       payload: `${err}`,
     });
   }
-  loader.classList.add("hidden");
+  dispatch({
+    type: "NOT_LOADING",
+  });
 };
 
 const clearAuthErrors = (dispatch) => {

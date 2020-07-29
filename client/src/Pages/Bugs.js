@@ -16,7 +16,7 @@ const Bugs = () => {
   const history = useHistory();
   const [open, setOpen] = React.useState(null);
 
-  const { isAuthenticated, isLoading } = useAuthState();
+  const { isAuthenticated } = useAuthState();
 
   const { currentProject } = useProjectsState();
 
@@ -30,20 +30,20 @@ const Bugs = () => {
   ));
 
   React.useEffect(() => {
-    if (!currentProject) {
-      history.push("/");
-    } else {
+    if (currentProject) {
       getBugs(bugsDispatch);
+    } else {
+      history.push("/");
     }
     // eslint-disable-next-line
   }, [currentProject]);
 
   React.useEffect(() => {
-    if (!isAuthenticated && !isLoading) {
+    if (!isAuthenticated) {
       history.push("/info");
     }
     // eslint-disable-next-line
-  }, [isAuthenticated, isLoading]);
+  }, [isAuthenticated]);
 
   return (
     <div className="w-full max-w-screen-xl mx-auto">

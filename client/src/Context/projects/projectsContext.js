@@ -84,6 +84,16 @@ const projectsReducer = (state, action) => {
         ...state,
         error: null,
       };
+    case "IS_LOADING":
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case "NOT_LOADING":
+      return {
+        ...state,
+        isLoading: false,
+      };
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -94,10 +104,12 @@ const ProjectsProvider = ({
   children,
   projects = [],
   currentProject = null,
+  isLoading = false,
 }) => {
   const initialState = {
     projects: projects,
     currentProject: currentProject,
+    isLoading: isLoading,
     error: null,
   };
 
@@ -113,8 +125,9 @@ const ProjectsProvider = ({
 };
 
 const getProjects = async (dispatch) => {
-  const loader = document.getElementById("loader");
-  loader.classList.remove("hidden");
+  dispatch({
+    type: "IS_LOADING",
+  });
   try {
     const req = await fetch(`/api/v1/projects/getProjects`, {
       method: "GET",
@@ -140,12 +153,15 @@ const getProjects = async (dispatch) => {
       payload: `${err}`,
     });
   }
-  loader.classList.add("hidden");
+  dispatch({
+    type: "NOT_LOADING",
+  });
 };
 
 const setProject = async (dispatch, id) => {
-  const loader = document.getElementById("loader");
-  loader.classList.remove("hidden");
+  dispatch({
+    type: "IS_LOADING",
+  });
   try {
     const req = await fetch(`/api/v1/projects/${id}`, {
       method: "GET",
@@ -171,12 +187,15 @@ const setProject = async (dispatch, id) => {
       payload: `${err}`,
     });
   }
-  loader.classList.add("hidden");
+  dispatch({
+    type: "NOT_LOADING",
+  });
 };
 
 const newProject = async (dispatch, body) => {
-  const loader = document.getElementById("loader");
-  loader.classList.remove("hidden");
+  dispatch({
+    type: "IS_LOADING",
+  });
   try {
     const req = await fetch(`/api/v1/projects`, {
       method: "POST",
@@ -207,7 +226,9 @@ const newProject = async (dispatch, body) => {
       payload: `${err}`,
     });
   }
-  loader.classList.add("hidden");
+  dispatch({
+    type: "NOT_LOADING",
+  });
 };
 
 const editProject = async (dispatch, project, index) => {
@@ -243,8 +264,9 @@ const editProject = async (dispatch, project, index) => {
 };
 
 const deleteProject = async (dispatch, id, index) => {
-  const loader = document.getElementById("loader");
-  loader.classList.remove("hidden");
+  dispatch({
+    type: "IS_LOADING",
+  });
   try {
     const req = await fetch(`/api/v1/projects/${id}`, {
       method: "GET",
@@ -286,7 +308,9 @@ const deleteProject = async (dispatch, id, index) => {
       payload: `${err}`,
     });
   }
-  loader.classList.add("hidden");
+  dispatch({
+    type: "NOT_LOADING",
+  });
 };
 
 const clearCurrentProject = (dispatch) => {

@@ -95,14 +95,28 @@ const bugsReducer = (state, action) => {
         ...state,
         error: null,
       };
+    case "IS_LOADING":
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case "NOT_LOADING":
+      return {
+        ...state,
+        isLoading: false,
+      };
     default: {
-      throw new Error(`Unhandled action type: ${action.type}`);
+      return {
+        ...state,
+        error: `Unhandled action type: ${action.type}`,
+      };
     }
   }
 };
 
 const BugsProvider = ({
   children,
+  isLoading = false,
   bugs = [
     {
       name: "",
@@ -123,6 +137,7 @@ const BugsProvider = ({
 }) => {
   const initialState = {
     bugs: bugs,
+    isLoading: isLoading,
     error: null,
   };
 
@@ -138,8 +153,9 @@ const BugsProvider = ({
 };
 
 const getBugs = async (dispatch) => {
-  const loader = document.getElementById("loader");
-  loader.classList.remove("hidden");
+  dispatch({
+    type: "IS_LOADING",
+  });
   try {
     const req = await fetch(`/api/v1/bugs/project`, {
       method: "GET",
@@ -165,12 +181,15 @@ const getBugs = async (dispatch) => {
       payload: err,
     });
   }
-  loader.classList.add("hidden");
+  dispatch({
+    type: "NOT_LOADING",
+  });
 };
 
 const newBug = async (dispatch, body) => {
-  const loader = document.getElementById("loader");
-  loader.classList.remove("hidden");
+  dispatch({
+    type: "IS_LOADING",
+  });
   try {
     const req = await fetch(`/api/v1/bugs`, {
       method: "POST",
@@ -199,12 +218,15 @@ const newBug = async (dispatch, body) => {
       payload: `${err}`,
     });
   }
-  loader.classList.add("hidden");
+  dispatch({
+    type: "NOT_LOADING",
+  });
 };
 
 const updateBug = async (dispatch, body, id, index) => {
-  const loader = document.getElementById("loader");
-  loader.classList.remove("hidden");
+  dispatch({
+    type: "IS_LOADING",
+  });
   try {
     const req = await fetch(`/api/v1/bugs/${id}`, {
       method: "PUT",
@@ -234,12 +256,15 @@ const updateBug = async (dispatch, body, id, index) => {
       payload: `${err}`,
     });
   }
-  loader.classList.add("hidden");
+  dispatch({
+    type: "NOT_LOADING",
+  });
 };
 
 const deleteBug = async (dispatch, id, index) => {
-  const loader = document.getElementById("loader");
-  loader.classList.remove("hidden");
+  dispatch({
+    type: "IS_LOADING",
+  });
   try {
     const req = await fetch(`/api/v1/bugs/${id}`, {
       method: "DELETE",
@@ -248,17 +273,17 @@ const deleteBug = async (dispatch, id, index) => {
 
     const res = await req.json();
 
-    if (!res.success) {
-      dispatch({
-        type: DELETE_BUG_FAIL,
-        payload: res.error,
-      });
-    } else {
+    if (res.success) {
       // let newBugsArr = [...state.bugs];
       // newBugsArr.splice(index, 1);
       dispatch({
         type: DELETE_BUG_SUCCESS,
         payload: index,
+      });
+    } else {
+      dispatch({
+        type: DELETE_BUG_FAIL,
+        payload: res.error,
       });
     }
   } catch (err) {
@@ -267,7 +292,9 @@ const deleteBug = async (dispatch, id, index) => {
       payload: `${err}`,
     });
   }
-  loader.classList.add("hidden");
+  dispatch({
+    type: "NOT_LOADING",
+  });
 };
 
 const sortBugs = (dispatch, sortBy) => {
@@ -301,6 +328,7 @@ const useBugsDispatch = () => {
 
 export {
   BugsProvider,
+  BugsStateContext,
   useBugsState,
   useBugsDispatch,
   getBugs,

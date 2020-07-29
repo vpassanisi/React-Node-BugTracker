@@ -1,10 +1,21 @@
 import React from "react";
 import { LinearProgress } from "@material-ui/core";
+import { useAuthState } from "../Context/auth/AuthContext";
+import { useProjectsState } from "../Context/projects/ProjectsContext";
+import { useBugsState } from "../Context/bugs/BugsContext";
 
 const Loader = () => {
+  const { isLoading: isAuthLoading } = useAuthState();
+  const { isLoading: isProjectsLoading } = useProjectsState();
+  const { isLoading: isBugsLoading } = useBugsState();
+
   return (
-    <div id="loader" className="fixed top-0 left-0 w-screen mt-16 hidden">
-      <LinearProgress color="secondary" />
+    <div>
+      {isAuthLoading || isProjectsLoading || isBugsLoading ? (
+        <LinearProgress color="secondary" />
+      ) : (
+        <div data-testid="not_loading" className="h-1" />
+      )}
     </div>
   );
 };
