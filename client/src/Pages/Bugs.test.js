@@ -4,6 +4,7 @@ import Bugs from "../Pages/Bugs";
 import Bug from "../components/Bug";
 import { ProjectsProvider } from "../Context/projects/ProjectsContext";
 import { AuthProvider } from "../Context/auth/AuthContext";
+import { useMediaQuery } from "react-responsive";
 import {
   BugsProvider,
   useBugsDispatch,
@@ -26,7 +27,7 @@ jest.mock("react-router-dom", () => ({
 }));
 
 jest.mock("react-responsive", () => ({
-  useMediaQuery: () => true,
+  useMediaQuery: jest.fn(() => true),
 }));
 
 jest.mock("../components/Bug", () => jest.fn(() => null));
@@ -45,11 +46,11 @@ const setup = (isAuth = true, currentProject = {}) => {
   const bugsDispatch = useBugsDispatch();
 
   const buttonName = utils.getByTestId("button_name");
-  const buttonFixer = utils.getByTestId("button_fixer");
-  const buttonReporter = utils.getByTestId("button_reporter");
+  const buttonFixer = utils.queryByTestId("button_fixer");
+  const buttonReporter = utils.queryByTestId("button_reporter");
   const buttonStatus = utils.getByTestId("button_status");
   const buttonSeverity = utils.getByTestId("button_severity");
-  const buttonReproduceable = utils.getByTestId("button_reproduceability");
+  const buttonReproduceable = utils.queryByTestId("button_reproduceability");
 
   return {
     ...utils,
@@ -133,4 +134,9 @@ test("renders bug components", () => {
   setup(true);
 
   expect(Bug).toHaveBeenCalled();
+});
+
+test("renders mobile", () => {
+  useMediaQuery.mockImplementation(() => false);
+  setup();
 });

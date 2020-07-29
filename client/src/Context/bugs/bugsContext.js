@@ -117,6 +117,7 @@ const bugsReducer = (state, action) => {
 const BugsProvider = ({
   children,
   isLoading = false,
+  error = null,
   bugs = [
     {
       name: "",
@@ -138,7 +139,7 @@ const BugsProvider = ({
   const initialState = {
     bugs: bugs,
     isLoading: isLoading,
-    error: null,
+    error: error,
   };
 
   const [state, dispatch] = React.useReducer(bugsReducer, initialState);
@@ -164,15 +165,15 @@ const getBugs = async (dispatch) => {
 
     const res = await req.json();
 
-    if (!res.success) {
-      dispatch({
-        type: GET_BUGS_FAIL,
-        payload: res.error,
-      });
-    } else {
+    if (res.success) {
       dispatch({
         type: GET_BUGS_SUCCESS,
         payload: res.data,
+      });
+    } else {
+      dispatch({
+        type: GET_BUGS_FAIL,
+        payload: res.error,
       });
     }
   } catch (err) {
@@ -200,16 +201,16 @@ const newBug = async (dispatch, body) => {
 
     const res = await req.json();
 
-    if (!res.success) {
-      dispatch({
-        type: NEW_BUG_FAIL,
-        payload: res.error,
-      });
-    } else {
+    if (res.success) {
       // let newBugsArr = [...state.bugs, res.data];
       dispatch({
         type: NEW_BUG_SUCCESS,
         payload: res.data,
+      });
+    } else {
+      dispatch({
+        type: NEW_BUG_FAIL,
+        payload: res.error,
       });
     }
   } catch (err) {
@@ -237,17 +238,17 @@ const updateBug = async (dispatch, body, id, index) => {
 
     const res = await req.json();
 
-    if (!res.success) {
-      dispatch({
-        type: UPDATE_BUG_FAIL,
-        payload: res.error,
-      });
-    } else {
+    if (res.success) {
       // let newBugsArr = [...state.bugs];
       // newBugsArr[index] = res.data;
       dispatch({
         type: UPDATE_BUG_SUCCESS,
         payload: { data: res.data, index: index },
+      });
+    } else {
+      dispatch({
+        type: UPDATE_BUG_FAIL,
+        payload: res.error,
       });
     }
   } catch (err) {

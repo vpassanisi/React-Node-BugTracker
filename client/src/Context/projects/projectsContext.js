@@ -94,9 +94,11 @@ const projectsReducer = (state, action) => {
         ...state,
         isLoading: false,
       };
-    default: {
-      throw new Error(`Unhandled action type: ${action.type}`);
-    }
+    default:
+      return {
+        ...state,
+        error: `Unhandled action type: ${action.type}`,
+      };
   }
 };
 
@@ -105,12 +107,13 @@ const ProjectsProvider = ({
   projects = [],
   currentProject = null,
   isLoading = false,
+  error = null,
 }) => {
   const initialState = {
     projects: projects,
     currentProject: currentProject,
     isLoading: isLoading,
-    error: null,
+    error: error,
   };
 
   const [state, dispatch] = React.useReducer(projectsReducer, initialState);
@@ -170,15 +173,15 @@ const setProject = async (dispatch, id) => {
 
     const res = await req.json();
 
-    if (!res.success) {
-      dispatch({
-        type: SET_PROJECT_FAIL,
-        payload: res.error,
-      });
-    } else {
+    if (res.success) {
       dispatch({
         type: SET_PROJECT_SUCCESS,
         payload: res.data,
+      });
+    } else {
+      dispatch({
+        type: SET_PROJECT_FAIL,
+        payload: res.error,
       });
     }
   } catch (err) {
@@ -206,19 +209,18 @@ const newProject = async (dispatch, body) => {
 
     const res = await req.json();
 
-    if (!res.success) {
-      dispatch({
-        type: NEW_PORJECT_FAIL,
-        payload: res.error,
-      });
-    } else {
+    if (res.success) {
       // const newProjectsArr = [...state.projects, res.data];
       dispatch({
         type: NEW_PROJECT_SUCCESS,
         payload: res.data,
       });
-
       setProject(dispatch, res.data._id);
+    } else {
+      dispatch({
+        type: NEW_PORJECT_FAIL,
+        payload: res.error,
+      });
     }
   } catch (err) {
     dispatch({
@@ -242,17 +244,17 @@ const editProject = async (dispatch, project, index) => {
 
     const res = await req.json();
 
-    if (!res.success) {
-      dispatch({
-        type: EDIT_PROJECT_FAIL,
-        payload: res.error,
-      });
-    } else {
+    if (res.success) {
       // let newProjectsArr = [...state.projects];
       // newProjectsArr[index] = res.data;
       dispatch({
         type: EDIT_PROJECT_SUCCESS,
         payload: { data: res.data, index: index },
+      });
+    } else {
+      dispatch({
+        type: EDIT_PROJECT_FAIL,
+        payload: res.error,
       });
     }
   } catch (err) {
@@ -289,17 +291,17 @@ const deleteProject = async (dispatch, id, index) => {
 
     const deleteRes = await deleteReq.json();
 
-    if (!deleteRes.success) {
-      dispatch({
-        type: DELETE_PROJECT_FAIL,
-        payload: deleteRes.error,
-      });
-    } else {
+    if (deleteRes.success) {
       // let newProjectsArr = [...state.projects];
       // newProjectsArr.splice(index, 1);
       dispatch({
         type: DELETE_PROJECT_SUCCESS,
         payload: index,
+      });
+    } else {
+      dispatch({
+        type: DELETE_PROJECT_FAIL,
+        payload: deleteRes.error,
       });
     }
   } catch (err) {
@@ -345,6 +347,7 @@ const useProjectsDispatch = () => {
 
 export {
   ProjectsProvider,
+  ProjectsStateContext,
   useProjectsState,
   useProjectsDispatch,
   getProjects,

@@ -16,19 +16,22 @@ const darkModeReducer = (state, action) => {
         ...state,
         isDarkMode: false,
       };
-    default: {
-      throw new Error(`Undhandled action type: ${action.type}`);
-    }
+    default:
+      return {
+        ...state,
+        error: `Unhandled action type: ${action.type}`,
+      };
   }
 };
 
 const DarkModeProvider = ({
   children,
   isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches,
+  error = null,
 }) => {
   const initialState = {
     isDarkMode: isDarkMode,
-    error: null,
+    error: error,
   };
 
   const [state, dispatch] = React.useReducer(darkModeReducer, initialState);

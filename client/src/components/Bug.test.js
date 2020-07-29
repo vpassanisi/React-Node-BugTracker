@@ -1,6 +1,7 @@
 import React from "react";
 import { fireEvent, render } from "@testing-library/react";
 import Bug from "../components/Bug";
+import { useMediaQuery } from "react-responsive";
 import {
   BugsProvider,
   useBugsDispatch,
@@ -13,7 +14,7 @@ jest.mock("../components/UpdateBug.js", () => jest.fn(() => null));
 global.matchMedia = jest.fn(() => true);
 
 jest.mock("react-responsive", () => ({
-  useMediaQuery: () => true,
+  useMediaQuery: jest.fn(() => true),
 }));
 
 jest.mock("../Context/bugs/BugsContext.js", () => ({
@@ -109,4 +110,10 @@ test("calls setOpen correctly", () => {
   fireEvent.click(buttonOpen, { button: 0 });
 
   expect(mockSetOpen).toHaveBeenCalledWith(null);
+});
+
+test("renders mobile", () => {
+  useMediaQuery.mockImplementation(() => false);
+
+  setup();
 });
