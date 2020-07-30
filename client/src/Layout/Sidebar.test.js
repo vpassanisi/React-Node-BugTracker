@@ -9,6 +9,7 @@ jest.mock("../Context/auth/AuthContext.js", () => ({
   ...jest.requireActual("../Context/auth/AuthContext.js"),
   logout: jest.fn(),
 }));
+
 const mockPush = jest.fn();
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
@@ -127,5 +128,13 @@ test("clicking the your projects button pushes to / and closes the sidebar", () 
   fireEvent.click(buttonProjects, { button: 0 });
 
   expect(mockPush).toHaveBeenCalledWith("/");
+  expect(mockSetIsOpen).toHaveBeenCalledWith(false);
+});
+
+test("Drawer", () => {
+  const { getByTestId, mockSetIsOpen } = setup(false, {}, true);
+
+  fireEvent.click(getByTestId("backdrop"), { button: 0 });
+
   expect(mockSetIsOpen).toHaveBeenCalledWith(false);
 });

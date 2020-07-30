@@ -127,7 +127,13 @@ const Sidebar = (props) => {
   );
 
   return (
-    <Drawer open={isOpen} onClose={() => setIsOpen(!isOpen)}>
+    <Drawer
+      open={isOpen}
+      onClose={() => setIsOpen(!isOpen)}
+      BackdropProps={{
+        "data-testid": "backdrop",
+      }}
+    >
       <div className="w-full h-full bg-white dark:bg-black">
         <div className="w-full h-full bg-white dark:bg-black-alpha-80 border-r">
           <div className="flex flex-col items-center w-64 pt-8">
