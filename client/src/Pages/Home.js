@@ -39,17 +39,14 @@ const Home = () => {
   return (
     <React.Fragment>
       {
-        <div className="w-screen max-w-full">
-          <br />
-          <div className="text-3xl text-center font-hairline">
+        <section>
+          <div className="font-head text-3xl text-center my-8">
             Your Projects
           </div>
-          <div className="px-4 max-w-screen-xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {cards}
-            </div>
+          <div className="max-w-screen-lg w-11/12 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {cards}
           </div>
-        </div>
+        </section>
       }
     </React.Fragment>
   );

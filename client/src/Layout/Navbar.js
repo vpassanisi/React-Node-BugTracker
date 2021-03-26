@@ -1,10 +1,8 @@
 import React from "react";
-import { useMediaQuery } from "react-responsive";
-import { useHistory } from "react-router-dom";
-import DarkModeToggle from "./DarkModeToggle";
-import NewBugModal from "../components/NewBugModal";
-import NewProjectModal from "../components/NewProjectModal";
-import Sidebar from "../Layout/Sidebar";
+import { NavLink, Link } from "react-router-dom";
+// import NewBugModal from "../components/NewBugModal";
+// import NewProjectModal from "../components/NewProjectModal";
+// import Sidebar from "../Layout/Sidebar";
 
 import { useProjectsState } from "../Context/projects/ProjectsContext";
 import {
@@ -13,12 +11,6 @@ import {
   logout,
   getMe,
 } from "../Context/auth/AuthContext";
-import {
-  useDarkModeState,
-  useDarkModeDispatch,
-  darkModeOn,
-  darkModeOff,
-} from "../Context/darkMode/DarkModeContext";
 
 const Navbar = (props) => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -30,33 +22,29 @@ const Navbar = (props) => {
   const { isAuthenticated } = useAuthState();
   const authDispatch = useAuthDispatch();
 
-  const { isDarkMode } = useDarkModeState();
-  const darkModeDispatch = useDarkModeDispatch();
-
-  const { setIsDark } = props;
-
-  const history = useHistory();
-
   const guestLinks = (
     <React.Fragment>
-      <button
-        className="flex items-center justify-center h-full px-4 transition duration-300 ease-in-out hover:bg-white-alpha-20 text-black dark:text-white focus:outline-none"
-        onClick={() => history.push("/create")}
+      <NavLink
+        className="flex items-center justify-center h-full px-4 focus:outline-none"
+        to="/create"
+        activeClassName="bg-oxford-blue-500"
       >
         Create User
-      </button>
-      <button
-        className="flex items-center justify-center h-full px-4 transition duration-300 ease-in-out hover:bg-white-alpha-20 text-black dark:text-white focus:outline-none"
-        onClick={() => history.push("/login")}
+      </NavLink>
+      <NavLink
+        className="flex items-center justify-center h-full px-4 focus:outline-none"
+        to="/login"
+        activeClassName="bg-oxford-blue-500"
       >
         Login
-      </button>
-      <button
-        className="flex items-center justify-center h-full px-4 transition duration-300 ease-in-out hover:bg-white-alpha-20 text-black dark:text-white focus:outline-none"
-        onClick={() => history.push("/info")}
+      </NavLink>
+      <NavLink
+        className="flex items-center justify-center h-full px-4 focus:outline-none"
+        to="/info"
+        activeClassName="bg-oxford-blue-500"
       >
         Info
-      </button>
+      </NavLink>
     </React.Fragment>
   );
 
@@ -64,26 +52,26 @@ const Navbar = (props) => {
     <React.Fragment>
       {currentProject ? (
         <button
-          className="flex items-center justify-center h-full px-4 transition duration-300 ease-in-out hover:bg-white-alpha-20 text-black dark:text-white cursor-pointer focus:outline-none"
+          className="flex items-center justify-center h-full px-4 cursor-pointer focus:outline-none"
           onClick={() => setIsNewBugOpen(true)}
         >
           New Bug
         </button>
       ) : (
         <button
-          className="flex items-center justify-center h-full px-4 transition duration-300 ease-in-out hover:bg-white-alpha-20 text-black dark:text-white cursor-pointer focus:outline-none"
+          className="flex items-center justify-center h-full px-4 cursor-pointer focus:outline-none"
           onClick={() => setIsNewProjectOpen(true)}
         >
           New Project
         </button>
       )}
       {currentProject && (
-        <button
+        <Link
           className="flex items-center justify-center h-full px-4 transition duration-300 ease-in-out hover:bg-white-alpha-20 text-black dark:text-white"
-          onClick={() => history.push("/")}
+          to="/"
         >
           Your Projects
-        </button>
+        </Link>
       )}
       <button
         className="flex items-center justify-center h-full px-4 transition duration-300 ease-in-out hover:bg-white-alpha-20 text-black dark:text-white cursor-pointer focus:outline-none"
@@ -94,74 +82,52 @@ const Navbar = (props) => {
     </React.Fragment>
   );
 
-  const desktopNav = (
-    <div className="flex flex-row items-center justify-center h-full">
-      {isAuthenticated ? userLinks : guestLinks}
-
-      <DarkModeToggle />
-    </div>
-  );
-
-  const mobileNav = (
-    <button
-      data-testid="button_hamburger"
-      className="flex flex-row items-center justify-center h-full w-16 focus:outline-none"
-      onClick={() => setIsOpen(!isOpen)}
-    >
-      <i className="material-icons text-black dark:text-white">menu</i>
-    </button>
-  );
-
-  React.useEffect(() => {
-    if (isDarkMode) {
-      setIsDark(true);
-      darkModeOn(darkModeDispatch);
-    } else {
-      setIsDark(false);
-      darkModeOff(darkModeDispatch);
-    }
-    // eslint-disable-next-line
-  }, [isDarkMode]);
-
   // checks if the login cookie is set.  This only needs to be done when the app loads, since the navabar should only mount once I put it here.
   React.useEffect(() => {
     getMe(authDispatch);
     // eslint-disable-next-line
   }, []);
 
-  const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
-
   return (
     <React.Fragment>
-      <div className="fixed flex flex-row items-baseline justify-center w-screen max-w-full h-16 shadow-lg bg-cyan-a400 dark:bg-cyan-a700 shadow z-10">
-        <div className="flex flex-row items-center justify-between max-w-screen-xl px-4 w-full h-full text-white">
+      <div className="fixed w-full bg-oxford-blue-700 h-16 z-10">
+        <div className="flex flex-row items-center justify-between w-11/12 mx-auto h-full text-white">
           <a
             href="/"
-            className="flex items-center justify-center h-full px-4 font-hairline text-3xl text-black dark:text-white"
+            className="flex items-center justify-center h-full px-4 text-3xl font-head font-normal"
           >
             BugTracker
           </a>
-          {isDesktop ? desktopNav : mobileNav}
+          <div className="hidden lg:flex flex-row items-center justify-center h-full">
+            {isAuthenticated ? userLinks : guestLinks}
+          </div>
+          <button
+            data-testid="button_hamburger"
+            className="flex lg:hidden flex-row items-center justify-center h-full w-16 focus:outline-none"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            <i className="material-icons">menu</i>
+          </button>
         </div>
       </div>
       <div className="w-screen h-16 max-w-full" />
 
-      <Sidebar
+      {/* <Sidebar
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         setIsNewBugOpen={setIsNewBugOpen}
         setIsNewProjectOpen={setIsNewProjectOpen}
-      />
+      /> */}
 
-      <NewBugModal
+      {/* <NewBugModal
         isNewBugOpen={isNewBugOpen}
         setIsNewBugOpen={setIsNewBugOpen}
-      />
+      /> */}
 
-      <NewProjectModal
+      {/* <NewProjectModal
         isNewProjectOpen={isNewProjectOpen}
         setIsNewProjectOpen={setIsNewProjectOpen}
-      />
+      /> */}
     </React.Fragment>
   );
 };

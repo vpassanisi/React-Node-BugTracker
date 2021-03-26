@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.w-90p {
+  width: 90%;
+}
+
+.mt-10vh {
+  margin-top: 10vh;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-transition-delay: 9999999s;
+}
+
+.text-indent {
+  text-indent: 4rem;
+}
+
+input:focus + .underline,
+textarea:focus + .underline {
+  width: 100%;
+}
+
+.modal-enter {
+  opacity: 0;
+}
+.modal-enter-active {
+  opacity: 1;
+  transition: opacity 300ms;
+}
+.modal-exit {
+  opacity: 1;
+}
+.modal-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+.collapse-enter {
+  opacity: 0;
+}
+.collapse-enter-active {
+  opacity: 1;
+  transition: opacity 300ms;
+}
+.collapse-exit {
+  opacity: 1;
+}
+.collapse-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
+}

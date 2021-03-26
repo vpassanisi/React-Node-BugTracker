@@ -1,9 +1,4 @@
 import React from "react";
-import TextField from "@material-ui/core/TextField";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
 
 import { useBugsDispatch, updateBug } from "../Context/bugs/BugsContext";
 
@@ -29,51 +24,42 @@ const UpdateBug = (props) => {
 
   return (
     <div className="w-full md:w-1/2 p-4 rounded border border-cyan-400">
-      <div className="mb-4">
-        <TextField
-          inputProps={{
-            "data-testid": "input_edit_name",
-          }}
-          variant="standard"
-          label="Name"
-          color="secondary"
-          fullWidth={true}
+      <div className="relative mb-4">
+        <input
+          className="w-full px-3 py-1 focus:outline-none bg-transparent"
+          data-testid="input_edit_name"
+          placeholder="Name. . ."
           defaultValue={bug.name}
           onChange={(event) => handleChange(event, "name")}
         />
+        <div className="absolute z-10 bottom-0 left-0 right-0 mx-auto w-0 underline transition-width duration-500 ease-in-out border-b-2 border-purple-munsell" />
+        <div className="absolute bottom-0 left-0 right-0 w-full border-b-2 border-dark-gray-700" />
       </div>
-      <div className="mb-4">
-        <TextField
-          inputProps={{
-            "data-testid": "input_edit_fixer",
-          }}
-          variant="standard"
-          label="Fixer"
-          color="secondary"
-          fullWidth={true}
+      <div className="relative mb-4">
+        <input
+          className="w-full px-3 py-1 focus:outline-none bg-transparent"
+          data-testid="input_edit_fixer"
+          placeholder="Fixer. . ."
           defaultValue={bug.fixer.email}
           helperText="Must be a users email"
-          type="email"
+          type="text"
           onChange={(event) => handleChange(event, "fixer")}
         />
+        <div className="absolute z-10 bottom-0 left-0 right-0 mx-auto w-0 underline transition-width duration-500 ease-in-out border-b-2 border-purple-munsell" />
+        <div className="absolute bottom-0 left-0 right-0 w-full border-b-2 border-dark-gray-700" />
       </div>
       <div className="mb-4">
-        <TextField
-          inputProps={{
-            "data-testid": "input_edit_description",
-          }}
-          multiline={true}
-          variant="standard"
-          label="Description"
-          color="secondary"
-          fullWidth={true}
+        <textarea
+          className="w-full px-3 py-1 focus:outline-none bg-transparent"
+          data-testid="input_edit_description"
+          placeholder="Description"
           defaultValue={bug.description}
           onChange={(event) => handleChange(event, "description")}
         />
       </div>
       <div className="flex mb-4">
         <div className="w-1/3 pr-4">
-          <FormControl variant="standard" color="secondary" fullWidth={true}>
+          {/* <FormControl variant="standard" color="secondary" fullWidth={true}>
             <InputLabel>Status</InputLabel>
             <Select
               inputProps={{
@@ -121,7 +107,7 @@ const UpdateBug = (props) => {
               <MenuItem value={"Always"}>Always</MenuItem>
               <MenuItem value={"Intermitent"}>Intermitent</MenuItem>
             </Select>
-          </FormControl>
+          </FormControl> */}
         </div>
       </div>
       <button

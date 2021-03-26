@@ -9,12 +9,9 @@ import {
   useAuthDispatch,
   logout,
 } from "../Context/auth/AuthContext";
-import { useDarkModeState } from "../Context/darkMode/DarkModeContext";
 
 const Sidebar = (props) => {
   const { currentProject } = useProjectsState();
-
-  const { isDarkMode } = useDarkModeState();
 
   const { isAuthenticated } = useAuthState();
   const authDispatch = useAuthDispatch();
@@ -37,9 +34,7 @@ const Sidebar = (props) => {
         Create User
       </button>
       <button
-        className={`flex items-center justify-center w-full h-12 transition duration-300 ease-in-out ${
-          isDarkMode ? "hover:bg-gray-800" : "hover:bg-gray-300"
-        } text-black dark:text-white`}
+        className="flex items-center justify-center w-full h-12 transition duration-300 ease-in-out text-black dark:text-white"
         onClick={() => {
           setIsOpen(false);
           history.push("/login");
@@ -48,9 +43,7 @@ const Sidebar = (props) => {
         Login
       </button>
       <button
-        className={`flex items-center justify-center w-full h-12 transition duration-300 ease-in-out ${
-          isDarkMode ? "hover:bg-gray-800" : "hover:bg-gray-300"
-        } text-black dark:text-white`}
+        className="flex items-center justify-center w-full h-12 transition duration-300 ease-in-out text-black dark:text-white"
         onClick={() => {
           setIsOpen(false);
           history.push("/info");
@@ -65,9 +58,7 @@ const Sidebar = (props) => {
     <React.Fragment>
       {currentProject ? (
         <button
-          className={`flex items-center justify-center w-full h-12 transition duration-300 ease-in-out ${
-            isDarkMode ? "hover:bg-gray-800" : "hover:bg-gray-300"
-          } text-black dark:text-white focus:outline-none`}
+          className="flex items-center justify-center w-full h-12 transition duration-300 ease-in-out text-black dark:text-white focus:outline-none"
           onClick={() => {
             setIsOpen(false);
             setIsNewBugOpen(true);
@@ -77,9 +68,7 @@ const Sidebar = (props) => {
         </button>
       ) : (
         <button
-          className={`flex items-center justify-center w-full h-12 transition duration-300 ease-in-out ${
-            isDarkMode ? "hover:bg-gray-800" : "hover:bg-gray-300"
-          } text-black dark:text-white  focus:outline-none`}
+          className="flex items-center justify-center w-full h-12 transition duration-300 ease-in-out text-black dark:text-white focus:outline-none"
           onClick={() => {
             setIsOpen(false);
             setIsNewProjectOpen(true);
@@ -90,9 +79,7 @@ const Sidebar = (props) => {
       )}
       {currentProject && (
         <button
-          className={`flex items-center justify-center w-full h-12 transition duration-300 ease-in-out ${
-            isDarkMode ? "hover:bg-gray-800" : "hover:bg-gray-300"
-          } text-black dark:text-white`}
+          className="flex items-center justify-center w-full h-12 transition duration-300 ease-in-out text-black dark:text-white"
           onClick={() => {
             setIsOpen(false);
             history.push("/");
@@ -102,9 +89,7 @@ const Sidebar = (props) => {
         </button>
       )}
       <button
-        className={`flex items-center justify-center w-full h-12 transition duration-300 ease-in-out ${
-          isDarkMode ? "hover:bg-gray-800" : "hover:bg-gray-300"
-        } text-black dark:text-white cursor-pointer`}
+        className="flex items-center justify-center w-full h-12 transition duration-300 ease-in-out text-black dark:text-white cursor-pointer"
         onClick={() => {
           logout(authDispatch);
           setIsOpen(false);
@@ -127,23 +112,14 @@ const Sidebar = (props) => {
   );
 
   return (
-    <Drawer
-      open={isOpen}
-      onClose={() => setIsOpen(!isOpen)}
-      BackdropProps={{
-        "data-testid": "backdrop",
-      }}
-    >
-      <div className="w-full h-full bg-white dark:bg-black">
-        <div className="w-full h-full bg-white dark:bg-black-alpha-80 border-r">
-          <div className="flex flex-col items-center w-64 pt-8">
-            <DarkModeToggle />
-            <hr className="w-full mt-8" />
-            {isAuthenticated ? userLinks : guestLinks}
-          </div>
+    <div className="w-full h-full bg-white dark:bg-black">
+      <div className="w-full h-full bg-white dark:bg-black-alpha-80 border-r">
+        <div className="flex flex-col items-center w-64 pt-8">
+          <hr className="w-full mt-8" />
+          {isAuthenticated ? userLinks : guestLinks}
         </div>
       </div>
-    </Drawer>
+    </div>
   );
 };
 

@@ -6,17 +6,15 @@ function errorHandler() {
       ctx.status = err.status || 500;
       ctx.body = {
         success: false,
-        error: err.message || "Service Error"
+        error: err.message || "Service Error",
       };
-
-      console.log(err);
 
       if (err.name === "CastError") {
         const message = `Resource not found with id of ${err.value}`;
         ctx.status = 404;
         ctx.body = {
           success: false,
-          error: [message]
+          error: [message],
         };
       }
 
@@ -30,16 +28,16 @@ function errorHandler() {
         ctx.status = 400;
         ctx.body = {
           success: false,
-          error: message
+          error: message,
         };
       }
 
       if (err.name === "ValidateError") {
-        const message = Object.values(err.errors).map(val => val.message);
+        const message = Object.values(err.errors).map((val) => val.message);
         ctx.status = 400;
         ctx.body = {
           success: false,
-          error: message
+          error: message,
         };
       }
 
@@ -58,7 +56,7 @@ function errorHandler() {
         ctx.status = 400;
         ctx.body = {
           success: false,
-          error: message
+          error: message,
         };
       }
     }

@@ -1,0 +1,131 @@
+/* Quicksand */
+/* Quicksand-Light 300 - latin */
+@font-face {
+  font-family: "Quicksand";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300;
+  src: local("Quicksand Light"), local("Quicksand-Light"),
+    url("./fonts/Quicksand-Light.ttf") format("truetype");
+}
+/* Quicksand-Regular 400 - latin */
+@font-face {
+  font-family: "Quicksand";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: local("Quicksand Regular"), local("Quicksand-Regular"),
+    url("./fonts/Quicksand-Regular.ttf") format("truetype");
+}
+/* Quicksand-medium 500 - latin */
+@font-face {
+  font-family: "Quicksand";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: local("Quicksand Medium"), local("Quicksand-Medium"),
+    url("./fonts/Quicksand-Medium.ttf") format("truetype");
+}
+/* Quicksand-SemiBold 600 - latin */
+@font-face {
+  font-family: "Quicksand";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: local("Quicksand SemiBold"), local("Quicksand-SemiBold"),
+    url("./fonts/Quicksand-SemiBold.ttf") format("truetype");
+}
+/* Quicksand-Bold 700 - latin */
+@font-face {
+  font-family: "Quicksand";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: local("Quicksand Bold"), local("Quicksand-Bold"),
+    url("./fonts/Quicksand-Bold.ttf") format("truetype");
+}
+
+/* Enriqueta */
+/* Enriqueta-Regular 400 - latin */
+@font-face {
+  font-family: "Enriqueta";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: local("Enriqueta Regular"), local("Enriqueta-Regular"),
+    url("./fonts/Enriqueta-Regular.ttf") format("truetype");
+}
+/* Enriqueta-Medium 500 - latin */
+@font-face {
+  font-family: "Enriqueta";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: local("Enriqueta Medium"), local("Enriqueta-Medium"),
+    url("./fonts/Enriqueta-Medium.ttf") format("truetype");
+}
+/* Enriqueta-SemiBold 600 - latin */
+@font-face {
+  font-family: "Enriqueta";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: local("Enriqueta SemiBold"), local("Enriqueta-SemiBold"),
+    url("./fonts/Enriqueta-SemiBold.ttf") format("truetype");
+}
+/* Enriqueta-Bold 700 - latin */
+@font-face {
+  font-family: "Enriqueta";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: local("Enriqueta Bold"), local("Enriqueta-Bold"),
+    url("./fonts/Enriqueta-Bold.ttf") format("truetype");
+}
+
+/* Hind Madurai */
+/* HindMadurai-Light 300 - latin */
+@font-face {
+  font-family: "Hind Madurai";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300;
+  src: local("Hind Madurai Light"), local("HindMadurai-Light"),
+    url("./fonts/HindMadurai-Light.ttf") format("truetype");
+}
+/* HindMadurai-Regular 400 - latin */
+@font-face {
+  font-family: "Hind Madurai";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: local("Hind Maduarai Regular"), local("HindMadurai-Regular"),
+    url("./fonts/HindMadurai-Regular.ttf") format("truetype");
+}
+/* HindMadurai-Medium 500 - latin */
+@font-face {
+  font-family: "Hind Madurai";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: local("Hind Madurai Medium"), local("HindMadurai-Medium"),
+    url("./fonts/HindMadurai-Medium.ttf") format("truetype");
+}
+/* HindMadurai-SemiBold 600 - latin */
+@font-face {
+  font-family: "Hind Madurai";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: local("Hind Madurai SemiBold"), local("HindMadurai-SemiBold"),
+    url("./fonts/HindMadurai-SemiBold.ttf") format("truetype");
+}
+/* HindMadurai-Bold 700 - latin */
+@font-face {
+  font-family: "Hind Madurai";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: local("Hind Madurai Bold"), local("HindMadurai-Bold"),
+    url("./fonts/HindMadurai-Bold.ttf") format("truetype");
+}

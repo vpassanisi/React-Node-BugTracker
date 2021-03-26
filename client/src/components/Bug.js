@@ -1,16 +1,14 @@
 import React from "react";
+import { CSSTransition } from "react-transition-group";
 import { useMediaQuery } from "react-responsive";
-import Collapse from "@material-ui/core/Collapse";
 import Updatebug from "./UpdateBug";
 
 import { useBugsDispatch, deleteBug } from "../Context/bugs/BugsContext";
-import { useDarkModeState } from "../Context/darkMode/DarkModeContext";
 
 const Bug = (props) => {
   const { open, setOpen, index, bug } = props;
 
   const bugsDispatch = useBugsDispatch();
-  const { isDarkMode } = useDarkModeState();
 
   const isDesktop = useMediaQuery({ query: "(min-width: 768px)" });
 
@@ -112,9 +110,7 @@ const Bug = (props) => {
       <button
         data-testid="button_open"
         onClick={() => (open === index ? setOpen(null) : setOpen(index))}
-        className={`flex flex-row items-center justify-between px-4 py-5 w-full bg-white ${
-          isDarkMode ? "hover:bg-gray-800" : "hover:bg-gray-300"
-        } transition-colors duration-500 ease-in-out dark:bg-gray-900 focus:outline-none border border-purple-a400 rounded-lg`}
+        className="flex flex-row items-center justify-between px-4 py-5 w-full bg-white transition-colors duration-500 ease-in-out dark:bg-gray-900 focus:outline-none border border-purple-a400 rounded-lg"
       >
         <div className={`${isDesktop ? "w-3/8" : "w-2/4"}`}>{bug.name}</div>
         {isDesktop ? <div className={`w-1/8`}>{bug.fixer.name}</div> : null}
@@ -149,11 +145,13 @@ const Bug = (props) => {
       </button>
 
       {/* collapse */}
-      <Collapse
+
+      <CSSTransition
         in={open === index}
         timeout={500}
-        mountOnEnter={true}
-        unmountOnExit={true}
+        classNames="collapse"
+        unmountOnExit
+        mountOnEnter
       >
         <div className="flex flex-wrap w-full max-w-screen bg-gray-50 dark:bg-dark-gray-900 border-l border-r rounded-lg p-4">
           <Updatebug bug={bug} index={index} />
@@ -176,7 +174,7 @@ const Bug = (props) => {
             </button>
           </div>
         </div>
-      </Collapse>
+      </CSSTransition>
     </div>
   );
 };

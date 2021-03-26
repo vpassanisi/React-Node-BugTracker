@@ -1,5 +1,4 @@
 import React from "react";
-import Slide from "@material-ui/core/Slide";
 
 import {
   useBugsState,
@@ -48,29 +47,11 @@ const Alert = () => {
 
   return (
     <React.Fragment>
-      <Slide
-        in={bugsError !== null}
-        direction="up"
-        className="fixed bottom-0 w-screen max-w-full bg-red-800 text-white text-2xl z-10 flex items-center justify-center px-4 py-2"
-      >
-        <div>{bugsError}</div>
-      </Slide>
+      <div>{bugsError}</div>
 
-      <Slide
-        in={projectsError !== null}
-        direction="up"
-        className="fixed bottom-0 w-screen max-w-full bg-red-800 text-white text-2xl z-10 flex items-center justify-center px-4 py-2"
-      >
-        <div>{projectsError}</div>
-      </Slide>
+      <div>{projectsError}</div>
 
-      <Slide
-        in={authError !== null}
-        direction="up"
-        className="fixed bottom-0 w-screen max-w-full bg-red-800 text-white text-2xl z-10 flex items-center justify-center px-4 py-2"
-      >
-        <div>{authError}</div>
-      </Slide>
+      <div>{authError}</div>
     </React.Fragment>
   );
 };

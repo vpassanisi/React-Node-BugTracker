@@ -1,5 +1,4 @@
 import React from "react";
-import { LinearProgress } from "@material-ui/core";
 import { useAuthState } from "../Context/auth/AuthContext";
 import { useProjectsState } from "../Context/projects/ProjectsContext";
 import { useBugsState } from "../Context/bugs/BugsContext";
@@ -12,7 +11,7 @@ const Loader = () => {
   return (
     <div>
       {isAuthLoading || isProjectsLoading || isBugsLoading ? (
-        <LinearProgress color="secondary" />
+        ""
       ) : (
         <div data-testid="not_loading" className="h-1" />
       )}

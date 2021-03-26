@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 // @desc Create new project
 // @route POST /api/v1/projects/
 // @access Private
-exports.createProject = async ctx => {
+exports.createProject = async (ctx) => {
   const decoded = jwt.verify(ctx.cookies.get("token"), process.env.JWT_SECRET);
 
   const user = await User.findById(decoded.id);
@@ -23,7 +23,7 @@ exports.createProject = async ctx => {
       Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
-    sameSite: "none"
+    sameSite: "none",
   };
 
   if (process.env.NODE_ENV === "production") {
@@ -35,14 +35,14 @@ exports.createProject = async ctx => {
   ctx.status = 200;
   ctx.body = {
     success: true,
-    data: project
+    data: project,
   };
 };
 
 // @desc Get project info
 // @route GET /api/v1/projects/getProject
 // @access Private
-exports.getProject = async ctx => {
+exports.getProject = async (ctx) => {
   const decoded = jwt.verify(ctx.cookies.get("token"), process.env.JWT_SECRET);
 
   let project = await Project.findOne({ _id: decoded.projectId });
@@ -54,22 +54,22 @@ exports.getProject = async ctx => {
   ctx.status = 200;
   ctx.body = {
     success: true,
-    data: project
+    data: project,
   };
 };
 
 // @desc Get all users projects
 // @route Get /api/v1/projects/getProjects
 // @access Private
-exports.getProjects = async ctx => {
+exports.getProjects = async (ctx) => {
   const decoded = jwt.verify(ctx.cookies.get("token"), process.env.JWT_SECRET);
 
   const bugs = await Bug.find({ fixer: decoded.id });
   const usersProjects = await Project.find({ user: decoded.id });
 
   let projectIds = [];
-  bugs.forEach(bug => projectIds.push(bug.project));
-  usersProjects.forEach(project => projectIds.push(project._id));
+  bugs.forEach((bug) => projectIds.push(bug.project));
+  usersProjects.forEach((project) => projectIds.push(project._id));
 
   let projects = await Project.find({ _id: { $in: projectIds } });
 
@@ -81,14 +81,14 @@ exports.getProjects = async ctx => {
   ctx.status = 200;
   ctx.body = {
     success: true,
-    data: projects
+    data: projects,
   };
 };
 
 // @desc Set token cookie to include project id
 // @route Get /api/v1/projects/:id
 // @access Private
-exports.setProject = async ctx => {
+exports.setProject = async (ctx) => {
   const decoded = jwt.verify(ctx.cookies.get("token"), process.env.JWT_SECRET);
 
   const user = await User.findById(decoded.id);
@@ -102,7 +102,7 @@ exports.setProject = async ctx => {
       Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
-    sameSite: "none"
+    sameSite: "strict",
   };
 
   // if (ctx.request.headers["user-agent"].includes("Windows")) {
@@ -118,17 +118,17 @@ exports.setProject = async ctx => {
   ctx.status = 200;
   ctx.body = {
     success: true,
-    data: project
+    data: project,
   };
 };
 
 // @desc Update project
 // @route PUT /api/v1/projects
 // @access Private
-exports.updateProject = async ctx => {
+exports.updateProject = async (ctx) => {
   const updated = {
     name: ctx.request.body.name,
-    description: ctx.request.body.description
+    description: ctx.request.body.description,
   };
 
   const project = await Project.findByIdAndUpdate(
@@ -137,7 +137,7 @@ exports.updateProject = async ctx => {
     {
       new: true,
       runValidators: true,
-      useFindAndModify: false
+      useFindAndModify: false,
     }
   );
 
@@ -148,14 +148,14 @@ exports.updateProject = async ctx => {
   ctx.status = 200;
   ctx.response.body = {
     success: true,
-    data: project
+    data: project,
   };
 };
 
 // @desc Delete project
 // @route DELETE /api/v1/projects
 // @access Private
-exports.deleteProject = async ctx => {
+exports.deleteProject = async (ctx) => {
   const decoded = jwt.verify(ctx.cookies.get("token"), process.env.JWT_SECRET);
 
   const project = await Project.deleteOne({ _id: decoded.projectId });
@@ -164,6 +164,6 @@ exports.deleteProject = async ctx => {
 
   ctx.status = 200;
   ctx.response.body = {
-    success: true
+    success: true,
   };
 };

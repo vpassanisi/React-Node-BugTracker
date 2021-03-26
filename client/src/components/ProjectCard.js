@@ -50,72 +50,54 @@ const ProjectCard = (props) => {
 
   return (
     <React.Fragment>
-      <div className="relative bg-gray-200 dark:bg-gray-900 rounded border-2 border-purple-a400 p-4 flex flex-col justify-between shadow">
-        <div>
-          <div className="text-center font-hairline text-2xl">
-            {project.name}
-          </div>
-          <hr className="border-cyan-400 my-2" />
-          <div className="text-purple-800 dark:text-purple-300 bg-gray-300 dark:bg-dark-gray-900 mb-1 px-2">
-            Bugs:{" "}
-            <span className="text-black dark:text-white">
-              {project.bugsCount}
-            </span>
-          </div>
-          <div className="text-purple-800 dark:text-purple-300 bg-gray-300 dark:bg-dark-gray-900 mb-1 px-2">
-            Created At:{" "}
-            <span className="text-black dark:text-white">
-              {project.createdAt}
-            </span>
-          </div>
-          <div className="text-purple-800 dark:text-purple-300 bg-gray-300 dark:bg-dark-gray-900 mb-4 px-2">
-            Last Updated:{" "}
-            <span className="text-black dark:text-white">
-              {project.updatedAt}
-            </span>
-          </div>
-          <div className="text-purple-800 dark:text-purple-300 mb-4">
-            Description:{" "}
-            <span className="text-black dark:text-white">
-              {project.description}
-            </span>
-          </div>
+      <div className="relative flex flex-col justify-between bg-oxford-blue-600">
+        <div className="p-4">
+          <div className="font-head text-center text-2xl">{project.name}</div>
+          <hr className="border-purple-munsell my-2" />
+          <div className="mb-4">{project.description}</div>
         </div>
 
-        <button
+        {/* <button
           data-testid="button_delete"
           className="absolute top-0 right-0 flex items-center justify-center mt-4 mr-4 focus:outline-none"
           onClick={() => handleDelete()}
         >
           <i className="material-icons text-4xl text-red-500">clear</i>
-        </button>
-        <div>
-          <button
+        </button> */}
+        {/* <div> */}
+        {/* <button
             data-testid="button_edit"
             className="mb-2 p-1 flex focus:outline-none"
             onClick={() => setIsEditProjectOpen(true)}
           >
             <i className="material-icons text-blue-500">edit</i>
-          </button>
+          </button> */}
 
+        <div className="flex flex-row">
           <button
             data-testid="button_go_to"
-            className="bg-cyan-a700 hover:bg-cyan-700 transition duration-300 ease-in-out h-10 w-full rounded focus:outline-none shadow text-white"
+            className="w-full focus:outline-none bg-maximum-blue-700 py-2 rounded-bl"
             onClick={() => {
               setProject(projectsDispatch, project._id);
             }}
           >
             Go To Project
           </button>
+          <button
+            className="bg-maximum-blue-700 border-l border-maximum-blue-50 px-4 focus:outline-none rounded-br"
+            onClick={() => setIsEditProjectOpen(true)}
+          >
+            <i className="material-icons flex">more_vert</i>
+          </button>
         </div>
+        {/* </div> */}
+        <EditProjectModal
+          project={project}
+          index={index}
+          isEditProjectOpen={isEditProjectOpen}
+          setIsEditProjectOpen={setIsEditProjectOpen}
+        />
       </div>
-
-      <EditProjectModal
-        project={project}
-        index={index}
-        isEditProjectOpen={isEditProjectOpen}
-        setIsEditProjectOpen={setIsEditProjectOpen}
-      />
     </React.Fragment>
   );
 };

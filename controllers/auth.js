@@ -4,13 +4,13 @@ const jwt = require("jsonwebtoken");
 // @desc Log user in
 // @route POST /api/v1/auth/register
 // @access Public
-exports.register = async ctx => {
+exports.register = async (ctx) => {
   const { name, email, password } = ctx.request.body;
 
   const user = await User.create({
     name,
     email,
-    password
+    password,
   });
 
   user.password = undefined;
@@ -21,7 +21,7 @@ exports.register = async ctx => {
 // @desc Create new user
 // @route POST /api/v1/auth/login
 // @access Public
-exports.login = async ctx => {
+exports.login = async (ctx) => {
   const { email, password } = ctx.request.body;
 
   if (!email || !password)
@@ -43,7 +43,7 @@ exports.login = async ctx => {
 // @desc Get current logged in user
 // @route GET /api/v1/auth/me
 // @access Private
-exports.getMe = async ctx => {
+exports.getMe = async (ctx) => {
   const token = ctx.cookies.get("token");
 
   if (token === "none" || token === undefined) {
@@ -64,19 +64,19 @@ exports.getMe = async ctx => {
       email,
       projects,
       createdAt,
-      updatedAt
-    }
+      updatedAt,
+    },
   };
 };
 
 // @desc Logout current user
 // @route GET /api/v1/auth/logout
 // @access Private
-exports.logout = async ctx => {
+exports.logout = async (ctx) => {
   let options = {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
-    sameSite: "none"
+    sameSite: "none",
   };
 
   // if (ctx.request.headers["user-agent"].includes("Windows")) {
@@ -91,14 +91,14 @@ exports.logout = async ctx => {
 
   ctx.status = 200;
   ctx.body = {
-    success: true
+    success: true,
   };
 };
 
 // @desc Update user details
 // @route PUT /api/v1/auth/updatedetails
 // @access Private
-exports.updateDetails = async ctx => {
+exports.updateDetails = async (ctx) => {
   const token = ctx.cookies.get("token");
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -116,7 +116,7 @@ exports.updateDetails = async ctx => {
   const user = await User.findByIdAndUpdate(decoded.id, fieldsToUpdate, {
     new: true,
     runValidators: true,
-    useFindAndModify: false
+    useFindAndModify: false,
   });
 
   const { name, email, createdAt, updatedAt } = user;
@@ -128,15 +128,15 @@ exports.updateDetails = async ctx => {
       name,
       email,
       createdAt,
-      updatedAt
-    }
+      updatedAt,
+    },
   };
 };
 
 // @desc Update password
 // @route PUT /api/v1/auth/updatepassword
 // @access Private
-exports.updatePassword = async ctx => {
+exports.updatePassword = async (ctx) => {
   const token = ctx.cookies.get("token");
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -161,7 +161,7 @@ const sendCookieResponse = (user, statusCode, ctx) => {
       Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
-    sameSite: "none"
+    sameSite: "strict",
   };
 
   // if (ctx.request.headers["user-agent"].includes("Windows")) {
@@ -178,6 +178,6 @@ const sendCookieResponse = (user, statusCode, ctx) => {
 
   ctx.body = {
     success: true,
-    data: user
+    data: user,
   };
 };
