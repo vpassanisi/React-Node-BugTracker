@@ -1,8 +1,10 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 
 import { useAuthDispatch, login } from "../Context/auth/authContext";
 
 const Info = () => {
+  const history = useHistory();
   const authDispatch = useAuthDispatch();
 
   return (
@@ -48,11 +50,12 @@ const Info = () => {
         <div className="flex items-center justify-center">
           <button
             data-testid="button_demo_login"
-            onClick={() => {
-              login(authDispatch, {
+            onClick={async () => {
+              await login(authDispatch, {
                 email: "Demo@gmail.com",
                 password: "123456",
               });
+              history.push("/");
             }}
             className="bg-maximum-blue font-head py-2 px-8 text-xl rounded focus:outline-none"
           >
