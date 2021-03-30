@@ -23,100 +23,93 @@ const UpdateBug = (props) => {
   };
 
   return (
-    <div className="w-full md:w-1/2 p-4 rounded border border-cyan-400">
-      <div className="relative mb-4">
-        <input
-          className="w-full px-3 py-1 focus:outline-none bg-transparent"
-          data-testid="input_edit_name"
-          placeholder="Name. . ."
-          defaultValue={bug.name}
-          onChange={(event) => handleChange(event, "name")}
-        />
-        <div className="absolute z-10 bottom-0 left-0 right-0 mx-auto w-0 underline transition-width duration-500 ease-in-out border-b-2 border-purple-munsell" />
-        <div className="absolute bottom-0 left-0 right-0 w-full border-b-2 border-dark-gray-700" />
-      </div>
-      <div className="relative mb-4">
-        <input
-          className="w-full px-3 py-1 focus:outline-none bg-transparent"
-          data-testid="input_edit_fixer"
-          placeholder="Fixer. . ."
-          defaultValue={bug.fixer.email}
-          helperText="Must be a users email"
-          type="text"
-          onChange={(event) => handleChange(event, "fixer")}
-        />
-        <div className="absolute z-10 bottom-0 left-0 right-0 mx-auto w-0 underline transition-width duration-500 ease-in-out border-b-2 border-purple-munsell" />
-        <div className="absolute bottom-0 left-0 right-0 w-full border-b-2 border-dark-gray-700" />
-      </div>
-      <div className="mb-4">
-        <textarea
-          className="w-full px-3 py-1 focus:outline-none bg-transparent"
-          data-testid="input_edit_description"
-          placeholder="Description"
-          defaultValue={bug.description}
-          onChange={(event) => handleChange(event, "description")}
-        />
-      </div>
-      <div className="flex mb-4">
-        <div className="w-1/3 pr-4">
-          {/* <FormControl variant="standard" color="secondary" fullWidth={true}>
-            <InputLabel>Status</InputLabel>
-            <Select
-              inputProps={{
-                "data-testid": "select_status",
-              }}
+    <div className="w-full md:w-1/2 p-4">
+      <div className="h-full p-4 rounded border border-maximum-blue">
+        <div className="relative mb-4">
+          <input
+            className="w-full px-3 py-1 focus:outline-none bg-transparent"
+            data-testid="input_edit_name"
+            placeholder="Name. . ."
+            defaultValue={bug.name}
+            onChange={(event) => handleChange(event, "name")}
+          />
+          <div className="absolute z-10 bottom-0 left-0 right-0 mx-auto w-0 underline transition-width duration-500 ease-in-out border-b-2 border-purple-munsell" />
+          <div className="absolute bottom-0 left-0 right-0 w-full border-b-2 border-dark-gray-700" />
+        </div>
+        <div className="relative mb-4">
+          <input
+            className="w-full px-3 py-1 focus:outline-none bg-transparent"
+            data-testid="input_edit_fixer"
+            placeholder="Fixer. . ."
+            defaultValue={bug.fixer.email}
+            type="text"
+            onChange={(event) => handleChange(event, "fixer")}
+          />
+          <div className="absolute z-10 bottom-0 left-0 right-0 mx-auto w-0 underline transition-width duration-500 ease-in-out border-b-2 border-purple-munsell" />
+          <div className="absolute bottom-0 left-0 right-0 w-full border-b-2 border-dark-gray-700" />
+        </div>
+        <div className="relative mb-4">
+          <textarea
+            className="w-full px-3 py-1 focus:outline-none bg-transparent"
+            data-testid="input_edit_description"
+            placeholder="Description. . ."
+            defaultValue={bug.description}
+            onChange={(event) => handleChange(event, "description")}
+          />
+          <div className="absolute z-10 bottom-0 left-0 right-0 mx-auto w-0 underline transition-width duration-500 ease-in-out border-b-2 border-purple-munsell" />
+          <div className="absolute bottom-0 left-0 right-0 w-full border-b-2 border-dark-gray-700" />
+        </div>
+        <div className="flex mb-4">
+          <div className="relative w-1/3">
+            <select
+              className="bg-transparent w-full p-1 focus:outline-none"
+              data-testid="select_status"
               value={updateBugBody.status}
               onChange={(event) => handleChange(event, "status")}
-              label="Status"
             >
-              <MenuItem value={"Open"}>Open</MenuItem>
-              <MenuItem value={"In Progress"}>In Progress</MenuItem>
-              <MenuItem value={"To Be Tested"}>To Be Tested</MenuItem>
-              <MenuItem value={"Closed"}>Closed</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
-        <div className="w-1/3 pr-4">
-          <FormControl variant="standard" color="secondary" fullWidth={true}>
-            <InputLabel>Severity</InputLabel>
-            <Select
-              inputProps={{
-                "data-testid": "select_severity",
-              }}
+              <option value="Open">Open</option>
+              <option value="In Progress">In Progress</option>
+              <option value="To Be Tested">To Be Tested</option>
+              <option value="Closed">Closed</option>
+            </select>
+            <div className="absolute z-10 bottom-0 left-0 right-0 mx-auto w-0 underline transition-width duration-500 ease-in-out border-b-2 border-purple-munsell" />
+            <div className="absolute bottom-0 left-0 right-0 w-full border-b-2 border-dark-gray-700" />
+          </div>
+          <div className="relative w-1/3 mx-2">
+            <select
+              className="bg-transparent w-full p-1 focus:outline-none"
+              data-testid="select_severity"
               value={updateBugBody.severity}
               onChange={(event) => handleChange(event, "severity")}
-              label="Severity"
             >
-              <MenuItem value={"Major"}>Major</MenuItem>
-              <MenuItem value={"Minor"}>Minor</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
-        <div className="w-1/3">
-          <FormControl variant="standard" color="secondary" fullWidth={true}>
-            <InputLabel>Reproduceable</InputLabel>
-            <Select
-              inputProps={{
-                "data-testid": "select_reproduceability",
-              }}
-              autoWidth={false}
+              <option value="Major">Major</option>
+              <option value="Minor">Minor</option>
+            </select>
+            <div className="absolute z-10 bottom-0 left-0 right-0 mx-auto w-0 underline transition-width duration-500 ease-in-out border-b-2 border-purple-munsell" />
+            <div className="absolute bottom-0 left-0 right-0 w-full border-b-2 border-dark-gray-700" />
+          </div>
+          <div className="relative w-1/3">
+            <select
+              className="bg-transparent w-full p-1 focus:outline-none"
+              data-testid="select_reproduceability"
               value={updateBugBody.reproduceability}
               onChange={(event) => handleChange(event, "reproduceability")}
-              label="Reproduceable"
             >
-              <MenuItem value={"Always"}>Always</MenuItem>
-              <MenuItem value={"Intermitent"}>Intermitent</MenuItem>
-            </Select>
-          </FormControl> */}
+              <option value="Always">Always</option>
+              <option value="Intermitent">Intermitent</option>
+            </select>
+            <div className="absolute z-10 bottom-0 left-0 right-0 mx-auto w-0 underline transition-width duration-500 ease-in-out border-b-2 border-purple-munsell" />
+            <div className="absolute bottom-0 left-0 right-0 w-full border-b-2 border-dark-gray-700" />
+          </div>
         </div>
+        <button
+          data-testid="button_edit"
+          className="w-full bg-purple-munsell py-2 mt-4 rounded focus:outline-none font-head"
+          onClick={() => updateBug(bugsDispatch, updateBugBody, bug._id, index)}
+        >
+          Update
+        </button>
       </div>
-      <button
-        data-testid="button_edit"
-        className="w-full h-10 bg-purple-400 hover:bg-purple-600 transition duration-300 ease-in-out rounded focus:outline-none text-white shadow"
-        onClick={() => updateBug(bugsDispatch, updateBugBody, bug._id, index)}
-      >
-        Update
-      </button>
     </div>
   );
 };

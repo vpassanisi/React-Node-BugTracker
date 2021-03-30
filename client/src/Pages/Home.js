@@ -2,7 +2,12 @@ import React from "react";
 import ProjectCard from "../components/ProjectCard";
 import { useHistory } from "react-router-dom";
 
-import { useAuthState } from "../Context/auth/AuthContext";
+import {
+  useAuthState,
+  useAuthDispatch,
+  getMe,
+} from "../Context/auth/AuthContext";
+import { clearBugs, useBugsDispatch } from "../Context/bugs/BugsContext";
 import {
   useProjectsState,
   useProjectsDispatch,
@@ -13,43 +18,46 @@ import {
 const Home = () => {
   const history = useHistory();
 
-  const { isAuthenticated } = useAuthState();
+  const { isAuthenticated, isLoading } = useAuthState();
+  const authDispatch = useAuthDispatch();
 
   const { projects } = useProjectsState();
   const projectsDispatch = useProjectsDispatch();
+
+  const bugsDispatch = useBugsDispatch();
 
   const cards = projects.map((project, index) => (
     <ProjectCard project={project} index={index} key={index} />
   ));
 
   React.useEffect(() => {
-    if (isAuthenticated) {
-      getProjects(projectsDispatch);
+    if (!isAuthenticated) {
+      getMe(authDispatch).then((data) => {
+        if (!data) {
+          history.push("/login");
+        } else {
+          getProjects(projectsDispatch);
+        }
+      });
     } else {
-      history.push("/info");
+      getProjects(projectsDispatch);
     }
-    // eslint-disable-next-line
-  }, [isAuthenticated]);
-
-  React.useEffect(() => {
-    clearCurrentProject(projectsDispatch);
     // eslint-disable-next-line
   }, []);
 
-  return (
-    <React.Fragment>
-      {
-        <section>
-          <div className="font-head text-3xl text-center my-8">
-            Your Projects
-          </div>
-          <div className="max-w-screen-lg w-11/12 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {cards}
-          </div>
-        </section>
-      }
-    </React.Fragment>
-  );
+  React.useEffect(() => {
+    clearCurrentProject(projectsDispatch);
+    clearBugs(bugsDispatch);
+  }, [projectsDispatch, bugsDispatch]);
+
+  return isAuthenticated && !isLoading ? (
+    <section>
+      <div className="font-head text-3xl text-center my-8">Your Projects</div>
+      <div className="max-w-screen-lg w-11/12 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {cards}
+      </div>
+    </section>
+  ) : null;
 };
 
 export default Home;

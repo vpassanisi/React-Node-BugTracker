@@ -1,15 +1,18 @@
 import React from "react";
-import { NavLink, Link } from "react-router-dom";
-// import NewBugModal from "../components/NewBugModal";
-// import NewProjectModal from "../components/NewProjectModal";
-// import Sidebar from "../Layout/Sidebar";
+import { NavLink, Link, useHistory } from "react-router-dom";
+import NewBugModal from "../components/NewBugModal";
+import NewProjectModal from "../components/NewProjectModal";
+import Sidebar from "../Layout/Sidebar";
 
-import { useProjectsState } from "../Context/projects/ProjectsContext";
+import {
+  useProjectsState,
+  useProjectsDispatch,
+  clearProjects,
+} from "../Context/projects/ProjectsContext";
 import {
   useAuthState,
   useAuthDispatch,
   logout,
-  getMe,
 } from "../Context/auth/AuthContext";
 
 const Navbar = (props) => {
@@ -18,9 +21,12 @@ const Navbar = (props) => {
   const [isNewProjectOpen, setIsNewProjectOpen] = React.useState(false);
 
   const { currentProject } = useProjectsState();
+  const projectsDispatch = useProjectsDispatch();
 
   const { isAuthenticated } = useAuthState();
   const authDispatch = useAuthDispatch();
+
+  const history = useHistory();
 
   const guestLinks = (
     <React.Fragment>
@@ -66,27 +72,25 @@ const Navbar = (props) => {
         </button>
       )}
       {currentProject && (
-        <Link
-          className="flex items-center justify-center h-full px-4 transition duration-300 ease-in-out hover:bg-white-alpha-20 text-black dark:text-white"
-          to="/"
-        >
+        <Link className="flex items-center justify-center h-full px-4" to="/">
           Your Projects
         </Link>
       )}
       <button
-        className="flex items-center justify-center h-full px-4 transition duration-300 ease-in-out hover:bg-white-alpha-20 text-black dark:text-white cursor-pointer focus:outline-none"
-        onClick={() => logout(authDispatch)}
+        className="flex items-center justify-center h-full px-4 cursor-pointer focus:outline-none"
+        onClick={() => {
+          logout(authDispatch).then((data) => {
+            if (data) {
+              clearProjects(projectsDispatch);
+              history.push("/info");
+            }
+          });
+        }}
       >
         Logout
       </button>
     </React.Fragment>
   );
-
-  // checks if the login cookie is set.  This only needs to be done when the app loads, since the navabar should only mount once I put it here.
-  React.useEffect(() => {
-    getMe(authDispatch);
-    // eslint-disable-next-line
-  }, []);
 
   return (
     <React.Fragment>
@@ -112,22 +116,22 @@ const Navbar = (props) => {
       </div>
       <div className="w-screen h-16 max-w-full" />
 
-      {/* <Sidebar
+      <Sidebar
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         setIsNewBugOpen={setIsNewBugOpen}
         setIsNewProjectOpen={setIsNewProjectOpen}
-      /> */}
+      />
 
-      {/* <NewBugModal
+      <NewBugModal
         isNewBugOpen={isNewBugOpen}
         setIsNewBugOpen={setIsNewBugOpen}
-      /> */}
+      />
 
-      {/* <NewProjectModal
+      <NewProjectModal
         isNewProjectOpen={isNewProjectOpen}
         setIsNewProjectOpen={setIsNewProjectOpen}
-      /> */}
+      />
     </React.Fragment>
   );
 };

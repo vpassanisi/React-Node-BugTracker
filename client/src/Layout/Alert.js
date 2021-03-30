@@ -47,11 +47,29 @@ const Alert = () => {
 
   return (
     <React.Fragment>
-      <div>{bugsError}</div>
+      <div
+        className={`fixed bottom-0 w-full py-6 transition-transform duration-150 ease-in-out transform ${
+          bugsError ? "translate-y-0" : "translate-y-full"
+        } bg-red-600 text-center text-2xl`}
+      >
+        {bugsError}
+      </div>
 
-      <div>{projectsError}</div>
+      <div
+        className={`fixed bottom-0 w-full py-6 transition-transform duration-150 ease-in-out transform ${
+          projectsError ? "translate-y-0" : "translate-y-full"
+        } bg-red-600 text-center text-2xl`}
+      >
+        {projectsError}
+      </div>
 
-      <div>{authError}</div>
+      <div
+        className={`fixed bottom-0 w-full py-6 transition-transform duration-150 ease-in-out transform ${
+          authError ? "translate-y-0" : "translate-y-full"
+        } bg-red-600 text-center text-2xl`}
+      >
+        {authError}
+      </div>
     </React.Fragment>
   );
 };

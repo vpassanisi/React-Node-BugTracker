@@ -11,10 +11,8 @@ const Loader = () => {
   return (
     <div>
       {isAuthLoading || isProjectsLoading || isBugsLoading ? (
-        ""
-      ) : (
-        <div data-testid="not_loading" className="h-1" />
-      )}
+        <div data-testid="not_loading" className="fixed top-16 progress-line" />
+      ) : null}
     </div>
   );
 };

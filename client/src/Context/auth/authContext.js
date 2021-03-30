@@ -144,6 +144,9 @@ const login = async (dispatch, credentials) => {
 };
 
 const getMe = async (dispatch) => {
+  dispatch({
+    type: "IS_LOADING",
+  });
   try {
     const req = await fetch(`/api/v1/auth/me`, {
       method: "GET",
@@ -157,16 +160,24 @@ const getMe = async (dispatch) => {
         type: GET_ME_FAIL,
         payload: res.error,
       });
+      return false;
     } else {
       dispatch({
         type: GET_ME_SUCCESS,
         payload: res.data,
       });
+      return true;
     }
   } catch (err) {
     dispatch({
       type: GET_ME_FAIL,
       payload: `${err}`,
+    });
+
+    return false;
+  } finally {
+    dispatch({
+      type: "NOT_LOADING",
     });
   }
 };
@@ -188,21 +199,25 @@ const logout = async (dispatch) => {
         type: LOGOUT_FAIL,
         payload: res.error,
       });
+      return false;
     } else {
       dispatch({
         type: LOGOUT_SUCCESS,
         payload: res,
       });
+      return true;
     }
   } catch (err) {
     dispatch({
       type: LOGOUT_FAIL,
       payload: `${err}`,
     });
+    return false;
+  } finally {
+    dispatch({
+      type: "NOT_LOADING",
+    });
   }
-  dispatch({
-    type: "NOT_LOADING",
-  });
 };
 
 const createUser = async (dispatch, user) => {

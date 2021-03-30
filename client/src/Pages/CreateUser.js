@@ -23,10 +23,10 @@ const CreateUser = () => {
     const obj = { ...newUser, [item]: event.target.value };
     setNewUser(obj);
   };
+
   React.useEffect(() => {
     if (isAuthenticated) history.push("/");
-    // eslint-disable-next-line
-  }, []);
+  }, [isAuthenticated, history]);
 
   return (
     <div className="w-full">

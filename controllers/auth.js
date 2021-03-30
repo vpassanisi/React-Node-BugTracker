@@ -74,20 +74,20 @@ exports.getMe = async (ctx) => {
 // @access Private
 exports.logout = async (ctx) => {
   let options = {
-    expires: new Date(Date.now() + 10 * 1000),
+    expires: new Date(Date.now()),
     httpOnly: true,
-    sameSite: "none",
+    sameSite: "strict",
   };
 
   // if (ctx.request.headers["user-agent"].includes("Windows")) {
   //   options.sameSite = "none";
   // }
 
-  if (process.env.NODE_ENV === "production") {
-    options.secure = true;
-  }
+  // if (process.env.NODE_ENV === "production") {
+  //   options.secure = true;
+  // }
 
-  ctx.cookies.set("token", "none", options);
+  ctx.cookies.set("token", null, options);
 
   ctx.status = 200;
   ctx.body = {
@@ -168,9 +168,9 @@ const sendCookieResponse = (user, statusCode, ctx) => {
   //   options.sameSite = "none";
   // }
 
-  if (process.env.NODE_ENV === "production") {
-    options.secure = true;
-  }
+  // if (process.env.NODE_ENV === "production") {
+  //   options.secure = true;
+  // }
 
   ctx.status = statusCode;
 

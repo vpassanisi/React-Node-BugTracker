@@ -24,7 +24,6 @@ function App() {
           <BugsProvider>
             <Navbar />
             <Loader />
-            <Alert />
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/bugs" component={Bugs} />
@@ -33,6 +32,7 @@ function App() {
               <Route exact path="/info" component={Info} />
               <Route path="*" component={NotFound} />
             </Switch>
+            <Alert />
           </BugsProvider>
         </ProjectsProvider>
       </AuthProvider>

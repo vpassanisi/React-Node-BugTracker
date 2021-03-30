@@ -4,6 +4,7 @@ import { CSSTransition } from "react-transition-group";
 import {
   useProjectsDispatch,
   editProject,
+  deleteProject,
 } from "../Context/projects/ProjectsContext";
 
 const EditProjectModal = (props) => {
@@ -18,6 +19,16 @@ const EditProjectModal = (props) => {
     const projectInfo = { ...editProjectBody, [field]: event.target.value };
 
     setEditProjectBody(projectInfo);
+  };
+
+  const handleDelete = () => {
+    const conf = window.confirm(
+      "Are you sure you want to delete this project? This will permanently delete this project And all of it's bugs"
+    );
+
+    if (conf) {
+      deleteProject(projectsDispatch, project._id, index);
+    }
   };
 
   return (
@@ -84,7 +95,11 @@ const EditProjectModal = (props) => {
               >
                 Edit
               </button>
-              <button className="bg-red-700 font-head rounded py-1 px-8 ml-4">
+              <button
+                className="bg-red-700 font-head rounded py-1 px-8 ml-4"
+                data-testid="button_delete"
+                onClick={() => handleDelete()}
+              >
                 Delete
               </button>
             </div>

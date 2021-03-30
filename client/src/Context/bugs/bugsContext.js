@@ -11,6 +11,7 @@ import {
   DELETE_BUG_SUCCESS,
   DELETE_BUG_FAIL,
   CLEAR_BUGS_ERRORS,
+  CLEAR_BUGS,
 } from "../types";
 
 const BugsStateContext = React.createContext();
@@ -89,6 +90,11 @@ const bugsReducer = (state, action) => {
       return {
         ...state,
         bugs: sorted,
+      };
+    case CLEAR_BUGS:
+      return {
+        ...state,
+        bugs: [],
       };
     case CLEAR_BUGS_ERRORS:
       return {
@@ -305,6 +311,12 @@ const sortBugs = (dispatch, sortBy) => {
   });
 };
 
+const clearBugs = (dispatch) => {
+  dispatch({
+    type: CLEAR_BUGS,
+  });
+};
+
 const clearBugsErrors = (dispatch) => {
   dispatch({
     type: CLEAR_BUGS_ERRORS,
@@ -338,4 +350,5 @@ export {
   deleteBug,
   sortBugs,
   clearBugsErrors,
+  clearBugs,
 };

@@ -11,6 +11,7 @@ import {
   EDIT_PROJECT_FAIL,
   DELETE_PROJECT_SUCCESS,
   DELETE_PROJECT_FAIL,
+  CLEAR_PROJECTS,
   CLEAR_CURRENT_PROJECT,
   CLEAR_PROJECTS_ERRORS,
 } from "../types";
@@ -18,7 +19,7 @@ import {
 const ProjectsStateContext = React.createContext();
 const ProjectsDispatchContext = React.createContext();
 
-const projectsReducer = (state, action) => {
+const ProjectsReducer = (state, action) => {
   switch (action.type) {
     case GET_PROJECTS_SUCCESS:
       return {
@@ -74,6 +75,11 @@ const projectsReducer = (state, action) => {
         ...state,
         error: action.payload,
       };
+    case CLEAR_PROJECTS:
+      return {
+        ...state,
+        projects: [],
+      };
     case CLEAR_CURRENT_PROJECT:
       return {
         ...state,
@@ -116,7 +122,7 @@ const ProjectsProvider = ({
     error: error,
   };
 
-  const [state, dispatch] = React.useReducer(projectsReducer, initialState);
+  const [state, dispatch] = React.useReducer(ProjectsReducer, initialState);
 
   return (
     <ProjectsStateContext.Provider value={state}>
@@ -315,6 +321,12 @@ const deleteProject = async (dispatch, id, index) => {
   });
 };
 
+const clearProjects = (dispatch) => {
+  dispatch({
+    type: CLEAR_PROJECTS,
+  });
+};
+
 const clearCurrentProject = (dispatch) => {
   dispatch({
     type: CLEAR_CURRENT_PROJECT,
@@ -355,6 +367,7 @@ export {
   newProject,
   editProject,
   deleteProject,
+  clearProjects,
   clearCurrentProject,
   clearProjectsErrors,
 };

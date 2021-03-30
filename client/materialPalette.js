@@ -111,6 +111,28 @@ const materialPalette = {
     900: "#263238",
   },
 
+  "deep-orange": {
+    800: "#D84315",
+  },
+
+  green: {
+    500: "#4CAF50",
+  },
+
+  blue: {
+    500: "#2196F3",
+  },
+
+  "deep-purple": {
+    200: "#B39DDB",
+    500: "#673AB7",
+  },
+
+  cyan: {
+    200: "#80DEEA",
+    600: "#00ACC1",
+  },
+
   black: "#000000",
   white: "#FFFFFF",
 

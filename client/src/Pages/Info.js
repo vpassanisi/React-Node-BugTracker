@@ -1,21 +1,9 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 
-import {
-  useAuthState,
-  useAuthDispatch,
-  login,
-} from "../Context/auth/AuthContext";
+import { useAuthDispatch, login } from "../Context/auth/AuthContext";
 
 const Info = () => {
-  const history = useHistory();
-
-  const { isAuthenticated } = useAuthState();
   const authDispatch = useAuthDispatch();
-
-  React.useEffect(() => {
-    if (isAuthenticated) history.push("/");
-  }, [isAuthenticated, history]);
 
   return (
     <section className="w-screen max-w-full">

@@ -1,9 +1,12 @@
 import React from "react";
-import { Drawer } from "@material-ui/core";
-import DarkModeToggle from "../Layout/DarkModeToggle";
-import { useHistory } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
+import { CSSTransition } from "react-transition-group";
 
-import { useProjectsState } from "../Context/projects/ProjectsContext";
+import {
+  useProjectsState,
+  clearProjects,
+  useProjectsDispatch,
+} from "../Context/projects/ProjectsContext";
 import {
   useAuthState,
   useAuthDispatch,
@@ -12,45 +15,39 @@ import {
 
 const Sidebar = (props) => {
   const { currentProject } = useProjectsState();
+  const projectsDispatch = useProjectsDispatch();
 
   const { isAuthenticated } = useAuthState();
   const authDispatch = useAuthDispatch();
 
   const { isOpen, setIsOpen, setIsNewBugOpen, setIsNewProjectOpen } = props;
 
-  const history = useHistory();
-
   const guestLinks = (
     <React.Fragment>
-      <button
-        className={`flex items-center justify-center w-full h-12 transition duration-300 ease-in-out ${
-          isDarkMode ? "hover:bg-gray-800" : "hover:bg-gray-300"
-        }  text-black dark:text-white`}
-        onClick={() => {
-          setIsOpen(false);
-          history.push("/create");
-        }}
+      <NavLink
+        className="py-2 w-full text-center cursor-pointer focus:outline-none"
+        onClick={() => setIsOpen(false)}
+        to="/create"
+        activeClassName="bg-oxford-blue-500"
       >
         Create User
-      </button>
-      <button
-        className="flex items-center justify-center w-full h-12 transition duration-300 ease-in-out text-black dark:text-white"
-        onClick={() => {
-          setIsOpen(false);
-          history.push("/login");
-        }}
+      </NavLink>
+      <NavLink
+        className="py-2 w-full text-center cursor-pointer focus:outline-none"
+        onClick={() => setIsOpen(false)}
+        to="/login"
+        activeClassName="bg-oxford-blue-500"
       >
         Login
-      </button>
-      <button
-        className="flex items-center justify-center w-full h-12 transition duration-300 ease-in-out text-black dark:text-white"
-        onClick={() => {
-          setIsOpen(false);
-          history.push("/info");
-        }}
+      </NavLink>
+      <NavLink
+        className="py-2 w-full text-center cursor-pointer focus:outline-none"
+        onClick={() => setIsOpen(false)}
+        to="/info"
+        activeClassName="bg-oxford-blue-500"
       >
         Info
-      </button>
+      </NavLink>
     </React.Fragment>
   );
 
@@ -58,7 +55,7 @@ const Sidebar = (props) => {
     <React.Fragment>
       {currentProject ? (
         <button
-          className="flex items-center justify-center w-full h-12 transition duration-300 ease-in-out text-black dark:text-white focus:outline-none"
+          className="py-2 w-full text-center cursor-pointer focus:outline-none"
           onClick={() => {
             setIsOpen(false);
             setIsNewBugOpen(true);
@@ -68,7 +65,7 @@ const Sidebar = (props) => {
         </button>
       ) : (
         <button
-          className="flex items-center justify-center w-full h-12 transition duration-300 ease-in-out text-black dark:text-white focus:outline-none"
+          className="py-2 w-full text-center cursor-pointer focus:outline-none"
           onClick={() => {
             setIsOpen(false);
             setIsNewProjectOpen(true);
@@ -78,48 +75,49 @@ const Sidebar = (props) => {
         </button>
       )}
       {currentProject && (
-        <button
-          className="flex items-center justify-center w-full h-12 transition duration-300 ease-in-out text-black dark:text-white"
-          onClick={() => {
-            setIsOpen(false);
-            history.push("/");
-          }}
+        <Link
+          className="py-2 w-full text-center cursor-pointer focus:outline-none"
+          onClick={() => setIsOpen(false)}
+          to="/"
         >
           Your Projects
-        </button>
+        </Link>
       )}
       <button
-        className="flex items-center justify-center w-full h-12 transition duration-300 ease-in-out text-black dark:text-white cursor-pointer"
-        onClick={() => {
-          logout(authDispatch);
+        className="py-2 w-full text-center cursor-pointer focus:outline-none"
+        onClick={async () => {
+          await logout(authDispatch);
+          clearProjects(projectsDispatch);
           setIsOpen(false);
         }}
       >
         Logout
       </button>
-      {/* <button
-        className={`flex items-center justify-center w-full h-12 transition duration-300 ease-in-out ${
-          isDarkMode ? "hover:bg-gray-800" : "hover:bg-gray-300"
-        } text-black dark:text-white`}
-        onClick={() => {
-          setIsOpen(false);
-          history.push("/info");
-        }}
-      >
-        Info
-      </button> */}
     </React.Fragment>
   );
 
   return (
-    <div className="w-full h-full bg-white dark:bg-black">
-      <div className="w-full h-full bg-white dark:bg-black-alpha-80 border-r">
-        <div className="flex flex-col items-center w-64 pt-8">
-          <hr className="w-full mt-8" />
+    <React.Fragment>
+      <CSSTransition in={isOpen} timeout={150} classNames="modal" unmountOnExit>
+        <div
+          className="fixed inset-0 h-full w-full bg-black bg-opacity-50 z-20"
+          onClick={() => setIsOpen(false)}
+        />
+      </CSSTransition>
+      <CSSTransition
+        in={isOpen}
+        timeout={150}
+        classNames="sidebar"
+        unmountOnExit
+      >
+        <div className="fixed top-0 left-0 bg-oxford-blue-700 flex flex-col items-center w-64 h-full pt-8 z-30">
+          <h1 className="font-head text-2xl text-center w-full my-4 border-b border-purple-munsell py-2">
+            BugTracker
+          </h1>
           {isAuthenticated ? userLinks : guestLinks}
         </div>
-      </div>
-    </div>
+      </CSSTransition>
+    </React.Fragment>
   );
 };
 
