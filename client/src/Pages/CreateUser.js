@@ -5,7 +5,7 @@ import {
   useAuthState,
   useAuthDispatch,
   createUser,
-} from "../Context/auth/AuthContext";
+} from "../Context/auth/authContext";
 
 const CreateUser = () => {
   const history = useHistory();

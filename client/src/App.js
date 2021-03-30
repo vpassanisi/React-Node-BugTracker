@@ -10,9 +10,9 @@ import Info from "./Pages/Info";
 import CreateUser from "./Pages/CreateUser";
 import Alert from "./Layout/Alert";
 
-import { AuthProvider } from "./Context/auth/AuthContext";
-import { BugsProvider } from "./Context/bugs/BugsContext";
-import { ProjectsProvider } from "./Context/projects/ProjectsContext";
+import { AuthProvider } from "./Context/auth/authContext";
+import { BugsProvider } from "./Context/bugs/bugsContext";
+import { ProjectsProvider } from "./Context/projects/projectsContext";
 
 import "./index.css";
 

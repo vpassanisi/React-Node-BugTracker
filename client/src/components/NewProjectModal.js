@@ -6,7 +6,7 @@ import {
   useProjectsState,
   useProjectsDispatch,
   newProject,
-} from "../Context/projects/ProjectsContext";
+} from "../Context/projects/projectsContext";
 
 const NewProjectModal = (props) => {
   const { isNewProjectOpen, setIsNewProjectOpen } = props;

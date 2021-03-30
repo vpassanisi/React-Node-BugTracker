@@ -4,17 +4,17 @@ import {
   useBugsState,
   useBugsDispatch,
   clearBugsErrors,
-} from "../Context/bugs/BugsContext";
+} from "../Context/bugs/bugsContext";
 import {
   useProjectsState,
   useProjectsDispatch,
   clearProjectsErrors,
-} from "../Context/projects/ProjectsContext";
+} from "../Context/projects/projectsContext";
 import {
   useAuthState,
   useAuthDispatch,
   clearAuthErrors,
-} from "../Context/auth/AuthContext";
+} from "../Context/auth/authContext";
 
 const Alert = () => {
   const { error: bugsError } = useBugsState();

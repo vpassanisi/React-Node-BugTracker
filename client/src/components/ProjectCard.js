@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import {
   useProjectsDispatch,
   setProject,
-} from "../Context/projects/ProjectsContext";
+} from "../Context/projects/projectsContext";
 
 const ProjectCard = (props) => {
   const { project, index } = props;

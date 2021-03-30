@@ -6,14 +6,14 @@ import {
   useAuthState,
   useAuthDispatch,
   getMe,
-} from "../Context/auth/AuthContext";
-import { clearBugs, useBugsDispatch } from "../Context/bugs/BugsContext";
+} from "../Context/auth/authContext";
+import { clearBugs, useBugsDispatch } from "../Context/bugs/bugsContext";
 import {
   useProjectsState,
   useProjectsDispatch,
   getProjects,
   clearCurrentProject,
-} from "../Context/projects/ProjectsContext";
+} from "../Context/projects/projectsContext";
 
 const Home = () => {
   const history = useHistory();

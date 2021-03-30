@@ -2,7 +2,7 @@ import React from "react";
 import { CSSTransition } from "react-transition-group";
 import Updatebug from "./UpdateBug";
 
-import { useBugsDispatch, deleteBug } from "../Context/bugs/BugsContext";
+import { useBugsDispatch, deleteBug } from "../Context/bugs/bugsContext";
 
 const Bug = (props) => {
   const { open, setOpen, index, bug } = props;

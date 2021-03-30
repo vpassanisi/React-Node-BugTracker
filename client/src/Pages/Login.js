@@ -5,7 +5,7 @@ import {
   useAuthState,
   useAuthDispatch,
   login,
-} from "../Context/auth/AuthContext";
+} from "../Context/auth/authContext";
 
 const Login = () => {
   const authDispatch = useAuthDispatch();

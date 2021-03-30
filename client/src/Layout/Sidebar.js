@@ -6,12 +6,12 @@ import {
   useProjectsState,
   clearProjects,
   useProjectsDispatch,
-} from "../Context/projects/ProjectsContext";
+} from "../Context/projects/projectsContext";
 import {
   useAuthState,
   useAuthDispatch,
   logout,
-} from "../Context/auth/AuthContext";
+} from "../Context/auth/authContext";
 
 const Sidebar = (props) => {
   const { currentProject } = useProjectsState();

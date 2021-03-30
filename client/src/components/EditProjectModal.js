@@ -5,7 +5,7 @@ import {
   useProjectsDispatch,
   editProject,
   deleteProject,
-} from "../Context/projects/ProjectsContext";
+} from "../Context/projects/projectsContext";
 
 const EditProjectModal = (props) => {
   const { isEditProjectOpen, setIsEditProjectOpen, project, index } = props;

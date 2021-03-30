@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useAuthDispatch, login } from "../Context/auth/AuthContext";
+import { useAuthDispatch, login } from "../Context/auth/authContext";
 
 const Info = () => {
   const authDispatch = useAuthDispatch();

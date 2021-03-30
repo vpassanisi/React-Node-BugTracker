@@ -1,7 +1,7 @@
 import React from "react";
 import { CSSTransition } from "react-transition-group";
 
-import { useBugsDispatch, newBug } from "../Context/bugs/BugsContext";
+import { useBugsDispatch, newBug } from "../Context/bugs/bugsContext";
 
 const NewBugModal = (props) => {
   const [mounted, setMounted] = React.useState(false);

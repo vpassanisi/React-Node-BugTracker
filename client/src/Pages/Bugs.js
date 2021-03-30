@@ -2,14 +2,14 @@ import React from "react";
 import Bug from "../components/Bug";
 import { useHistory } from "react-router-dom";
 
-import { useAuthState } from "../Context/auth/AuthContext";
+import { useAuthState } from "../Context/auth/authContext";
 import {
   useBugsState,
   useBugsDispatch,
   sortBugs,
   getBugs,
-} from "../Context/bugs/BugsContext";
-import { useProjectsState } from "../Context/projects/ProjectsContext";
+} from "../Context/bugs/bugsContext";
+import { useProjectsState } from "../Context/projects/projectsContext";
 
 const Bugs = () => {
   const history = useHistory();

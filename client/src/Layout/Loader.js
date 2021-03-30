@@ -1,7 +1,7 @@
 import React from "react";
-import { useAuthState } from "../Context/auth/AuthContext";
-import { useProjectsState } from "../Context/projects/ProjectsContext";
-import { useBugsState } from "../Context/bugs/BugsContext";
+import { useAuthState } from "../Context/auth/authContext";
+import { useProjectsState } from "../Context/projects/projectsContext";
+import { useBugsState } from "../Context/bugs/bugsContext";
 
 const Loader = () => {
   const { isLoading: isAuthLoading } = useAuthState();

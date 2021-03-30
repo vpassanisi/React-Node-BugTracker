@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useBugsDispatch, updateBug } from "../Context/bugs/BugsContext";
+import { useBugsDispatch, updateBug } from "../Context/bugs/bugsContext";
 
 const UpdateBug = (props) => {
   const bugsDispatch = useBugsDispatch();
