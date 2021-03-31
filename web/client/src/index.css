@@ -1,0 +1,118 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.w-90p {
+  width: 90%;
+}
+
+.mt-10vh {
+  margin-top: 10vh;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-transition-delay: 9999999s;
+}
+
+.text-indent {
+  text-indent: 4rem;
+}
+
+input:focus + .underline,
+textarea:focus + .underline,
+select:focus + .underline {
+  width: 100%;
+}
+
+.modal-enter {
+  opacity: 0;
+}
+.modal-enter-active {
+  opacity: 1;
+  transition: opacity 300ms;
+}
+.modal-exit {
+  opacity: 1;
+}
+.modal-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+.collapse-enter {
+  max-height: 0rem;
+}
+.collapse-enter-active {
+  max-height: 24rem;
+  transition: max-height 750ms ease;
+}
+.collapse-exit {
+  max-height: 24rem;
+}
+.collapse-exit-active {
+  max-height: 0rem;
+  transition: max-height 750ms ease;
+}
+
+.sidebar-enter {
+  transform: translateX(-100%);
+}
+.sidebar-enter-active {
+  transform: translateX(0);
+  transition: transform 150ms ease;
+}
+.sidebar-exit {
+  transform: translateX(0);
+}
+.sidebar-exit-active {
+  transform: translateX(-100%);
+  transition: transform 150ms ease;
+}
+
+.progress-line,
+.progress-line:before {
+  height: 3px;
+  width: 100%;
+}
+.progress-line {
+  background-color: #90caf9;
+  display: -webkit-flex;
+  display: flex;
+}
+.progress-line:before {
+  background-color: #1976d2;
+  content: "";
+  -webkit-animation: running-progress 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation: running-progress 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+@-webkit-keyframes running-progress {
+  0% {
+    margin-left: 0px;
+    margin-right: 100%;
+  }
+  50% {
+    margin-left: 25%;
+    margin-right: 0%;
+  }
+  100% {
+    margin-left: 100%;
+    margin-right: 0;
+  }
+}
+@keyframes running-progress {
+  0% {
+    margin-left: 0px;
+    margin-right: 100%;
+  }
+  50% {
+    margin-left: 25%;
+    margin-right: 0%;
+  }
+  100% {
+    margin-left: 100%;
+    margin-right: 0;
+  }
+}
