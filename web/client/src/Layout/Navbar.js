@@ -82,7 +82,7 @@ const Navbar = (props) => {
           logout(authDispatch).then((data) => {
             if (data) {
               clearProjects(projectsDispatch);
-              history.push("/");
+              history.push("/login");
             }
           });
         }}

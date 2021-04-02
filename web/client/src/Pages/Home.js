@@ -50,14 +50,18 @@ const Home = () => {
     clearBugs(bugsDispatch);
   }, [projectsDispatch, bugsDispatch]);
 
-  return isAuthenticated && !isLoading ? (
+  if (!isAuthenticated) {
+    return null;
+  }
+
+  return (
     <section>
       <div className="font-head text-3xl text-center my-8">Your Projects</div>
       <div className="max-w-screen-lg w-11/12 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {cards}
       </div>
     </section>
-  ) : null;
+  );
 };
 
 export default Home;
