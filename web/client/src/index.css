@@ -46,15 +46,32 @@ select:focus + .underline {
   max-height: 0rem;
 }
 .collapse-enter-active {
-  max-height: 24rem;
+  max-height: 46.375rem;
   transition: max-height 750ms ease;
 }
 .collapse-exit {
-  max-height: 24rem;
+  max-height: 46.375rem;
 }
 .collapse-exit-active {
   max-height: 0rem;
   transition: max-height 750ms ease;
+}
+
+@media only screen and (min-width: 768px) {
+  .collapse-enter {
+    max-height: 0rem;
+  }
+  .collapse-enter-active {
+    max-height: 21.625rem;
+    transition: max-height 750ms ease;
+  }
+  .collapse-exit {
+    max-height: 21.625rem;
+  }
+  .collapse-exit-active {
+    max-height: 0rem;
+    transition: max-height 750ms ease;
+  }
 }
 
 .sidebar-enter {

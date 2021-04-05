@@ -18,7 +18,7 @@ import {
 const Home = () => {
   const history = useHistory();
 
-  const { isAuthenticated, isLoading } = useAuthState();
+  const { isAuthenticated } = useAuthState();
   const authDispatch = useAuthDispatch();
 
   const { projects } = useProjectsState();
