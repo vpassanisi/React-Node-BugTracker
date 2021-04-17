@@ -4,7 +4,6 @@ import Bugs from "../Pages/Bugs";
 import Bug from "../components/Bug";
 import { ProjectsProvider } from "../Context/projects/ProjectsContext";
 import { AuthProvider } from "../Context/auth/AuthContext";
-import { useMediaQuery } from "react-responsive";
 import {
   BugsProvider,
   useBugsDispatch,
@@ -24,10 +23,6 @@ jest.mock("react-router-dom", () => ({
   useHistory: () => ({
     push: mockHistoryPush,
   }),
-}));
-
-jest.mock("react-responsive", () => ({
-  useMediaQuery: jest.fn(() => true),
 }));
 
 jest.mock("../components/Bug", () => jest.fn(() => null));
