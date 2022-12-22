@@ -28,7 +28,7 @@
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
     "dotenv": "^8.2.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "koa": "^2.11.0",
     "koa-bodyparser": "^4.2.1",
     "koa-content-filter": "^1.0.0",
